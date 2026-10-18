@@ -1,7 +1,3 @@
-# openmr2
-OpenMR2 - MegaRace 2 Revived
-
-
 **OpenMR2 – MegaRace 2 Revived**
 
 An open-source recreation of MegaRace 2 for modern Windows and Linux systems, using the original game data without DOSBox.

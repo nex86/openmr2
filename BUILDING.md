@@ -27,7 +27,7 @@ python3 tools/fetch_appimage_tools.py
 python3 tools/build_appimage.py
 ```
 
-`build_linux.sh` accepts `CXX`. AppImage tools are downloaded from the official AppImage repositories; asset URLs and SHA-256 hashes are recorded in `build/tools/downloads.json`. The download script checks the upstream GitHub digest when supplied. AppImage output: `build/OpenMR2-0.7.11-dev-x86_64.AppImage`.
+`build_linux.sh` accepts `CXX`. AppImage tools are downloaded from the official AppImage repositories; asset URLs and SHA-256 hashes are recorded in `build/tools/downloads.json`. The download script checks the upstream GitHub digest when supplied. AppImage output: `build/OpenMR2-0.7.13-dev-x86_64.AppImage`.
 
 The AppImage build bundles transitive non-glibc dependencies, OpenGL dispatch/client libraries and PulseAudio client libraries. GPU-specific drivers remain system components. Its baseline is glibc 2.39; older distributions have not been verified. Public binary redistribution must wait for the license/corresponding-source audit described in `LICENSE_STATUS.md`.
 
@@ -38,7 +38,7 @@ The native regression suites use the actual original installations for file hash
 
 `tools/generate_manifest.py FIXTURE_PARENT` regenerates SHA-256 fingerprints from all three fixtures. It is an explicit developer action, not a runtime detector: do not run it against damaged data. `tools/generate_localization.py` compiles the UTF-8 TSV into the bitmap renderer's single-byte strings. `tools/localize_builders.py` was the one-time literal UI migration helper.
 
-Visual inspection tools `inspect_assets.py`, `inspect_executable.py` and `font_atlas.py` read original resources locally. Their output is not included in source/release ZIPs. `tools/package_candidates.py` creates private development candidate ZIPs and SHA256SUMS, excluding original data, temporary builds and personal paths.
+Visual inspection tools `inspect_assets.py`, `inspect_executable.py` and `font_atlas.py` read original resources locally. Their output is not included in source/release ZIPs. See DISTRIBUTION.md and tools/package_github_release.py for separate source tarballs and platform ZIPs; original data, temporary builds and personal paths are excluded.
 
 Fixtures: place Megarace 2 English, Megarace 2 French and Megarace 2 German beside the project directory. Runtime smoke scripts cover nine cases per language, including the quit dialog and both supported output modes. `python tests/render_pacing.py` compares rendered traces for the two modes.
 

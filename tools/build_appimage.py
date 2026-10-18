@@ -18,8 +18,12 @@ runtime_license=build/'tools/AppImage-runtime-LICENSE'
 if not runtime_license.exists():raise RuntimeError('Fetch the official runtime license before packaging')
 shutil.copy2(runtime_license,licenses/'AppImage-runtime-LICENSE')
 shutil.copy2(build/'tools/downloads.json',licenses/'AppImage-build-tools.json')
-for doc in ('RECORDING.md','VIDEO_UPSCALING.md','TODO.md','REVIVE_EFFECTS.md','ENGINE_AUDIO.md','custom_textures.txt','THIRD_PARTY_NOTICES.txt','README.md','BUILDING.md','CONFIGURATION.md','LOCALIZATION_REVIEW.md','RETRO_RENDERER.md','CHANGELOG.md','HUD_RESEARCH.md','TEST_REPORT.md','WORK_STATUS.md','LICENSE_STATUS.md','RELEASE_NOTES.md','test-results.json'):
+for doc in ('LICENSE','LICENSING.md','PUBLICATION_AUDIT.md','KEYBOARD.md','DISTRIBUTION.md','RECORDING.md','VIDEO_UPSCALING.md','TODO.md','REVIVE_EFFECTS.md','ENGINE_AUDIO.md','custom_textures.txt','THIRD_PARTY_NOTICES.txt','README.md','BUILDING.md','CONFIGURATION.md','LOCALIZATION_REVIEW.md','RETRO_RENDERER.md','CHANGELOG.md','HUD_RESEARCH.md','LICENSE_STATUS.md','RELEASE_NOTES.md'):
     shutil.copy2(root/doc,licenses.parent/doc)
+# Private QA reports are not distributed in the public source snapshot.
+# Their absence must not prevent building an optional AppImage from a clone.
+for doc in ('TEST_REPORT.md','WORK_STATUS.md','test-results.json'):
+    if (root/doc).is_file():shutil.copy2(root/doc,licenses.parent/doc)
 # Bundle the complete filter sources, build adapter and license texts.
 filter_sources=licenses.parent/'output-filter-source'
 filter_sources.mkdir(exist_ok=True)

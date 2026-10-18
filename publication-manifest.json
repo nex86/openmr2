@@ -30,8 +30,8 @@
     },
     {
       "path": "BUILDING.md",
-      "bytes": 5178,
-      "sha256": "19634f750129a5370dc11017f0cfb251e9b342e01075c93576e48e016b3457e1",
+      "bytes": 5196,
+      "sha256": "aab452eb480bbcae9d2181e65fb805ef7560a57a9085db6ff4e26983e135f994",
       "classification": "project development material; scope in LICENSING.md"
     },
     {
@@ -1380,8 +1380,8 @@
     },
     {
       "path": "tools/build_appimage.py",
-      "bytes": 6583,
-      "sha256": "a58213f5f9ab0624ace3247579e3d5508e9e0e6155f3eecb8baafbcf04b4e008",
+      "bytes": 6897,
+      "sha256": "95f553069958d744f4b7712a353d0cf27ddbeb7291c3ad52da4ec4ab63d22b6a",
       "classification": "project development material; scope in LICENSING.md"
     },
     {

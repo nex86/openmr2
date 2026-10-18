@@ -14,7 +14,7 @@ An open-source recreation of MegaRace 2 for modern Windows and Linux systems, us
 
 Includes the championship, custom single races, original music and Lance Boyle videos. Requires your own game files.
 
-For now Only the English, German and French GOG Versions are supported.
+For now only the English, German and French GOG Versions are supported.
 Support for original release CD versions will be added later.
 
 **Will be released when it's ready :)**

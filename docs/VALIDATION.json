@@ -1,0 +1,73 @@
+{
+  "version": "0.7.13-dev",
+  "date": "2026-10-19",
+  "ci_status": "workflow prepared; not executed on GitHub yet",
+  "export_checks": {
+    "tests": 8,
+    "failures": 0
+  },
+  "platforms": {
+    "windows": {
+      "binary_sha256": "3ccfe933f960bf2b8a36a75cce1237bcac7e57a2579de9d5fccee8bd040094bc",
+      "native_assertions": 16324,
+      "native_failures": 0,
+      "render_captures": [
+        {
+          "name": "revived-race",
+          "pass": true
+        },
+        {
+          "name": "revived-options",
+          "pass": true
+        },
+        {
+          "name": "revived-carshop",
+          "pass": true
+        },
+        {
+          "name": "retro-race",
+          "pass": true
+        },
+        {
+          "name": "retro-options",
+          "pass": true
+        },
+        {
+          "name": "retro-carshop",
+          "pass": true
+        }
+      ]
+    },
+    "linux": {
+      "binary_sha256": "4bc7f2b4ade4a6549a554cb70b6813948a773005ca6e7828add0274d265c95cd",
+      "native_assertions": 16314,
+      "native_failures": 0,
+      "render_captures": [
+        {
+          "name": "revived-race",
+          "pass": true
+        },
+        {
+          "name": "revived-options",
+          "pass": true
+        },
+        {
+          "name": "revived-carshop",
+          "pass": true
+        },
+        {
+          "name": "retro-race",
+          "pass": true
+        },
+        {
+          "name": "retro-options",
+          "pass": true
+        },
+        {
+          "name": "retro-carshop",
+          "pass": true
+        }
+      ]
+    }
+  }
+}

@@ -1,0 +1,5 @@
+Built-in image_gen edit, transparent_background=true.
+Edit target: build/ui-remaster-input/arsenal_buttons-target.png
+Selected output: arsenal_buttons-generated.png
+
+Edit target: attached transparent 1024x768 sprite atlas, four columns by three rows of the eleven square shop weapon/equipment buttons from MegaRace 2. Exactly eleven occupied cells in original order, bottom right cell empty. Faithfully redraw these exact eleven tiles as a very sharp high definition remaster, preserving each tile's original bounding box and aspect, dark blue-gray mottled metallic background, narrow gray bevel frame, and original red/gold/silver symbols. Match the supplied missile arrows, skull mine badge, oil splat, armored car, three weapon shapes, red turbine and gold engine. Keep every symbol identifiable, orientation and colors unchanged, clean smooth detailed metallic surfaces, restrained specular detail; do not redesign as modern flat icons. No additional frames outside original tiles, no labels, text, numerals, glow, scenery or new symbols. All gaps and the final empty cell remain transparent. This ONLY edits these eleven shop tiles; no other menu controls.

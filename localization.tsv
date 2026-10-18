@@ -1,0 +1,314 @@
+key	de	en	fr
+Gas	Beschleunigen	Accelerate	Accélérer
+Bremse / Rückwärts	Bremsen / Rückwärts	Brake / reverse	Freiner / reculer
+Links lenken	Links lenken	Steer left	Tourner à gauche
+Rechts lenken	Rechts lenken	Steer right	Tourner à droite
+Frontwaffe feuern	Frontwaffe feuern	Fire front weapon	Tirer à l'avant
+Heckwaffe abwerfen	Heckwaffe abwerfen	Drop rear weapon	Lâcher l'arme arrière
+Frontwaffe wechseln	Frontwaffe wechseln	Switch front weapon	Changer l'arme avant
+Heckwaffe wechseln	Heckwaffe wechseln	Switch rear weapon	Changer l'arme arrière
+Steuerkreuz hoch	Steuerkreuz hoch	D-pad up	Croix vers le haut
+Steuerkreuz runter	Steuerkreuz runter	D-pad down	Croix vers le bas
+Steuerkreuz links	Steuerkreuz links	D-pad left	Croix vers la gauche
+Steuerkreuz rechts	Steuerkreuz rechts	D-pad right	Croix vers la droite
+Back / Ansicht	Back / Ansicht	Back / View	Retour / Vue
+Linker Stick (Klick)	Linker Stick (Klick)	Left stick (click)	Stick gauche (clic)
+Rechter Stick (Klick)	Rechter Stick (Klick)	Right stick (click)	Stick droit (clic)
+Linker Stick links	Linker Stick links	Left stick left	Stick gauche : gauche
+Linker Stick rechts	Linker Stick rechts	Left stick right	Stick gauche : droite
+Linker Stick hoch	Linker Stick hoch	Left stick up	Stick gauche : haut
+Linker Stick runter	Linker Stick runter	Left stick down	Stick gauche : bas
+Rechter Stick links	Rechter Stick links	Right stick left	Stick droit : gauche
+Rechter Stick rechts	Rechter Stick rechts	Right stick right	Stick droit : droite
+Rechter Stick hoch	Rechter Stick hoch	Right stick up	Stick droit : haut
+Rechter Stick runter	Rechter Stick runter	Right stick down	Stick droit : bas
+Fertigmachen fürs Rennen : 	Nächstes Rennen: 	Next race: 	Prochaine course : 
+Fertigmachen fürs Rennen: 	Nächstes Rennen: 	Next race: 	Prochaine course : 
+ , Runde : 	 , Runde : 	, heat: 	, manche : 
+ , Position : 	 , Position : 	, position: 	, position : 
+Wagen waehlen	Wagen wählen	Choose a car	Choisir une voiture
+Wagen wählen	Wagen wählen	Choose a car	Choisir une voiture
+Geschwindigkeit : 	Geschwindigkeit : 	Speed: 	Vitesse : 
+ Mph\nKraftstoff : 	 mph\nKraftstoff : 	 mph\nFuel: 	 mph\nCarburant : 
+\nMotor      : 	\nMotor      : 	\nEngine: 	\nMoteur : 
+\n\nPreis : 	\n\nPreis : 	\n\nPrice: 	\n\nPrix : 
+   (noch nicht erhältlich)	   (noch nicht erhältlich)	   (not yet available)	   (pas encore disponible)
+   (dein Wagen)	   (dein Wagen)	   (your car)	   (votre voiture)
+Dieser Wagen ist noch nicht erhältlich.	Dieser Wagen ist noch nicht erhältlich.	This car is not available yet.	Cette voiture n'est pas encore disponible.
+Sorry, nicht genug Geld	Nicht genug Geld.	Not enough money.	Fonds insuffisants.
+Beide Plätze für Frontwaffen sind belegt.\nZuerst einen Werfer verkaufen.	Beide Plätze für Frontwaffen sind belegt.\nZuerst einen Werfer verkaufen.	Both front weapon slots are occupied.\nSell a launcher first.	Les deux emplacements avant sont occupés.\nVendez d'abord un lanceur.
+Beide Plätze für Heckwaffen sind belegt.\nZuerst einen Werfer verkaufen.	Beide Plätze für Heckwaffen sind belegt.\nZuerst einen Werfer verkaufen.	Both rear weapon slots are occupied.\nSell a launcher first.	Les deux emplacements arrière sont occupés.\nVendez d'abord un lanceur.
+Zuerst den passenden Werfer kaufen.	Zuerst den passenden Werfer kaufen.	Buy the matching launcher first.	Achetez d'abord le lanceur adapté.
+Der Werfer ist voll.	Der Werfer ist voll.	The launcher is full.	Le lanceur est plein.
+Nein	Nein	No	Non
+Ja	Ja	Yes	Oui
+Preis:	Preis:	Price:	Prix :
+Wagen : 	Wagen : 	Car: 	Voiture : 
+     Geld : 	     Geld : 	     Money: 	     Argent : 
+Minen	Minen	Mines	Mines
+Upgrades : 	Upgrades : 	Upgrades: 	Améliorations : 
+Schutzschild SH-24	Schutzschild SH-24	SH-24 shield	Bouclier SH-24
+kein Schaden	kein Schaden	no damage	aucun dégât
+keine	keine	none	aucune
+    Schaden : 	    Schaden : 	    Damage: 	    Dégâts : 
+Strecke wird geladen ...	Strecke wird geladen ...	Loading track ...	Chargement du circuit ...
+Klassifikation	Rennergebnis	Race results	Résultats
+Runde : 	Lauf: 	Heat: 	Manche : 
+Runde 	Lauf 	Heat 	Manche 
+Insgesamt	Insgesamt	Total	Total
+Verlassen	Aufgegeben	Retired	Abandon
+Zerstört	Zerstört	Destroyed	Détruit
+( Spieler )	( Spieler )	( Player )	( Joueur )
+Treffer: 	Treffer: 	Hits: 	Coups au but : 
+    Gewonnen: 	    Gewonnen: 	    Won: 	    Gains : 
+ $    Geld: 	 $    Geld: 	 $    Money: 	 $    Argent : 
+Geld: 	Geld: 	Money: 	Argent : 
+Kostenlose Reparatur	Kostenlose Reparatur	Free repair	Réparation gratuite
+Neuer Wagen im Laden + 5000 $	Neuer Wagen freigeschaltet + 5000 $	New car unlocked + $5,000	Voiture débloquée + 5000 $
+, Runde: 	, Runde: 	, heat: 	, manche : 
+Erweiterte\nGrafik ...	Erweiterte\nGrafik	Advanced\ngraphics	Graphismes\navancés
+Geräuscheffekte	Soundeffekte	Sound effects	Effets sonores
+Musik im Rennen	Musik im Rennen	Race music	Musique en course
+Musik im Hauptmenü	Menümusik	Menu music	Musique des menus
+Geräusche in Menüs	Menü-Sounds	Menu sounds	Sons des menus
+3 Runden	3 Runden	3 laps	3 tours
+5 Runden	5 Runden	5 laps	5 tours
+Maus	Maus	Mouse	Souris
+Tastatur	Tastatur	Keyboard	Clavier
+Controller belegen	Controller-Belegung	Controller bindings	Configurer la manette
+Debugmenü	Debug / Cheats	Debug / Cheats	Debug / Cheats
+Tasten	Tastenbelegung	Keyboard controls	Commandes clavier
+Grafikmodi	Grafik	Graphics	Graphismes
+Geräusche	Audio	Audio	Audio
+Rennen	Rennen	Race	Course
+Steuerung	Steuerung	Controls	Commandes
+(Controller verbunden)	(Controller verbunden)	(controller connected)	(manette connectée)
+(kein Controller gefunden)	(kein Controller gefunden)	(no controller found)	(aucune manette détectée)
+Übernehmen	Übernehmen	Apply	Appliquer
+CONTROLLER BELEGEN	CONTROLLER-BELEGUNG	CONTROLLER BINDINGS	CONFIGURATION MANETTE
+Xbox-Controller verbunden	Xbox-Controller verbunden	Xbox controller connected	Manette Xbox connectée
+Kein Controller gefunden - bitte anschließen	Kein Controller gefunden - bitte anschließen	No controller found - please connect one	Aucune manette détectée - connectez-en une
+Standardbelegung	Standardbelegung	Default bindings	Commandes par défaut
+Zurueck	Zurück	Back	Retour
+Taste drücken ...	Taste drücken ...	Press a button ...	Appuyez sur une touche ...
+Zurück	Zurück	Back	Retour
+Lenken geht immer auch mit dem Steuerkreuz.  Esc: Abbrechen	Das Steuerkreuz funktioniert immer.  Esc: Abbrechen	The D-pad always works for steering.  Esc: Cancel	La croix directionnelle reste active.  Échap : Annuler
+ERWEITERTE GRAFIK	ERWEITERTE GRAFIK	ADVANCED GRAPHICS	GRAPHISMES AVANCÉS
+Skalierung (Retro Mode): 	Skalierung (Retro Mode): 	Scaling (Retro Mode): 	Mise à l'échelle (Retro Mode) : 
+MSAA Kantenglättung: 	MSAA-Antialiasing: 	MSAA Antialiasing: 	Antialiasing MSAA : 
+Aus	Aus	Off	Désactivé
+Bildausgabe im Rennen: 	Framerate: 	Framerate: 	Framerate : 
+Revived (hochauflösend)	Revived (hochauflösend)	Revived (high resolution)	Revived (haute résolution)
+Retro Mode (Originalauflösung)	Retro Mode (Originalauflösung)	Retro Mode (original resolution)	Retro Mode (résolution d'origine)
+Ganzzahlige Skalierung (Retro Mode)	Integer Scaling (Retro Mode)	Integer Scaling (Retro Mode)	Integer Scaling (Retro Mode)
+Texturen gefiltert (nur Revived)	Texturfilter (Revived)	Texture filtering (Revived)	Filtrage des textures (Revived)
+FXAA Kantenglättung	FXAA-Antialiasing	FXAA Antialiasing	Antialiasing FXAA
+Vollbild	Vollbild	Fullscreen	Plein écran
+DEBUGMENÜ	DEBUG / CHEATS	DEBUG / CHEATS	DEBUG / CHEATS
+Erweiterte Debug Optionen	Debug	Debug	Debug
+Cheats (nur Meisterschaft)	Cheats (nur Meisterschaft)	Cheats (championship only)	Cheats (championnat)
+FPS anzeigen	FPS anzeigen	Show FPS	Afficher les FPS
+Renn-Infos (Videobild, Streckenpunkt, Tempo)	Renn-Infos (Videobild, Streckenpunkt, Tempo)	Race info (frame, road point, speed)	Infos course (image, point, vitesse)
+Fahrbahn-Markierungen (Hütchen)	Fahrbahn-Markierungen (Hütchen)	Show road markers	Afficher les repères de route
+Ohne Gegner fahren	Ohne Gegner fahren	Race without opponents	Courir sans adversaires
+Bild 4:3 gestreckt (statt Original 640x400)	Bild 4:3 gestreckt (statt Original 640x400)	Stretch video to 4:3	Étirer la vidéo au format 4:3
+Alte geglättete Kamera (nicht original)	Alte geglättete Kamera (nicht original)	Legacy smoothed camera	Ancienne caméra lissée
+Alle Videos überspringen (auch Intro)	Alle Videos überspringen (auch Intro)	Skip all videos (including intro)	Ignorer les vidéos (intro comprise)
+KI-Notfallhilfe (modern, nicht original)	KI-Bergung (nicht original)	AI recovery assistance	Remise en piste de l'IA
+Revived-Fahrmodell (unterteilte Physik)	Revived-Physik (Teilschritte)	Revived physics (substeps)	Physique Revived (calcul subdivisé)
+Unbegrenzt Geld	Unbegrenzt Geld	Unlimited money	Argent illimité
+Unbegrenzt Munition	Unbegrenzt Munition	Unlimited ammunition	Munitions illimitées
+Alle Waffen und Wagen	Alle Waffen und Wagen	All weapons and cars	Toutes les armes et voitures
+Kein Schaden	Kein Schaden	No damage	Aucun dégât
+Zurücksetzen	Zurücksetzen	Reset	Réinitialiser
+Die Cheats für das Einzelrennen stellst du im Einzelrennen-Menü ein.	Die Cheats für das Einzelrennen stellst du im Einzelrennen-Menü ein.	Single-race cheats are in the single-race menu.	Les cheats de la course rapide se règlent dans son menu.
+\nWagen : 	\nWagen : 	\nCar: 	\nVoiture : 
+\nGeld  : 	\nGeld  : 	\nMoney: 	\nArgent : 
+Nicht speichern	Leerer Speicherplatz	Empty slot	Emplacement vide
+Rennen laden	Spielstand laden	Load game	Charger une partie
+Dein Rennen	Aktueller Spielstand	Current game	Partie en cours
+Rennen geladen	Spielstand geladen	Game loaded	Partie chargée
+Keine Daten auffindbar	Kein Spielstand vorhanden.	No saved game found.	Aucune sauvegarde trouvée.
+Strecke konnte nicht geladen werden.	Strecke konnte nicht geladen werden.	Could not load the track.	Impossible de charger le circuit.
+Position 	Position 	Position 	Position 
+PAUSE	PAUSE	PAUSE	PAUSE
+WIEDERGABE	REPLAY	REPLAY	REPLAY
+Wiedergabe Nr.: 	Replay Nr. 	Replay no. 	Replay n° 
+Wiedergabe laden	Replay laden	Load replay	Charger un replay
+\nPlatz : 	\nPlatz : 	\nPosition: 	\nPosition : 
+\nDauer : 	\nDauer : 	\nDuration: 	\nDurée : 
+ Min. 	 Min. 	 min 	 min 
+ Sek.	 Sek.	 sec	 s
+Wiedergabe leer	Kein Replay vorhanden	No replay saved	Aucun replay enregistré
+Auswahl markieren	Spielmenü	Game menu	Menu du jeu
+Neues Spiel starten	Neues Spiel	New game	Nouvelle partie
+Löschen	Löschen	Delete	Supprimer
+Einzelrennen	Einzelrennen	Single race	Course rapide
+Spielstand gelöscht	Spielstand zurückgesetzt	Game reset	Partie réinitialisée
+Wagen	Wagen	Car	Voiture
+Strecke	Strecke	Track	Circuit
+Runden : 	Runden : 	Laps: 	Tours : 
+Cheats (nur Einzelrennen)	Cheats (nur Einzelrennen)	Cheats (single race only)	Cheats (course rapide)
+Alle Waffen	Alle Waffen	All weapons	Toutes les armes
+<< Zurück	<< Zurück	<< Back	<< Retour
+START >>	START >>	START >>	DÉPART >>
+FERTIG ZUM RENNEN\nRunde Nr. 	FERTIG ZUM RENNEN\nRunde Nr. 	GET READY TO RACE\nHeat no. 	PRÉPAREZ-VOUS\nManche n° 
+FERTIG ZUM RENNEN	FERTIG ZUM RENNEN	GET READY TO RACE	PRÉPAREZ-VOUS
+Runde Nr. 	Runde Nr. 	Heat no. 	Manche n° 
+ - Keine Waffen	 - Keine Waffen	 - No weapons	 - Sans armes
+Du hast einen Autounfall!	Dein Wagen ist zerstört!	Your car is wrecked!	Votre voiture est détruite !
+FALSCHE FAHRTRICHTUNG!!!	FALSCHE RICHTUNG!	WRONG WAY!	CONTRESENS !
+LETZTE RUNDE!!!	LETZTE RUNDE!	FINAL LAP!	DERNIER TOUR !
+START !!!	LOS!	GO!	PARTEZ !
+Ende des Rennens	Rennen beendet	Race finished	Course terminée
+Runden	Runden	Laps	Tours
+SCHMIEDE	SCHMIEDE	FOUNDRY	FONDERIE
+MONDBASIS 9	MONDBASIS 9	MOONBASE 9	BASE LUNAIRE 9
+Tasten im Rennen:\nPfeil hoch: Gas     Pfeil runter: Bremse\nLinks / Rechts: lenken\nLeertaste: Frontwaffe   Tab: wechseln\nEingabe: Heckwaffe   /: wechseln\nEsc: Pause	Tasten im Rennen:\nPfeil hoch: Gas     Pfeil runter: Bremse\nLinks / Rechts: lenken\nLeertaste: Frontwaffe   Tab: wechseln\nEingabe: Heckwaffe   /: wechseln\nEsc: Pause	Race controls:\nUp: accelerate     Down: brake\nLeft / Right: steer\nSpace: front weapon   Tab: switch\nEnter: rear weapon   /: switch\nEsc: pause	Commandes en course :\nHaut : accélérer     Bas : freiner\nGauche / Droite : tourner\nEspace : arme avant   Tab : changer\nEntrée : arme arrière   / : changer\nÉchap : pause
+Retro Mode: 640x480 (Rennen 320x480 wie im Original), ohne Filter.\nGanzzahlige Skalierung: höchstens der gewählte Faktor, der ins Fenster passt.\nOhne ganzzahlige Skalierung: Bild füllt immer das Fenster.\nSkalierung, MSAA, Bildausgabe: Links/Rechts oder anklicken. Vollbild: F11.	Retro Mode: Menüs 640x480, Rennen 320x400; ohne Filter/AA.\nFramerate: Original. Revived-Einstellungen werden gespeichert.\nGesperrte Optionen werden beim Wechsel zu Revived wiederhergestellt.\nSkalierung: Links/Rechts. Vollbild: F11.	Retro Mode: menus 640x480, races 320x400; no filtering/AA.\nFramerate: Original. Your Revived settings are saved.\nLocked options are restored when switching back to Revived.\nScaling: Left/Right. Fullscreen: F11.	Retro Mode : menus 640x480, courses 320x400 ; sans filtre/AA.\nFramerate : Original. Réglages Revived conservés.\nOptions rétablies lors du retour au mode Revived.\nMise à l'échelle : Gauche/Droite. Plein écran : F11.
+\n\nMaus ziehen: drehen   Mausrad/+/-: Zoom   Links/Rechts: Modell   Hoch/Runter: Fahrzeugsatz\nL: LOD   W: Drahtgitter   T: Texturfilter   R: Raeder   Leertaste: Auto-Rotation\nB: Hintergrund   G: Boden   F12: Screenshot   H: Hilfe   Esc: Beenden\nF1: Modelle   F2: Strecke fahren (Video + GPU-Autos)   F3: Videos	\n\nMaus ziehen: drehen   Mausrad/+/-: Zoom   Links/Rechts: Modell   Hoch/Runter: Fahrzeugsatz\nL: LOD   W: Drahtgitter   T: Texturfilter   R: Raeder   Leertaste: Auto-Rotation\nB: Hintergrund   G: Boden   F12: Screenshot   H: Hilfe   Esc: Beenden\nF1: Modelle   F2: Strecke fahren (Video + GPU-Autos)   F3: Videos	\n\nDrag: rotate   Wheel/+/-: zoom   Left/Right: model   Up/Down: model set\nL: LOD   W: wireframe   T: filtering   R: wheels   Space: auto-rotate\nB: background   G: ground   F12: screenshot   H: help   Esc: return\nF1: models   F2: game (video + GPU cars)   F3: videos	\n\nGlisser : tourner   Molette/+/- : zoom   Gauche/Droite : modèle   Haut/Bas : série\nL : LOD   W : fil de fer   T : filtrage   R : roues   Espace : rotation\nB : fond   G : sol   F12 : capture   H : aide   Échap : retour\nF1 : modèles   F2 : jeu (vidéo + voitures 3D)   F3 : vidéos
+\nLinks/Rechts: Video   Leertaste: Pause   Enter: neu starten   M: Ton   H: Hilfe   F2: Spiel   F1: Modelle   Esc: Spiel	\nLinks/Rechts: Video   Leertaste: Pause   Enter: neu starten   M: Ton   H: Hilfe   F2: Spiel   F1: Modelle   Esc: Spiel	\nLeft/Right: video   Space: pause   Enter: restart   M: sound   H: help   F2: game   F1: models   Esc: game	\nGauche/Droite : vidéo   Espace : pause   Entrée : recommencer   M : son   H : aide   F2 : jeu   F1 : modèles   Échap : jeu
+Ende des Rennens\nPos : 	Ende des Rennens\nPos : 	End of race\nPos: 	Fin de la course\nPos : 
+Bild 	Bild 	Frame 	Image 
+  Punkt 	  Punkt 	  Point 	  Point 
+  Tempo 	  Tempo 	  Speed 	  Vitesse 
+  Schaden 	  Schaden 	  Damage 	  Dégâts 
+  Lenk 	  Lenk 	  Steering 	  Direction 
+  roh 	  roh 	  raw 	  brut 
+Ausgabe 	Ausgabe 	Output 	Affichage 
+  KamV 	  KamV 	  CamSpeed 	  VitCam 
+  Paket x	  Paket x	  Package x	  Paquet x
+  versp. 	  versp. 	  late 	  retard 
+ Dreiecke  |  	 Dreiecke  |  	 triangles  |  	 triangles  |  
+Filter: anisotrop+Mipmaps	Filter: anisotrop+Mipmaps	Filter: anisotropic+mipmaps	Filtre : anisotrope+mipmaps
+Filter: Retro (nearest)	Filter: Retro (nearest)	Filter: retro (nearest)	Filtre : rétro (au plus proche)
+Kleines Missile	Kleine Rakete	Small missile	Petit missile
+Mittleres Missile	Mittlere Rakete	Medium missile	Missile moyen
+Grosses Missile	Große Rakete	Large missile	Gros missile
+Werfer fuer kleine Missiles	Werfer für kleine Raketen	Small missile launcher	Lanceur de petits missiles
+Werfer fuer mittlere Missiles	Werfer für mittlere Raketen	Medium missile launcher	Lanceur de missiles moyens
+Werfer fuer grosse Missiles	Werfer für große Raketen	Large missile launcher	Lanceur de gros missiles
+TRax L3 Missilewerfer	TRax L3 Missilewerfer	TRax L3 launcher	Lanceur TRax L3
+TRax L6 Missilewerfer	TRax L6 Missilewerfer	TRax L6 launcher	Lanceur TRax L6
+TRax L9 Missilewerfer	TRax L9 Missilewerfer	TRax L9 launcher	Lanceur TRax L9
+Minenwerfer MKII	Minenwerfer MKII	MKII mine launcher	Lance-mines MKII
+Minenwerfer	Minenwerfer	Mine launcher	Lance-mines
+Oelwerfer Od.V	Ölwerfer Od.V	Od.V oil dispenser	Distributeur d'huile Od.V
+Oelwerfer	Ölwerfer	Oil dispenser	Distributeur d'huile
+Oel	Öl	Oil	Huile
+Schutzschild	Schutzschild	Shield	Bouclier
+Niedrig	Niedrig	Low	Faibles
+Mittel	Mittel	Medium	Moyens
+Hoch	Hoch	High	Élevés
+Nitroglyzerin	Nitroglyzerin	Nitroglycerin	Nitroglycérine
+Spaltmaterial	Spaltmaterial	Fissile material	Matière fissile
+2 Runden	2 Runden	2 laps	2 tours
+Fluessiges Uran	Flüssiges Uran	Liquid uranium	Uranium liquide
+Eistee mit Milch	Eistee mit Milch	Iced tea with milk	Thé glacé au lait
+Fluessiges Nitro.	Flüssiges Nitro	Liquid nitro	Nitro liquide
+Fluessiger Kuhdung	Flüssiger Kuhdung	Liquid cow dung	Bouse de vache liquide
+Schutzschild SH-24\nSuperschutzschild\nModell Sh-24	Schutzschild SH-24\nSuperschutzschild\nModell Sh-24	SH-24 shield\nSuper shield\nModel SH-24	Bouclier SH-24\nSuper bouclier\nModèle SH-24
+.\nKapazität : 	\nKapazität: 	\nCapacity: 	\nCapacité : 
+\nMunition  : 	\nMunition  : 	\nAmmunition: 	\nMunitions : 
+\nVerfolgung   : 	\nVerfolgung   : 	\nTracking: 	\nGuidage : 
+\nWerfer       : TRax 	\nWerfer       : TRax 	\nLauncher: TRax 	\nLanceur : TRax 
+\nSprengstoff  : 	\nSprengstoff  : 	\nExplosive: 	\nExplosif : 
+\nSchaden      : 	\nSchaden      : 	\nDamage: 	\nDégâts : 
+.Mine Th-1.\nWerfer       : MKII\nSprengstoff  : Thorium\nSchaden      : Hoch	Mine Th-1\nWerfer: MKII\nSprengstoff: Thorium\nSchaden: Hoch	Th-1 mine\nLauncher: MKII\nExplosive: Thorium\nDamage: High	Mine Th-1\nLanceur : MKII\nExplosif : Thorium\nDégâts : Élevés
+.Öl Sk-N.\nWerfer : Ölwerfer Od.V\nDauer  : 2 Runden	Öl Sk-N\nWerfer: Od.V\nWirkung: 2 Runden	Sk-N oil\nDispenser: Od.V\nDuration: 2 laps	Huile Sk-N\nDistributeur : Od.V\nDurée : 2 tours
+.Öl Sk-N.\nWerfer : ölwerfer Od.V\nDauer  : 2 Runden	Öl Sk-N\nWerfer: Od.V\nWirkung: 2 Runden	Sk-N oil\nDispenser: Od.V\nDuration: 2 laps	Huile Sk-N\nDistributeur : Od.V\nDurée : 2 tours
+Öl	Öl	Oil	Huile
+Taste drücken	Taste drücken	Press a button	Appuyez sur une touche
+Laden der Strecke	Laden der Strecke	Loading track	Chargement du circuit
+ Bild 	 Bild 	 Frame 	 Image 
+ Punkt 	 Punkt 	 Point 	 Point 
+ Schaden 	 Schaden 	 Damage 	 Dégâts 
+ Runde 	 Runde 	 Heat 	 Manche 
+Spiel beenden	Verlassen	Exit	Quitter
+Spielstand zurücksetzen	Zurücksetzen	Reset	Réinitialiser
+MEGARACE II SETUP	EINSTELLUNGEN	SETTINGS	PARAMÈTRES
+Score : 	Punkte: 	Score: 	Score : 
+Esc: Ende   Leertaste: Pause   Links/Rechts: spulen	Esc: Zurück   Leertaste: Pause   Links/Rechts: Spulen	Esc: Back   Space: Pause   Left/Right: Seek	Échap : Retour   Espace : Pause   Gauche/Droite : Avancer/reculer
+Windows OpenGL Portierung	OpenGL-Port für Windows und Linux	OpenGL port for Windows and Linux	Portage OpenGL pour Windows et Linux
+Video nicht lesbar	Video konnte nicht geladen werden.	Could not load the video.	Impossible de charger la vidéo.
+Streckenvideo nicht lesbar	Streckenvideo konnte nicht geladen werden.	Could not load the track video.	Impossible de charger la vidéo du circuit.
+Fuer das Spiel werden MEGARACE2.gog und M.EXE im Spielordner benoetigt.	MEGARACE2.gog und M.EXE werden im Spielordner benötigt.	The game folder must contain MEGARACE2.gog and M.EXE.	Le dossier du jeu doit contenir MEGARACE2.gog et M.EXE.
+Fenster konnte nicht erstellt werden.	Das Spielfenster konnte nicht erstellt werden.	Could not create the game window.	Impossible de créer la fenêtre du jeu.
+opengl32.dll fehlt.	opengl32.dll wurde nicht gefunden.	opengl32.dll was not found.	opengl32.dll est introuvable.
+Kein passendes OpenGL-Pixelformat gefunden.	Kein geeignetes OpenGL-Pixelformat verfügbar.	No suitable OpenGL pixel format is available.	Aucun format de pixels OpenGL compatible n'est disponible.
+OpenGL-Kontext konnte nicht erstellt werden. Bitte Grafiktreiber aktualisieren.	OpenGL konnte nicht initialisiert werden. Bitte aktualisiere den Grafiktreiber.	Could not initialize OpenGL. Please update your graphics driver.	Impossible de démarrer OpenGL. Mettez à jour le pilote graphique.
+Der Grafiktreiber unterstuetzt kein modernes OpenGL (wglCreateContextAttribsARB fehlt).	Der Grafiktreiber unterstützt kein modernes OpenGL (wglCreateContextAttribsARB fehlt).	Your graphics driver does not support modern OpenGL (wglCreateContextAttribsARB is missing).	Le pilote graphique ne prend pas en charge OpenGL moderne (wglCreateContextAttribsARB absent).
+OpenGL 3.3 wird von diesem Grafiktreiber nicht unterstuetzt.	Der Grafiktreiber unterstützt OpenGL 3.3 nicht.	Your graphics driver does not support OpenGL 3.3.	Le pilote graphique ne prend pas en charge OpenGL 3.3.
+OpenGL-Funktion fehlt: 	OpenGL-Funktion fehlt: 	Missing OpenGL function: 	Fonction OpenGL manquante : 
+Keine MegaRace-2-Modelle gefunden (erwartet: CARS\<SATZ>\*.M3D).	Keine Fahrzeugmodelle gefunden (erwartet: CARS\<SATZ>\*.M3D).	No car models found (expected: CARS\<SET>\*.M3D).	Aucun modèle de voiture trouvé (attendu : CARS\<SÉRIE>\*.M3D).
+KI-Notfallhilfe: Wagen 	KI-Bergung: Wagen 	AI recovery: car 	Récupération de l'IA : voiture 
+Video: 	Video: 	Video: 	Vidéo : 
+  -  Videos	  -  Videos	  -  Videos	  -  Vidéos
+/10 Pkt/s  x 	/10 Pkt/s  x 	/10 units/s  x 	/10 unités/s  x 
+ B/s  Upd 	 FPS  Updates 	 FPS  Updates 	 FPS  Updates 
+  -  Debugkonsole	  -  Debug-Konsole	  -  Debug console	  -  Console de débogage
+Hauptmenü	Hauptmenü	Main menu	Menu principal
+Waffenladen	Waffenshop	Weapon shop	Boutique d'armes
+Ergebnis	Rennergebnis	Race results	Résultats
+Preistüren	Gewinnauswahl	Prize selection	Choix du prix
+Bestenliste	Bestenliste	Leaderboard	Classement
+Laden/Speichern	Laden / Speichern	Load / Save	Charger / Sauvegarder
+Meldung	Meldung	Message	Message
+Schrifttest	Schrifttest	Font test	Test des polices
+Wiedergaben	Replays	Replays	Replays
+Wiedergabe	Replay	Replay	Replay
+Ende	Beenden	Exit	Quitter
+[Zustand] 	[Status] 	[State] 	[État] 
+ Bilder)	 Bilder)	 frames)	 images)
+[OpenGL Fehler] 0x	[OpenGL-Fehler] 0x	[OpenGL error] 0x	[Erreur OpenGL] 0x
+  Fenster 	  Fenster 	  Window 	  Fenêtre 
+  Controller: ja	  Controller: verbunden	  Controller: connected	  Manette : connectée
+ Tempo 	 Tempo 	 Speed 	 Vitesse 
+ Mph Platz 	 mph  Platz 	 mph  Position 	 mph  Position 
+  -  Debugkonsole (Events, Dateien, Fehler in Rot)	  -  Debug-Konsole (Events, Dateien, Fehler rot)	  -  Debug console (events, files, errors in red)	  -  Console de débogage (événements, fichiers, erreurs en rouge)
+CD image (MEGARACE2.gog) not found - game and videos disabled	CD-Abbild MEGARACE2.gog fehlt. Spiel und Videos sind nicht verfügbar.	CD image MEGARACE2.gog not found. Game and videos are unavailable.	Image CD MEGARACE2.gog introuvable. Jeu et vidéos indisponibles.
+M.EXE not usable - game and videos disabled	M.EXE konnte nicht geladen werden. Spiel und Videos sind nicht verfügbar.	Could not load M.EXE. Game and videos are unavailable.	Impossible de charger M.EXE. Jeu et vidéos indisponibles.
+Debug-Konsole (CMD)	Debug-Konsole (CMD)	Debug console (CMD)	Console de debug (CMD)
+Debug-Ausgabe (Terminal)	Debug-Ausgabe (Terminal)	Debug output (terminal)	Logs de debug (terminal)
+Dump textures	Dump textures	Dump textures	Dump textures
+Enable custom textures	Eigene Texturen aktivieren	Enable custom textures	Activer les textures personnalisées
+Advanced graphics	Erweiterte Grafik	Advanced graphics	Graphismes avancés
+Lance Boyle videos	Lance-Boyle-Videos	Lance Boyle videos	Vidéos de Lance Boyle
+Sounds	Sounds	Sounds	Sons
+Engines	Motoren	Engines	Moteurs
+Race music	Rennmusik	Race music	Musique de course
+Menu music	Menümusik	Menu music	Musique des menus
+Menu sounds	Menüsounds	Menu sounds	Sons des menus
+Audio off hint	0% = ausgeschaltet	0% = off	0% = désactivé
+Volume controls hint	Lautstärke: Ziehen / Links / Rechts	Volume: drag / left / right	Volume : glisser / gauche / droite
+Advanced sound	Erweiterter Sound	Advanced sound	Audio avancé
+Race information	Renn-Infos	Race information	Infos de course
+Road markers	Fahrbahn-Markierungen	Road markers	Repères de piste
+Skip videos	Videos überspringen	Skip videos	Passer les vidéos
+Retro controller	Controller-Belegung	Controller setup	Manette
+Output filter: 	Output-Filter: 	Output filter: 	Filtre de sortie : 
+Output filter hint	Nur Bildausgabe. Links / Rechts: Filter wählen.	Final image only. Left / Right: choose filter.	Image finale uniquement. Gauche / Droite : filtre.
+Revived graphics hint	MSAA und Framerate: Links / Rechts oder anklicken.\nVollbild: Alt+Enter.	MSAA and framerate: Left / Right or click.\nFullscreen: Alt+Enter.	MSAA et framerate : Gauche / Droite ou cliquer.\nPlein écran : Alt+Entrée.
+Run DOS Version	DOS Version starten	Run DOS Version	Lancer la version DOS
+DOS launch failed	DOSBox konnte nicht gestartet werden.\nBitte die DOSBox-Dateien der GOG-Installation prüfen.	Could not start DOSBox.\nPlease check the GOG installation and DOSBox files.	Impossible de lancer DOSBox.\nVérifiez les fichiers DOSBox de l'installation GOG.
+Real-time shadows	Echtzeitschatten	Real-time shadows	Ombres en temps réel
+Modern explosion effects	Moderne Explosionseffekte	Modern explosion effects	Explosions modernes
+Revived Effects	Revived Effekte	Revived Effects	Effets Revived
+Vehicle lights	Fahrzeugbeleuchtung	Vehicle lights	Éclairage des véhicules
+Enhanced oil slicks	Realistische Ölflecken	Enhanced oil slicks	Nappes d'huile améliorées
+Damage effects	Schadenseffekte	Damage effects	Effets de dégâts
+Revived effects hint	Nur im Revived-Modus aktiv.\nSchadenseffekte: Rauch ab 70%, Feuer ab 90%, Explosion bei 100%.	Active in Revived Mode only.\nDamage effects: smoke at 70%, fire at 90%, explosion at 100%.	Actifs uniquement en mode Revived.\nDégâts : fumée dès 70%, feu dès 90%, explosion à 100%.
+Missile effects	Raketeneffekte	Missile effects	Effets des missiles
+Reset effects	Zurücksetzen	Reset	Réinitialiser
+Effect intensity hint	Intensität: Links / Rechts oder ziehen. 100% = Standard.	Intensity: Left / Right or drag. 100% = default.	Intensité : Gauche / Droite ou glisser. 100% = défaut.
+Video upscaling (FSR)	Video-Upscaling (FSR)	Video upscaling (FSR)	Upscaling vidéo (FSR)
+Video upscaling	Video-Upscaling (experimentell)	Video upscaling (experimental)	Upscaling vidéo (expérimental)
+Video filter: 	Videofilter: 	Video filter: 	Filtre vidéo : 
+Extras	Extras	Extras	Extras
+Model viewer	Modellbetrachter	Model viewer	Visionneuse de modèles
+Extras scroll hint	Mausrad / Pfeile: Scrollen   Enter: Starten   Esc: Zurück	Wheel / arrows: scroll   Enter: play   Esc: back	Molette / flèches : défiler   Entrée : lire   Échap : retour
+Recording started	Aufnahme gestartet	Recording started	Enregistrement démarré
+Recording stopped	Aufnahme gestoppt	Recording stopped	Enregistrement arrêté
+Recording failed	Aufnahme fehlgeschlagen	Recording failed	Échec de l'enregistrement
+Screenshot saved	Screenshot erstellt	Screenshot saved	Capture enregistrée
+Screenshot failed	Screenshot fehlgeschlagen	Screenshot failed	Échec de la capture

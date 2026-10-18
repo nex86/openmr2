@@ -1,0 +1,15 @@
+{
+  "repository": "https://github.com/libretro/glsl-shaders",
+  "retrieved": "2026-10-18",
+  "hq4x": "hqx/shader-files/hqx-pass1.glsl + hqx-pass2.glsl and hqx/resources/hq4x.png; LGPL-2.1-or-later",
+  "xbr": "xbr/shaders/xbr-lv2.glsl, MIT; sampled at 4x",
+  "sha256": {
+    "GPL-2.txt": "8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643",
+    "hq4x.glslp": "660f0d274ffef7345f4508873cb4e5d998b9b938d265a92d61eb05e61e3d8f1f",
+    "hq4x.png": "f61d7396aa22b8b06cd5cd563771da7ea819fb6c6d9e2e420f965f4b2a1bef1d",
+    "hqx-pass1.glsl": "bdf154ef38130b6b4ab033fe141a4e5761f0c7cb4cd6c80f1e9c35d387db8138",
+    "hqx-pass2.glsl": "58177cfdfe57a230e26bfe3fd9729003ef91cb1a969796e8bfb7f4b2de13a571",
+    "LGPL-2.1.txt": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551",
+    "xbr-lv2.glsl": "9cf5b08c7378305b558204354e898f6837c481fd5b4371dfbe6b5092cffe5062"
+  }
+}

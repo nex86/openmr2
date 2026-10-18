@@ -1,0 +1,50 @@
+name: Build
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  linux:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Install build dependencies
+        run: sudo apt-get update && sudo apt-get install -y g++ libx11-dev
+      - name: Check publication contents
+        run: python3 tools/prepare_github.py --check .
+      - name: Test export safeguards
+        run: python3 -B tests/publication_export.py
+      - name: Build Linux
+        run: sh build_linux.sh
+      - name: Compile native regression runner
+        run: g++ -std=c++17 -O1 -fno-math-errno -Wno-unused-result tests/regression.cpp src/media.cpp -o build/regression_linux
+
+  windows:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@11d5960a326750d5838078e36cf38b85af677262 # v4
+        with:
+          persist-credentials: false
+      - name: Check publication contents
+        run: python tools/prepare_github.py --check .
+      - name: Test export safeguards
+        run: python -B tests/publication_export.py
+      - name: Build Windows
+        shell: pwsh
+        run: |
+          $llvm = 'C:/Program Files/LLVM/bin'
+          if (-not (Test-Path "$llvm/clang++.exe")) {
+            choco install llvm --yes --no-progress
+            if ($LASTEXITCODE -ne 0) { throw 'LLVM installation failed' }
+          }
+          ./build_windows.ps1 -LLVM $llvm
+
+# No game files are fetched. Runtime/graphics tests require privately supplied
+# original fixtures. This workflow compiles only; it does not publish binaries.

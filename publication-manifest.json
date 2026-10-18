@@ -1,0 +1,1526 @@
+{
+  "date": "2026-10-19",
+  "target": "https://github.com/nex86/openmr2",
+  "version": "0.7.13-dev",
+  "classification": "complete local development source snapshot, not legal clearance",
+  "original_game_data_included": false,
+  "bundled_executables_included": false,
+  "unresolved": [
+    "P01 decoder translation",
+    "P02 AI-edited original artwork"
+  ],
+  "files": [
+    {
+      "path": ".gitattributes",
+      "bytes": 45,
+      "sha256": "7e0b9aab1519bc516f818e6260ddfc7cfd625b0a4681777599d5a443ecd4a655",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": ".github/workflows/build.yml",
+      "bytes": 1669,
+      "sha256": "61c71282cd278ca2a5044545ae0d2345aedeb924c7c46dfc649559f6dff6fd52",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": ".gitignore",
+      "bytes": 829,
+      "sha256": "4c1c5ea33f68dce126339d0a372d80426e3638cf12c38192e583b5a884b0cf89",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "BUILDING.md",
+      "bytes": 5178,
+      "sha256": "19634f750129a5370dc11017f0cfb251e9b342e01075c93576e48e016b3457e1",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "CHANGELOG.md",
+      "bytes": 11651,
+      "sha256": "49afdf1564a4b21821b69ef374ea880c32a06b1c6800d55536ffe550dd3c4ba9",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "CONFIGURATION.md",
+      "bytes": 16134,
+      "sha256": "406302ba5a142875050a389f51095f071f9d6b5bd2dad9360f218a888cf4e01f",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "CONTRIBUTING.md",
+      "bytes": 1321,
+      "sha256": "5fe76930ecb083c36fe8caa32fd2e7bc419885273cc698d80d9d7b8482ef5114",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "DISTRIBUTION.md",
+      "bytes": 2426,
+      "sha256": "1157d4441805b22eec55c681de2878e23b441299aae22e6efcc32d21fa56718e",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "ENGINE_AUDIO.md",
+      "bytes": 2996,
+      "sha256": "a567792c11c217eb2ea9140f4f2c14ccbb3881b4f049196927236505bfefdea9",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "HUD_RESEARCH.md",
+      "bytes": 4745,
+      "sha256": "26cd2fb22717f36ab7fc7e1970bf8c12bbf6ab7744638e3599be85780f2223df",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "KEYBOARD.md",
+      "bytes": 3937,
+      "sha256": "378a1f34e2301fdad48a5ca5682f8a43b41614ec6be01eacf88879e2cd556fb8",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "LICENSE",
+      "bytes": 35149,
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "classification": "GPL version 3 license text; scope in LICENSING.md"
+    },
+    {
+      "path": "LICENSE_STATUS.md",
+      "bytes": 2950,
+      "sha256": "b1ce58a6eb037a402ffd142142c45fe55fa3031f0119251ef1f6e4228223ce99",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "LICENSING.md",
+      "bytes": 2599,
+      "sha256": "95aa68d5d114a67b8082e07a8f15f18362ca8edc9096a602fb01d6d038de7174",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "LOCALIZATION_REVIEW.md",
+      "bytes": 2517,
+      "sha256": "f96396939c536a120e6e0e1e851cc162f6f6366947113e591e2f27f3884cdbc0",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "PUBLICATION_AUDIT.md",
+      "bytes": 4286,
+      "sha256": "00635a67062468ab4939c169d826dc5fd3e5198b11961d795202189e7fc5f0b6",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "README.md",
+      "bytes": 9262,
+      "sha256": "7454abdd6bb7937013b914c5182390250aa4f3c2c7b2378bb231713b68e3166e",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "RECORDING.md",
+      "bytes": 5892,
+      "sha256": "9e16db0f700e60a7934c15193078e2bbcc6825b2222b2b7b638fc1f668683913",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "RELEASE_NOTES.md",
+      "bytes": 14834,
+      "sha256": "624211a6eddebf4e9416055257f20b2dc76055637190d072f3967561f872f37d",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "RETRO_RENDERER.md",
+      "bytes": 6045,
+      "sha256": "e15b6edacd66877a7d48c3985a8f8e5b30d869f19ad98fe8cbd9593cfa1f4145",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "REVIVE_EFFECTS.md",
+      "bytes": 10028,
+      "sha256": "6052f3d12fa6c6043210c1cfdf811aec62c472bdf5463c3e35dcce98cee28beb",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "THIRD_PARTY_NOTICES.txt",
+      "bytes": 10077,
+      "sha256": "9a6e11d5b20d8de10e2ad4dbd76469f30750cc00ed565d57debed335910d410b",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "TODO.md",
+      "bytes": 1682,
+      "sha256": "010c6134d52b07c37221e1481862851ac18596a9f3e9a8ee983ed8b586d32781",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "VIDEO_UPSCALING.md",
+      "bytes": 3573,
+      "sha256": "0a61954b4768853e079b447e763762053207be90313c0105f9a44edba8c3ba3c",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "assets/effects/README.md",
+      "bytes": 1645,
+      "sha256": "f11b80ad705eb66efdb548022fa995b1a301c87ef885dba85f6aec9b01c2b8f6",
+      "classification": "text-generated project fire asset"
+    },
+    {
+      "path": "assets/effects/vehicle-fire-atlas-v1.png",
+      "bytes": 307619,
+      "sha256": "bc2026e06fadaf211c2a8361b48e26830715a9d983a1a2b0d6cebd985d76f76b",
+      "classification": "text-generated project fire asset"
+    },
+    {
+      "path": "assets/effects/vehicle-fire-source-v1.png",
+      "bytes": 1583300,
+      "sha256": "e24754e07c44bf969132dbc5aa9c366a045c99a9c2c294add22f1b7b9b213e8d",
+      "classification": "text-generated project fire asset"
+    },
+    {
+      "path": "assets/fonts/OFL.txt",
+      "bytes": 4373,
+      "sha256": "f62ef357d3a1c3d27edd35a6e1ba350e8a8d13499797964eeadefbf0b3b15d1f",
+      "classification": "SIL OFL font and derived atlas"
+    },
+    {
+      "path": "assets/fonts/README.txt",
+      "bytes": 561,
+      "sha256": "041012308d12c4aa14da99d9292c9230e09b4440d16a05d58cf2e143dd1ea470",
+      "classification": "SIL OFL font and derived atlas"
+    },
+    {
+      "path": "assets/fonts/Rajdhani-SemiBold.ttf",
+      "bytes": 390340,
+      "sha256": "94bbd25a18ca665999feb05a537de9fd2b860dcfb78bbe9ca00270825bf235da",
+      "classification": "SIL OFL font and derived atlas"
+    },
+    {
+      "path": "assets/fonts/Revived-SDF.png",
+      "bytes": 112023,
+      "sha256": "368dc92248638f037300e3fe9d5df1b5226c4256ce38f48ceab95f6b7f20b280",
+      "classification": "SIL OFL font and derived atlas"
+    },
+    {
+      "path": "assets/revived_ui/README.md",
+      "bytes": 2688,
+      "sha256": "3dbdbf773e61b1b66914c9342a971cf4a354cebada5cf1f9ad6f4abd335f1d11",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/arsenal-generated.png",
+      "bytes": 1528557,
+      "sha256": "231922dccfa96f780a6c50199cb7fc4f694ffb9690ad08c0a7790620609892d4",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/arsenal_buttons-generated.png",
+      "bytes": 1666530,
+      "sha256": "7ef24ded47e45a76487923f0adfe23aebac23bae36be85722f0280a5fffb2a70",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/catalog.json",
+      "bytes": 35772,
+      "sha256": "82f922c84cb778336e1fc4bedf0c690baf59c9bfa3be54e9aaf2ed6419cf1d13",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/controls-generated.png",
+      "bytes": 332001,
+      "sha256": "507b589fbeb29f1fdc0378a0e67a991b7993dc8dfbe0b551ef797b1847aee2cd",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/hud-generated.png",
+      "bytes": 1011666,
+      "sha256": "a71ee8ab83b900a06e22d187fdf4919ba43751899cf84493bf9a97d029791d1d",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/prompts.json",
+      "bytes": 2623,
+      "sha256": "c4531125a87f6f4dcdcbe63817221e428e2277218fbccb451ad5c1c39ba9159d",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/shop-strip-prompt.txt",
+      "bytes": 1162,
+      "sha256": "ff6cf50be870855b869be50669f7ae8e147ffa04b4c16bae8a7d99afc7f500f4",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-000.png",
+      "bytes": 22228,
+      "sha256": "9acce6fed8d928eb7b364f30192f132fcca76bbd98c46a0561b06b3f80d3195a",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-001.png",
+      "bytes": 15949,
+      "sha256": "fc4e0bea9a264c98bad0958bd4783fda1118f909c113e7f7b5e53d5421b1af38",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-002.png",
+      "bytes": 15019,
+      "sha256": "b376f09a783ca969109e983716baafc9373aad9d5ec0f9a5af324b34e830406c",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-003.png",
+      "bytes": 21849,
+      "sha256": "aae9c5e438c85ba0b42243c5ea5f95c4010fb6e7d5dc9dabbb1e319dec665161",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-004.png",
+      "bytes": 31440,
+      "sha256": "75d9d64e14993edb603ba24d1a5f640a15e1d66f4f20b051394efba413c9fc5e",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-005.png",
+      "bytes": 45997,
+      "sha256": "a448b390145c873f25ee409e9ef8468eff077cfed6630ed95fe22934099e47ce",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-006.png",
+      "bytes": 17533,
+      "sha256": "b58c72830f35561420eab8bfe0152cbfad7fd43711377e7f7802d2269f48a27a",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-007.png",
+      "bytes": 14255,
+      "sha256": "c940dc63510e616443e3bd8c44468d0cdabd8e57a0c047189e0d4e3261ca8fe2",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-008.png",
+      "bytes": 13786,
+      "sha256": "c2a78ea739524555696728873321235694f096c9f6fed2c150ec2b2274d58458",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-009.png",
+      "bytes": 32761,
+      "sha256": "b2bd0fdc71506e1a5ec35ed0ae4aec1af788c735b5e26ffc8ee9deb50056b284",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-010.png",
+      "bytes": 35695,
+      "sha256": "bd8b0ee6f9080b21e7c2adfd5957bc1e1587e6168e909bc5b0bae10f6985bc05",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-011.png",
+      "bytes": 38256,
+      "sha256": "8d9850292e74840fc2af4159db5b9e290aab340e0ede1b62352f693e20e2d96a",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-012.png",
+      "bytes": 21599,
+      "sha256": "d1f7790efb53dd18667e86a8dd47a6f2b58784ebe162053a1238a1a557b90d46",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-013.png",
+      "bytes": 14814,
+      "sha256": "2a374ba99f3f6bdeea485af5e42fe79245d136b5ed41fcaf8df31060528f32be",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-014.png",
+      "bytes": 19331,
+      "sha256": "1db608960dbea48da0d8aae95414047a842761cd0550c6c7ab1c545832d45850",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-015.png",
+      "bytes": 23289,
+      "sha256": "4d520b878f745834d265aac5ac06e03bc596a6233ec7d183a08ec725c887ca4e",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-016.png",
+      "bytes": 21445,
+      "sha256": "3bfe7b10daaa66ab725081d9319ba2953e6200f09d82251ca8cdd820124d5c36",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-017.png",
+      "bytes": 37722,
+      "sha256": "ec59eaefda77ff894941e66f06704756ac581d716337586bd9bd6d82b4fadc81",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-018.png",
+      "bytes": 20917,
+      "sha256": "f1788d1f8cd66809463ea69d3808cd806ab64c141df5073b67ba08c857b7175b",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-019.png",
+      "bytes": 23966,
+      "sha256": "0c818f3b72c5ec5d04b20eb087b6d9d1c3a5e191c7dc8b1b8ecada704e84382d",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-020.png",
+      "bytes": 17468,
+      "sha256": "5473a323816cfda44857105381752d8dc70b38a1e4040f2327ab2be9f5764077",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-021.png",
+      "bytes": 12947,
+      "sha256": "89ff406e3010150aa8ec32b35705d719484273e188b45439b19bfe3edd812851",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-022.png",
+      "bytes": 13632,
+      "sha256": "b05bc77ec9af0de193721f697396f3cdea9c3f61b1005409e6afa5b0447ae641",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-023.png",
+      "bytes": 24291,
+      "sha256": "d8ad0a37332f30a3ad00e208605f5617741db2ef8941e69df3575e14552e8e71",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-024.png",
+      "bytes": 29084,
+      "sha256": "477ea5480dee34baeb13ac9cfef6dab29a44e597f1b3ab625105c90dfec94860",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-025.png",
+      "bytes": 41254,
+      "sha256": "99e31ec5241ab43e381253a843caed2749d6d6362090e7d66ee38612ea5cc045",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-026.png",
+      "bytes": 221296,
+      "sha256": "ac87540cd3400c51c09603659767433f73101d9aeea3d615f021d0761cf5c208",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-027.png",
+      "bytes": 219122,
+      "sha256": "8ff11dcfc86b7bacf41bc7facc21fe2343a845c2c384a54e76e9c08616462959",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-028.png",
+      "bytes": 219443,
+      "sha256": "ce3e1f962e2f99d48e9b1ef65c59bab8a9032192e65e71eacf317d31064054e6",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-029.png",
+      "bytes": 229227,
+      "sha256": "3918032b3296dc35d3de49f18093916ca410123b83c8c0d3afd61da87ad03783",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-030.png",
+      "bytes": 228511,
+      "sha256": "181ee46dd01dd21e25a94e9eeedfbf9d40424518b578c9e95c00d2645893a0aa",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-031.png",
+      "bytes": 226539,
+      "sha256": "c931950408978e955550dd2e0005940be0160fe2e03947708b610df4689216de",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-032.png",
+      "bytes": 222296,
+      "sha256": "ddc06fa5e0c0e311a596d6e4f687597198764d9f5939106241d6d5dab4186879",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-033.png",
+      "bytes": 225516,
+      "sha256": "443e23d0ea2b2e9a1df71384b182cc0afc4657177e12fe1479d7b2825b7f6b26",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-034.png",
+      "bytes": 220464,
+      "sha256": "4230b686b3eb973d6b9deb29fa23a76dd5c070e675646600d228f4a755cba7a9",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-035.png",
+      "bytes": 233823,
+      "sha256": "730073fdad7ad266761f3ec0eb92833ddf02034b563493ef787da127548f493b",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-036.png",
+      "bytes": 229870,
+      "sha256": "ebc05824d8750ea306bd3bbbe829988b474ee0a6a4db109a27cab40cf060d4b5",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-037.png",
+      "bytes": 88511,
+      "sha256": "e88794b9bc73e89bffacc935ab293064a59436bb7e5f0ffef010237fa2266ac8",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-038.png",
+      "bytes": 87373,
+      "sha256": "245f20c1d3a6d904b46ad443b96fbc3ca7d6b613e2fcc56f6e157c8d28e2e4b6",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-039.png",
+      "bytes": 84771,
+      "sha256": "e78c5628094feed7428df21c3ffb7221efe3792d6cfcd168e47d8e3ba03bcd9e",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-040.png",
+      "bytes": 100884,
+      "sha256": "77e35538f2aa6700f5c43ea7ec702cdbda984358c474acadf2666401db8f948d",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-041.png",
+      "bytes": 89169,
+      "sha256": "5ee11aba5ea4b436148f1e1558c7e0db0e0940cbc571edc225d101b869f9b1b0",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-042.png",
+      "bytes": 91447,
+      "sha256": "aa32864b7bcf76026eca01c599782a8483feb23d4bd2f97a2b516ce23f38b81f",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-043.png",
+      "bytes": 90145,
+      "sha256": "d210153808c536e97046b25e93c065702165ca8a0b3f669431e000386ce6d2f7",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-044.png",
+      "bytes": 91277,
+      "sha256": "a038c3c19eab0e2567410b0fb5444dc634ad73c5975fa4a9e91ed742d0d7009f",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-045.png",
+      "bytes": 95733,
+      "sha256": "b33f1c004041c20e209a0f017e61b3df7a441731b511ff86efbbaf5e92a29ee8",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-046.png",
+      "bytes": 91567,
+      "sha256": "226db56666c73933d250b3bb87679bd3c07a0b3d38b2f756e1e7bfa58a8ac11a",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-047.png",
+      "bytes": 103497,
+      "sha256": "25be2ad03899240ffb681d1c1133a96b5c1483a035b82596431be3093bf4c3c0",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "assets/revived_ui/sprite-067.png",
+      "bytes": 42785,
+      "sha256": "1d6584bc573db85037c2a38a30b4ddca7b7c061439a9dc9c5813bc5bf7b2437a",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "build_linux.sh",
+      "bytes": 574,
+      "sha256": "f526b086ed3d2172ac9615c8fc45d2cae561336c2238826622fa2488da05afe4",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "build_win.sh",
+      "bytes": 1358,
+      "sha256": "d7eca99f3c4054c63446f3757223403392fab30dd2b639e278e9345fefac991f",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "build_windows.ps1",
+      "bytes": 2008,
+      "sha256": "c9aeb85c81fd35160ae3f12069cec43d635ed0b86529f107bab78e179baedc02",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "custom_textures.txt",
+      "bytes": 15438,
+      "sha256": "2330d7efed04b98e14374a5c035f1743e11d8106fd0d41dfd5858747f6a11f7b",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "docs/VALIDATION.json",
+      "bytes": 1567,
+      "sha256": "789d182e50a540ccbc5802777e69ad363ebb91a84a14533ce9d25af413deee78",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "docs/VALIDATION.md",
+      "bytes": 1339,
+      "sha256": "a01b25afd9d0f56abb73ef7b5ea0e3e78cf0bc2ccdc54a2cdcfa6651ee69af91",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "docs/images/effect-brakelights.png",
+      "bytes": 1409231,
+      "sha256": "5ea0cb389da1be2fe2e0fb57bc9a2d0b3c00d7ed7ecf291fc5dfeaedac63e8cc",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "docs/images/effect-damage.png",
+      "bytes": 862827,
+      "sha256": "adc04f44b55e3bab7cc58287b8d39eb10db85dc777bec6994ddd943a46451312",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "docs/images/effect-explosion.png",
+      "bytes": 876913,
+      "sha256": "31a9b9cbcfb89afd15bb855c40e95db11352a79046c8c81eed18921af8236fca",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "docs/images/effect-headlights.png",
+      "bytes": 1422512,
+      "sha256": "2b795d724856125acc4607374e4038b4a6f6435aa810075e7eece1d38723242c",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "docs/images/effect-oil.png",
+      "bytes": 862206,
+      "sha256": "e08583675985f1e3ee079bb9568cfc1d629c892aaec3f57e74d498608775f240",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "docs/images/effect-sparks.png",
+      "bytes": 876587,
+      "sha256": "90eb5a17c2d8958d5efc3e5913dd17ae0918a2268e5e6fc436d05b1bfb2d8f06",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "docs/images/provenance.json",
+      "bytes": 2810,
+      "sha256": "fd1e544d12a0ffa319fd733f52ca38c7f141b05b4b22488d24f30c5139ee92de",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "docs/images/retro-car.png",
+      "bytes": 333959,
+      "sha256": "3208fab916277653bb3072eab7d1c720a328ce0de315166b69b25e3f3068a6ea",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "docs/images/retro-options.png",
+      "bytes": 321156,
+      "sha256": "2acecd71c6741928dd15f6fdac0c467b32de5150de2394f6f2e02338351c8690",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "docs/images/retro-race.png",
+      "bytes": 190097,
+      "sha256": "4a57692ca26c3bb165894fb8c0a63ba53dbab1bde59a2d21f448c5cef56dec52",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "docs/images/revived-car.png",
+      "bytes": 1408745,
+      "sha256": "c1528c04b83f06bf104487aab9f0b3919e2be522773479937c93b3794e012bf9",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "docs/images/revived-options.png",
+      "bytes": 1616124,
+      "sha256": "8f2667c489b6005ac145b44bcf522089088fcc78fa62b2c3d37f104b5af20466",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "docs/images/revived-race.png",
+      "bytes": 862347,
+      "sha256": "d9402295af6cdb289cb1765b85a31d1af266ade20acc4782780fd6072832fe21",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "localization.tsv",
+      "bytes": 27442,
+      "sha256": "5cfa987ecf9a8a749018757e5acc2be03a8d74819ab4236ae1a3de719830f2d9",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/audio_pulse.inc",
+      "bytes": 2074,
+      "sha256": "49f5f26ac793fdb5bb096f5e3d1788e0f240cbe2f8f59cbe28b700057ad135b6",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/config_keys.h",
+      "bytes": 1727,
+      "sha256": "6726e7867a9a8adfd87039695ac3af42b2ff05ed2235e2128dbb22105556b6cf",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/core.cpp",
+      "bytes": 63350,
+      "sha256": "324ee7b5ed0d5844d782435593ac5724776487404da4e28ba09cef4f8d5aa9d0",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/debug_console_win32.inc",
+      "bytes": 3594,
+      "sha256": "275ad46770d0b549100f767b6d16a162eed3ca32df9f0eb71e8bea2ff6a166a4",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/dos_win32.inc",
+      "bytes": 1922,
+      "sha256": "62b6249569c02c198f9e09fc3dbeef10d2f6e91d9e7210df59f1f63eb8cff61d",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/encoder_win32.inc",
+      "bytes": 4239,
+      "sha256": "5c7b11b4ac550ef4538776370345a92d4f4e7760e3416e605a4807819b469431",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/encoder_x11.inc",
+      "bytes": 3216,
+      "sha256": "2df7bc75c19bdfdfd954372769ab2b5b256b180b02b69247425ed337e6a57aa9",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/fire_atlas_data.h",
+      "bytes": 1106203,
+      "sha256": "53c15ec4322b82e7b69c4b4006abd7ddb294f23d21f9027baedb391f8d642844",
+      "classification": "text-generated project fire asset"
+    },
+    {
+      "path": "src/g_base.inc",
+      "bytes": 28078,
+      "sha256": "65108eed99bcb41ed2e211163a480d282a1ff7bffcc87ddbfc76eaaebdf51849",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/g_effects.inc",
+      "bytes": 17626,
+      "sha256": "94dccbf9d9638c4836c2fa080499d551cd46b85e9cb67fa16f688420328fbd8c",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/g_extras.inc",
+      "bytes": 3001,
+      "sha256": "11dd2ecda8a4d544587bb6330f6b667bb65091bad85a2c5fe383d4295dd76ac6",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/g_lights.inc",
+      "bytes": 8169,
+      "sha256": "7685a1691797311f531387051605917bfae761b9393a28010ae88e2b77d98c2f",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/g_menu.inc",
+      "bytes": 126798,
+      "sha256": "bf982573bec1c79295a955937a5dd6ce3d8a548fd169ad9b35e3d185775d67b5",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/g_menu_head.inc",
+      "bytes": 8341,
+      "sha256": "dd4a3713bbd543580f27837afb0b065bd648a0894bc44a696f357809f81c80ca",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/g_menu_mid.inc",
+      "bytes": 16789,
+      "sha256": "e7411def4d3cad9018d182fb5476a0d4890c46c6839344245e67b696f7743b50",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/g_menu_tail.inc",
+      "bytes": 101668,
+      "sha256": "77c6af8b887f1ff5892d79ab7dcb3fa16026f67dad78b9fdd0c3506214337058",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/g_missile_effects.inc",
+      "bytes": 4888,
+      "sha256": "7332bd75f9eab623b882815bddc7f6d4b204ca2f6a2eda8899b639d7051e95fc",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/g_projectiles.inc",
+      "bytes": 5231,
+      "sha256": "1fa9c5d01a9a5083b277d7424c91f1f1a408d6381f07806ed29258cba9f84528",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/g_race.inc",
+      "bytes": 102741,
+      "sha256": "55d7026848a82e5cfccd8fb70aac5be0bc311d34c1908889b89252ac12802281",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/g_replay.inc",
+      "bytes": 12683,
+      "sha256": "6144277a156160fdc98647e77829c26416f72a8de1974fb3f7ed40bd2a39e91d",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/g_retro_menu.inc",
+      "bytes": 9215,
+      "sha256": "2b18d8c833b6b1d4f4b551ad57c6470de2db9fe4f2f80b71bc386cb44bfd2943",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/g_shadows.inc",
+      "bytes": 9112,
+      "sha256": "9a0ec2d56478bbf8064f2f0f7203f9ae5ae66e65956a2e27bdacffe4c52580d0",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/g_track.inc",
+      "bytes": 32770,
+      "sha256": "5c47d29952ce7b829ace27370b3e01a8253eac9af17a6cb3058bdc607364994d",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/game_directory.h",
+      "bytes": 4164,
+      "sha256": "98dfaab963a0f54fcd98e93f9204d7b7a183d1e4bbd6458f7a267d8a19a5c696",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/gamedir_win32.inc",
+      "bytes": 6261,
+      "sha256": "5ff8d0b9fe46a29644cc0d078b073debb95315c4a795fa5ba8b655ff1f38b9ca",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/gamedir_x11.inc",
+      "bytes": 4778,
+      "sha256": "5cb758ba60f7bf848e2ecf28b99c98d03167031cab570503d4f4a0e5a05e05d3",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/gamefiles.h",
+      "bytes": 6587,
+      "sha256": "234697eb4297ea9eef8c68688b7db0d6f923da299b244a710c3506999f9fbd1d",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/gl.h",
+      "bytes": 7011,
+      "sha256": "d10f72ab286693cd3a0f1de3a06b8d2edaf720a14e787d528c88695a6883c143",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/global_shortcuts.inc",
+      "bytes": 5374,
+      "sha256": "0a2e5cdb4b9a9f1b9921f44550cc81c9b4b35dc85e47eb3bf70fbde9a37253d7",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/gog_manifest.h",
+      "bytes": 56425,
+      "sha256": "2e6982a29e76ed2ec19cb5a20df9a1d2db2dd3acb1fb434e585c4636c4c293ff",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/gog_verify.h",
+      "bytes": 3636,
+      "sha256": "ae31f0696bff7014c73d9238c8d02fd969b0939f0c235239d54f9113d794e320",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/i18n.h",
+      "bytes": 109862,
+      "sha256": "749d0cd0e09b04e13b809a59bee967ee9959ea2c3e3c561820656157538ad679",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/media.cpp",
+      "bytes": 17615,
+      "sha256": "4f4d4d2cfba99714dd8d59819a03ddf3a514d361bf2e01b0402f7ec3444c4e8c",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/media.h",
+      "bytes": 2165,
+      "sha256": "92bb5cbd852af5dbba7e7adf5a85900c680972227df0de7c4709aa9e6f6536b3",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/modes.inc",
+      "bytes": 26403,
+      "sha256": "e2a1493b6e651d5454001ce5566c1180f261b1a77d7052f58a7ca42e46fe4d8a",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/output_filter_data.h",
+      "bytes": 43041,
+      "sha256": "a83a8a3ae573f94803bfcfd758e4b4e305867f4abbbe7497dbf41d0a092b3fc5",
+      "classification": "third-party component; upstream terms retained"
+    },
+    {
+      "path": "src/output_filters.inc",
+      "bytes": 3889,
+      "sha256": "91cb031435f38f99132f7b87953d7ecd246355f6bf847921c283cd834122b05a",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/png.inc",
+      "bytes": 1897,
+      "sha256": "d02e41a9b1b26bd600757fa47fed86c4e099f0b35fb07b064b6677e7f3548e23",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/recording.inc",
+      "bytes": 3545,
+      "sha256": "62094c66652b266e04f874cfa37bd149b94c97d5fcc6296cf180357b32d53014",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/remastered_ui_data.h",
+      "bytes": 14870666,
+      "sha256": "0101340a90ceb50a7a4b74f3b509ad6bc65ca4fed03eb31fff61e708dc7c16f6",
+      "classification": "P02: AI-edited original artwork; rights unresolved"
+    },
+    {
+      "path": "src/retro_palette.inc",
+      "bytes": 2789,
+      "sha256": "eeb6e108309382cceff154b773d6b254d76822eae6f88b6fc51ac95ebb013339",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/revived_font_data.h",
+      "bytes": 403777,
+      "sha256": "602953c454b0246f39774fe3dc78a4f34c8629de6ae36a345126ec215828ef32",
+      "classification": "SIL OFL font and derived atlas"
+    },
+    {
+      "path": "src/sha256.h",
+      "bytes": 3173,
+      "sha256": "af9b6b9cbcb2ff4dc48e7d1cf7b0163b08b5d1e21d31d830aaba1f43e7834aad",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/startup_choice.h",
+      "bytes": 2116,
+      "sha256": "337ad93743313775be4ad6889739eaa6adb56f6a41468012e2f44c9493bab5ff",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/startup_win32.inc",
+      "bytes": 2677,
+      "sha256": "642a0983af410cd30581426729f67fd4c5d92ac60222645123cdf7aec94416f4",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/startup_x11.inc",
+      "bytes": 3947,
+      "sha256": "21a68678cc74ea922373df2cd9ffec044384c0fddcf70a36cb4224d1cef1a309",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/sys.h",
+      "bytes": 4508,
+      "sha256": "1a369d9009f8b61297e455e30d22d5744d7a6c7bea4628cba7ae7c5b9dfee545",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/texture_canvas.inc",
+      "bytes": 5235,
+      "sha256": "7c7666b626dbf53099e272b94f189f7efa5a9b6a0be702358b30afece5b97f28",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/texture_dump.inc",
+      "bytes": 11230,
+      "sha256": "2be43a2c9b14482979e85bfdc391ab029d7451f85442ba0bcd393d26dffe0216",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/textures.inc",
+      "bytes": 5649,
+      "sha256": "791af874e83b3bb4f514d9b84c44d1ef4dc7d631a0a62a33c637e8ead83ef868",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/third_party/README.md",
+      "bytes": 332,
+      "sha256": "920dc6dd2ad29104a0f9094c89aa4d060cc6dbff21a97919f05e397e9e300693",
+      "classification": "third-party component; upstream terms retained"
+    },
+    {
+      "path": "src/third_party/fsr1/LICENSE.txt",
+      "bytes": 1094,
+      "sha256": "db089274ce766da70f5b7d791029c3486f9f9e27c8c79c652689603d3192e802",
+      "classification": "third-party component; upstream terms retained"
+    },
+    {
+      "path": "src/third_party/fsr1/ffx_a.h",
+      "bytes": 181915,
+      "sha256": "f60e2722fcd13989523b9164d776ab382b3692791767f3bf8bb19967f763f3fb",
+      "classification": "third-party component; upstream terms retained"
+    },
+    {
+      "path": "src/third_party/fsr1/ffx_fsr1.h",
+      "bytes": 60310,
+      "sha256": "93c3922362ea7fc99cbcc698ca30c98de4f8c246d1fbb0b09e015ddef38ce3a5",
+      "classification": "third-party component; upstream terms retained"
+    },
+    {
+      "path": "src/third_party/fsr1/provenance.json",
+      "bytes": 359,
+      "sha256": "b9df1d81355f8bd463e45ce18a1e8106b12790c3156142129d00b6baadc19c92",
+      "classification": "third-party component; upstream terms retained"
+    },
+    {
+      "path": "src/third_party/output_filters/HQX-COPYING.txt",
+      "bytes": 26530,
+      "sha256": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551",
+      "classification": "third-party component; upstream terms retained"
+    },
+    {
+      "path": "src/third_party/output_filters/README.txt",
+      "bytes": 1092,
+      "sha256": "e3a4bed01358cea908a19154a0370cde7f45a7aa5313b8dbc36fd0e8cad2210a",
+      "classification": "third-party component; upstream terms retained"
+    },
+    {
+      "path": "src/third_party/output_filters/SHA256SUMS.json",
+      "bytes": 685,
+      "sha256": "0d4c46e7473e4794e3dcd4aa622a7b0aa6192eb3791bdc59728908388cc1ba35",
+      "classification": "third-party component; upstream terms retained"
+    },
+    {
+      "path": "src/third_party/output_filters/XBRZ-COPYING.txt",
+      "bytes": 35149,
+      "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
+      "classification": "third-party component; upstream terms retained"
+    },
+    {
+      "path": "src/third_party/output_filters/hq2x.cg",
+      "bytes": 1049,
+      "sha256": "bb229fec53e69b3bf9b8db188516f9f6f14489b2b6cd1266e89a62678eaa85de",
+      "classification": "third-party component; upstream terms retained"
+    },
+    {
+      "path": "src/third_party/output_filters/hq2x.glsl",
+      "bytes": 18322,
+      "sha256": "b5b6d955d9aa3a5c68c3614070e918ec47816e61884e2bf5b011d678c6a69bd6",
+      "classification": "third-party component; upstream terms retained"
+    },
+    {
+      "path": "src/third_party/output_filters/hq2x.png",
+      "bytes": 2793,
+      "sha256": "27470641a8ab900b8ae889f22bc8bffeda587d7243e14de47730d9f9abcfa4ac",
+      "classification": "third-party component; upstream terms retained"
+    },
+    {
+      "path": "src/third_party/output_filters/hqx.inc",
+      "bytes": 4471,
+      "sha256": "f246f019278323b058a13c59c2ce01300c0adabbcc7a911faf601c3ebd4c7e97",
+      "classification": "third-party component; upstream terms retained"
+    },
+    {
+      "path": "src/third_party/output_filters/xbrz-freescale.glsl",
+      "bytes": 14441,
+      "sha256": "4af7e0af2d65f6f93e622ec86fb6e46e66f23ba6e4c400421ff4d62c2c3835e5",
+      "classification": "third-party component; upstream terms retained"
+    },
+    {
+      "path": "src/third_party/stb_image.h",
+      "bytes": 283010,
+      "sha256": "594c2fe35d49488b4382dbfaec8f98366defca819d916ac95becf3e75f4200b3",
+      "classification": "third-party component; upstream terms retained"
+    },
+    {
+      "path": "src/third_party/stb_image_write.h",
+      "bytes": 71221,
+      "sha256": "cbd5f0ad7a9cf4468affb36354a1d2338034f2c12473cf1a8e32053cb6914a05",
+      "classification": "third-party component; upstream terms retained"
+    },
+    {
+      "path": "src/third_party/video_filters/GPL-2.txt",
+      "bytes": 18092,
+      "sha256": "8177f97513213526df2cf6184d8ff986c675afb514d4e68a404010521b880643",
+      "classification": "third-party component; upstream terms retained"
+    },
+    {
+      "path": "src/third_party/video_filters/LGPL-2.1.txt",
+      "bytes": 26530,
+      "sha256": "dc626520dcd53a22f727af3ee42c770e56c97a64fe3adb063799d8ab032fe551",
+      "classification": "third-party component; upstream terms retained"
+    },
+    {
+      "path": "src/third_party/video_filters/hq4x.glslp",
+      "bytes": 297,
+      "sha256": "660f0d274ffef7345f4508873cb4e5d998b9b938d265a92d61eb05e61e3d8f1f",
+      "classification": "third-party component; upstream terms retained"
+    },
+    {
+      "path": "src/third_party/video_filters/hq4x.png",
+      "bytes": 11913,
+      "sha256": "f61d7396aa22b8b06cd5cd563771da7ea819fb6c6d9e2e420f965f4b2a1bef1d",
+      "classification": "third-party component; upstream terms retained"
+    },
+    {
+      "path": "src/third_party/video_filters/hqx-pass1.glsl",
+      "bytes": 5459,
+      "sha256": "bdf154ef38130b6b4ab033fe141a4e5761f0c7cb4cd6c80f1e9c35d387db8138",
+      "classification": "third-party component; upstream terms retained"
+    },
+    {
+      "path": "src/third_party/video_filters/hqx-pass2.glsl",
+      "bytes": 4078,
+      "sha256": "58177cfdfe57a230e26bfe3fd9729003ef91cb1a969796e8bfb7f4b2de13a571",
+      "classification": "third-party component; upstream terms retained"
+    },
+    {
+      "path": "src/third_party/video_filters/provenance.json",
+      "bytes": 885,
+      "sha256": "3210bfdc5e8a63057132f75e09befa7b569a7cf389044313c21257a9fa8163f2",
+      "classification": "third-party component; upstream terms retained"
+    },
+    {
+      "path": "src/third_party/video_filters/xbr-lv2.glsl",
+      "bytes": 10536,
+      "sha256": "9cf5b08c7378305b558204354e898f6837c481fd5b4371dfbe6b5092cffe5062",
+      "classification": "third-party component; upstream terms retained"
+    },
+    {
+      "path": "src/ubbdec.inc",
+      "bytes": 742045,
+      "sha256": "2ea0c239fd1603a77d456dfb96cdbc46a6a8443a844d46edd342ebb739c74887",
+      "classification": "P01: original executable translation; rights unresolved"
+    },
+    {
+      "path": "src/verify_progress_win32.inc",
+      "bytes": 2320,
+      "sha256": "e8999449e852baa52d4267545c96cf490b82da4f82c22b87c62153bc0165b6f1",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/video_filter_data.h",
+      "bytes": 64054,
+      "sha256": "5688877f87938e51b57969ee20a6c850656819a85ea80152e7a0d5c2c0fdc5d5",
+      "classification": "third-party component; upstream terms retained"
+    },
+    {
+      "path": "src/video_fsr_data.h",
+      "bytes": 243598,
+      "sha256": "18274fd5ed5c75be5321fba08eaa256379c9e4ed1dc62438f9fac99637a62c39",
+      "classification": "third-party component; upstream terms retained"
+    },
+    {
+      "path": "src/video_upscale.inc",
+      "bytes": 9519,
+      "sha256": "95b98072dfc4a24f19a8262d8d736820caee8ff99026f719c1229173e1305802",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/win32_main.cpp",
+      "bytes": 31716,
+      "sha256": "b90bb77fb6f2a1440c43ed7f5d42557a1fa453b47e9a9be3301c9636eec5ef9e",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "src/x11_main.cpp",
+      "bytes": 13735,
+      "sha256": "8063e6e5cf4dee358f32f5f115a7eb6d1687d935deaea9cc11f86b6f2b9d8e95",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/audio_fonts.inc",
+      "bytes": 6838,
+      "sha256": "f5e58582cd3ce5bc158c85352d51137f840229129158d66199d170dab50efd10",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/console_startup_windows.ps1",
+      "bytes": 1890,
+      "sha256": "88f420eafc637c0a10f0f72baada678e039c68486da5cf3dafebec5b2ba400ce",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/console_windows.cpp",
+      "bytes": 7247,
+      "sha256": "2d0c5be62af39a92a7e5126412fb74c68f57f6b162fe6ca332af5a6fb25b7701",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/controls_0713.inc",
+      "bytes": 5641,
+      "sha256": "e93e96742428f27ffbab5850d938d05fdb1ea5b330fcac85f372f8d79c75a869",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/custom_textures.py",
+      "bytes": 8816,
+      "sha256": "fed38889967208c5b475c2d2b8d40b8501d302a05ae6e03a0c32ee2ed9407f51",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/dos_launch_linux.cpp",
+      "bytes": 2468,
+      "sha256": "d3cdad9f7df228b39282d99bc3e6c8fbdbf62dcd6f50b9368ecb3a120a959ae3",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/engine_retro.inc",
+      "bytes": 5470,
+      "sha256": "14ede9992058b94bf417df73fc41f77356f62dc2fc591c64e3b582254ac8900c",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/gameplay_graphics.inc",
+      "bytes": 20392,
+      "sha256": "10684c70862727e8241c3e4e02e18ad1a9f98f2d3fb29b71aa671b10961d96a6",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/gameplay_graphics.py",
+      "bytes": 7258,
+      "sha256": "cba6270228a6cdefdc8ac20c3c73aeb020620118e431dc3a6d49a0340a7fcbcb",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/light_effects_graphics.py",
+      "bytes": 5822,
+      "sha256": "21db91dcf837e5360dfc6a541347737648472d9d7fe651ce6417150c8253a58e",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/localization_screens_windows.ps1",
+      "bytes": 2006,
+      "sha256": "f40875b02d70e3f81496ae9d2c0537d56d5764c042af6e59a9d8545d092b1774",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/missile_graphics.py",
+      "bytes": 3060,
+      "sha256": "eff1eebdbcda29fc2551cafed70dcd5ac4c9dff4e15447834a86ea75cc6eba41",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/object_palettes.py",
+      "bytes": 2866,
+      "sha256": "0eaa3ba4bdd9ee620d8238760504ea1158b6b00fb3af06f48aedbe06f9e9d40f",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/options_layout.py",
+      "bytes": 2785,
+      "sha256": "b697aa6672b1512fad8b6e0ae4e2608e220e6f32c08145580a4771062ee20581",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/output_filters.py",
+      "bytes": 5874,
+      "sha256": "b5fa83663469e1c6acba658e28ad1bb247806c52f1a854dfbc87c17bc0917c35",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/platform_stdio.inc",
+      "bytes": 3460,
+      "sha256": "4b281987f1fa95b76d194412797c057e44db06e0b4acd8ad0b7b2b838566d1d0",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/publication_export.py",
+      "bytes": 2992,
+      "sha256": "caf9abdfbc57d6a74654205d7497bc22124ab883413186f14a2b0d846b353698",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/publication_smoke.py",
+      "bytes": 3190,
+      "sha256": "6bc22fb4a178ab4dc95f977bd4995ecaff5f7e550359e04e0219e1c5b34ecddf",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/regression.cpp",
+      "bytes": 27603,
+      "sha256": "f38bf89991245f2ecb322ef0e4dc9bf5af69aef41a401fe8255252aa57c606b7",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/remastered_ui.inc",
+      "bytes": 3319,
+      "sha256": "025d411fd446d4957c934356f23e06cc337935070f0b3ea6ba305d0b48a2e4fc",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/remastered_ui_graphics.py",
+      "bytes": 4513,
+      "sha256": "b42f20d6489790c3b74130593f45cd0d245cbe203d702762f5a5eae3f6678846",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/render_pacing.py",
+      "bytes": 3455,
+      "sha256": "6aecbdad3894c5b824b39d083a87dad34662f0bba043d2f8a35cdbd96c532f5a",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/retro_linux.py",
+      "bytes": 2043,
+      "sha256": "3b63a106031b60cfd6d3a6e69ce639e31b4aa26a72d60f6a17435d0f13106a3d",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/retro_windows.ps1",
+      "bytes": 2234,
+      "sha256": "c5ae4da98cad8222a96f2c3ebfd8cd6627cc393beb3b8d18cc35eec636861673",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/revision_0713_graphics.py",
+      "bytes": 4651,
+      "sha256": "85afa151575b562994f2497dae6f85e5293eda859789193d3cd736341d11e63a",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/run_console_windows.ps1",
+      "bytes": 1398,
+      "sha256": "542e56ee58ef0d6ac53cd57227fe3cf8fc02a1551dcc45a202cc3fac54724327",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/run_linux.sh",
+      "bytes": 370,
+      "sha256": "580f8fa877be9500acbbfd042221f8df8d693c093049f2cdaf5ef21194bfd3e7",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/run_windows.ps1",
+      "bytes": 1153,
+      "sha256": "1e82cbb988bbd00d9430ea930e9f0a4822beb8e5669287ff698d2139b8f4cf7b",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/runtime_smoke_linux.py",
+      "bytes": 1918,
+      "sha256": "66351b347270919b35cca13e6abbc517b6479cedc67cee5a5955aef0c1afe7b8",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/runtime_smoke_windows.ps1",
+      "bytes": 2042,
+      "sha256": "988787866a17c84ce044f510e74029cdbdfb6b27fd16bf1eff5b28dbd551c344",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/shortcuts_recording.py",
+      "bytes": 10263,
+      "sha256": "10b5397064679c61703abeb802dd88d95f11cc120dc5cc4168beeb3b4dee51cc",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/startup_dialog.py",
+      "bytes": 7949,
+      "sha256": "bab5af9bf603bcb44ec98006a6aec6839d4c085fa4f9358e7eb9ca607d44543c",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/startup_dos.inc",
+      "bytes": 5348,
+      "sha256": "6f60eed3931d1cc74d265cd91279e7441e8b5775cc3bfa7475278a8d59a7356c",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/startup_windows.ps1",
+      "bytes": 2488,
+      "sha256": "dad8be0986ae664514d068ed12abb0e2883c8f38f8bf499404c0684d42dff7b3",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/vehicle_models.py",
+      "bytes": 2294,
+      "sha256": "18c3ecc986c78de2b779f9556d56c28781ea6b4cd09a45cc5e70695bc9481585",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/verification_startup_windows.ps1",
+      "bytes": 2709,
+      "sha256": "35f28982c781487bb1c9b274c4662ad17ae73a4103ba033e07889a8634bae3b4",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/video_upscale_graphics.py",
+      "bytes": 3801,
+      "sha256": "0fecd24845221754056a6c3b4bfcadf142aa249e24ab3e482c9b2a44fca0cfad",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tools/audit_localization.py",
+      "bytes": 1520,
+      "sha256": "4811d00d1721ffdcdbd139633336d410da43db41bd47d1df324a62f7c68c4b09",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tools/audit_vehicle_lights.py",
+      "bytes": 4879,
+      "sha256": "8c6987a838425f13fc8c485b11df420de313d7e8298ee1fc681e87ccb1b04c9d",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tools/build_appimage.py",
+      "bytes": 6583,
+      "sha256": "a58213f5f9ab0624ace3247579e3d5508e9e0e6155f3eecb8baafbcf04b4e008",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tools/build_effect_asset.py",
+      "bytes": 671,
+      "sha256": "42dc3265b428ee1afe704be6e73451d3f7df23a94905039062c7f675a1e9b212",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tools/build_output_filters.py",
+      "bytes": 1286,
+      "sha256": "b3a72657a2eb049697a6d6cf4ad4eb33cbbf8145dddcf33371927a1a003a1dfb",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tools/build_revived_font.py",
+      "bytes": 2209,
+      "sha256": "b5bf491a10632fdae9282a8e8499f73fedba27f8a5222aeea4640362f45d6a7b",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tools/build_ui_remaster.py",
+      "bytes": 4230,
+      "sha256": "33924797b3b5af9ca9d4173a88b211b7cf0c340700f9ee6d319991f965ed0443",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tools/build_video_filters.py",
+      "bytes": 2577,
+      "sha256": "e76b5d8f798e323748d83278668f4761108ce9c905b860b4adbb73a0ca0684da",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tools/build_video_fsr.py",
+      "bytes": 2320,
+      "sha256": "3a820187647e4cb1572aa418ec3ecf9a6348da2be494a789112f508a1f606d2f",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tools/compare_hud.py",
+      "bytes": 2358,
+      "sha256": "d24740285fb0aa23446feb2f3849e52b89796ab8c8e10e42ee14ddb26c215052",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tools/fetch_appimage_tools.py",
+      "bytes": 1610,
+      "sha256": "41ea8315fd636aa381463cd36d22fe94c5c82d35688ac99ea0d3ac1d1d6e3035",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tools/font_atlas.py",
+      "bytes": 1041,
+      "sha256": "f967b87942fe9b3ef7c1f219a74b59551360f10dd0ea7251c1907d68b698055a",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tools/generate_localization.py",
+      "bytes": 1509,
+      "sha256": "4d147542597ab72150432bf39916c85eb49dcc5d2744dcb1d8c427d780eb4601",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tools/generate_manifest.py",
+      "bytes": 1265,
+      "sha256": "7c0c292c07815413b3e84fb99cb37d49859524e3f2b1a7c5b9729599558a40f1",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tools/inspect_assets.py",
+      "bytes": 2680,
+      "sha256": "79e31b725f1843b36dc65ef44240d8b851baca41d2ae91df2eb0bca54c8b61a9",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tools/inspect_engine_audio.py",
+      "bytes": 2264,
+      "sha256": "943861d3e9fe34d5e25836c82fe46d1c73754c532f72a2a0f585d752b1190fe6",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tools/inspect_executable.py",
+      "bytes": 3137,
+      "sha256": "1479c80886fa21d7df60b5b03c7eeea7357f4525be47dcc4699f04cc56ed568a",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tools/localize_builders.py",
+      "bytes": 1491,
+      "sha256": "6d94a934efcb92c9bf4aa599b7002020a6aad6c8adf03ff01e782a2ad5d64f1f",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tools/package_github_release.py",
+      "bytes": 6464,
+      "sha256": "5277463fa21f07145dc294777ebde316026e1693c6208874e1e6ab317e9c7454",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tools/prepare_github.py",
+      "bytes": 11564,
+      "sha256": "6656b5879e5aebd22e86ecad292e907952a8eb81ebb928c0c4f889d072dfdef7",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tools/prepare_release_images.py",
+      "bytes": 1998,
+      "sha256": "30252e3acf7fb34165d1d5afaa54404af440b423ff17d8b0244256a2a05304a3",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tools/prepare_ui_remaster.py",
+      "bytes": 5005,
+      "sha256": "dec4e44e0361b39feb4071c4a2c7e33f5ed444684d285d8a6fe3d88abe156a55",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tools/smoke_candidate_appimage.py",
+      "bytes": 1547,
+      "sha256": "7e59c89d2974ca23ecf8b2660beb044b622fde01e352c3d0f934a6c0d8de90af",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "winlib/gdi32.def",
+      "bytes": 177,
+      "sha256": "9ea1cda55694f3ab2185045c1d3b15e18a5f4556c93b97101c293fc5c41af4bd",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "winlib/kernel32.def",
+      "bytes": 596,
+      "sha256": "898827b0674b2e25c4810746e4b87d7eb78dcaca6757653490c06c03d469780c",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "winlib/user32.def",
+      "bytes": 471,
+      "sha256": "83c19edb76c7563512c7d4f4c6f5aa2a4322f02764bc95b8f90ac055b9d261a5",
+      "classification": "project development material; scope in LICENSING.md"
+    }
+  ]
+}

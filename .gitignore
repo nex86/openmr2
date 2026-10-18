@@ -66,3 +66,21 @@ vcpkg_installed/
 # test output & cache
 Testing/
 .cache/
+
+# Original game files and personal runtime output
+/revived_config/
+/texture_dumps/
+/texture_replacements/
+*.gog
+*.iso
+*.bin
+*.cue
+*.cfg
+*.sav
+*.AppImage
+*.zip
+*.7z
+__pycache__/
+*.pyc
+.env
+.env.*

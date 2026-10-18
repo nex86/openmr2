@@ -1,0 +1,13 @@
+LIBRARY gdi32.dll
+EXPORTS
+ChoosePixelFormat
+SetPixelFormat
+SwapBuffers
+CreateCompatibleDC
+CreateDIBSection
+SelectObject
+DeleteObject
+DeleteDC
+CreateFontA
+SetTextColor
+SetBkMode

@@ -1,0 +1,68 @@
+{
+  "version": "0.7.13-dev",
+  "type": "actual OpenMR2 deterministic in-engine test captures",
+  "retouching": "none; copied byte-for-byte from lossless PNG captures",
+  "note": "Retro means OpenMR2 Retro renderer, not the original DOS executable. Mode viewport/scaling may differ. Assets shown retain their respective rights.",
+  "images": [
+    {
+      "image": "retro-race.png",
+      "source_test_capture": "remastered-ui-windows/retro-hud-original.png",
+      "sha256": "4a57692ca26c3bb165894fb8c0a63ba53dbab1bde59a2d21f448c5cef56dec52"
+    },
+    {
+      "image": "revived-race.png",
+      "source_test_capture": "remastered-ui-windows/track1-ai.png",
+      "sha256": "d9402295af6cdb289cb1765b85a31d1af266ade20acc4782780fd6072832fe21"
+    },
+    {
+      "image": "retro-options.png",
+      "source_test_capture": "revision-0713-windows/retro-ui-options.png",
+      "sha256": "2acecd71c6741928dd15f6fdac0c467b32de5150de2394f6f2e02338351c8690"
+    },
+    {
+      "image": "revived-options.png",
+      "source_test_capture": "revision-0713-windows/ui-options.png",
+      "sha256": "8f2667c489b6005ac145b44bcf522089088fcc78fa62b2c3d37f104b5af20466"
+    },
+    {
+      "image": "retro-car.png",
+      "source_test_capture": "revision-0713-windows/retro-preview-original.png",
+      "sha256": "3208fab916277653bb3072eab7d1c720a328ce0de315166b69b25e3f3068a6ea"
+    },
+    {
+      "image": "revived-car.png",
+      "source_test_capture": "light-effects-windows/car00-rear.png",
+      "sha256": "c1528c04b83f06bf104487aab9f0b3919e2be522773479937c93b3794e012bf9"
+    },
+    {
+      "image": "effect-explosion.png",
+      "source_test_capture": "light-effects-windows/barrel-350.png",
+      "sha256": "31a9b9cbcfb89afd15bb855c40e95db11352a79046c8c81eed18921af8236fca"
+    },
+    {
+      "image": "effect-sparks.png",
+      "source_test_capture": "gameplay-graphics-windows/contact-sparks.png",
+      "sha256": "90eb5a17c2d8958d5efc3e5913dd17ae0918a2268e5e6fc436d05b1bfb2d8f06"
+    },
+    {
+      "image": "effect-headlights.png",
+      "source_test_capture": "light-effects-windows/car13-headlights.png",
+      "sha256": "2b795d724856125acc4607374e4038b4a6f6435aa810075e7eece1d38723242c"
+    },
+    {
+      "image": "effect-brakelights.png",
+      "source_test_capture": "light-effects-windows/car00-brake.png",
+      "sha256": "5ea0cb389da1be2fe2e0fb57bc9a2d0b3c00d7ed7ecf291fc5dfeaedac63e8cc"
+    },
+    {
+      "image": "effect-damage.png",
+      "source_test_capture": "gameplay-graphics-windows/damage-100.png",
+      "sha256": "adc04f44b55e3bab7cc58287b8d39eb10db85dc777bec6994ddd943a46451312"
+    },
+    {
+      "image": "effect-oil.png",
+      "source_test_capture": "gameplay-graphics-windows/revived-oil.png",
+      "sha256": "e08583675985f1e3ee079bb9568cfc1d629c892aaec3f57e74d498608775f240"
+    }
+  ]
+}

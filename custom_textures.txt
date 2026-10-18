@@ -1,0 +1,153 @@
+OPENMR2 - CUSTOM TEXTURES GUIDE
+Version 0.7.6-dev
+
+1. WHAT THIS FEATURE DOES
+
+OpenMR2 can export original static images as PNG and load edited PNG files in their place. Replacements affect presentation only: the original game files, model geometry, UV coordinates, sprite positions, collision rules, hit boxes and gameplay stay unchanged.
+
+There are TWO SEPARATE folders:
+
+  revived_config/texture_dumps         Original exports and reference information.
+  revived_config/texture_replacements Only PNG files you want the game to use.
+
+Windows places both folders inside revived_config beside OpenMR2.exe. The Linux AppImage uses its writable application data directory, normally ~/.local/share/OpenMR2 (or $XDG_DATA_HOME/OpenMR2), inside its revived_config directory. A directly launched Linux binary uses its working directory.
+
+NEVER copy the entire dump into texture_replacements unless you intend to replace everything. Missing replacements automatically use the original asset.
+
+2. EXPORTING ORIGINAL TEXTURES
+
+Open Options > Debug / Cheats and click "Dump textures". Exporting starts immediately, including textures for models and screens you have not visited. It processes the loose game files and the mounted game disc image in small jobs while the game continues to render. Keep the game open until the Debug screen reports completion. A complete dump can contain many thousands of palette-qualified PNGs and require several hundred MiB of disk space.
+
+The export uses the same orange progress bar as track loading, shown at the bottom of the screen. It follows you when you leave Debug or change views. The label shows percentage, PNG exports and error counts. At completion it briefly shows 100% and plays the same Cash/Apply effect once (if menu sound effects are enabled). revived_config/texture_dumps/status.txt records progress. With the Debug console enabled, English messages identify exports, existing files, failures and completion.
+
+"Dump textures" is an action button, not a checkbox or a persistent setting. One click runs one complete export. Clicking again during an export keeps the existing job running; it does not restart or stop it. Leaving Debug or resetting Debug settings also does not cancel the export. After completion, click again to start a fresh pass. Closing the application ends an unfinished job; it is not automatically restarted next time.
+
+Existing PNG exports are preserved. The specific incorrect object palettes from version 0.7.5 are refreshed only when an existing export still matches the unedited output of that version exactly. Edited exports and all texture_replacements PNGs are preserved. To obtain entirely fresh originals, move the old dump aside before starting another export.
+
+The console/export command is also available:
+
+  OpenMR2.exe --game "D:\Games\MegaRace 2" --screen debug --dump-textures
+
+This exports the catalog and exits automatically when finished. It uses the same data validation and folder rules as the game.
+
+Dumping always reads ORIGINAL assets, even if custom textures are enabled. It never exports a replacement as an original.
+
+3. DIRECTORY AND FILENAME RULES
+
+The original game already has useful asset directories, so OpenMR2 preserves them. The LOCAL and CD prefixes distinguish loose installation files from files inside the disc image. Do not remove either prefix.
+
+Examples:
+
+  revived_config/texture_dumps/LOCAL/CARS/FAC/<texture-name>.HLZ.png
+  revived_config/texture_dumps/LOCAL/OBJS/TIB/<texture-name>.HLZ.png
+  revived_config/texture_dumps/LOCAL/DATA640/MENUFOND.HLZ.png
+  revived_config/texture_dumps/LOCAL/SOURIS/FLECHE.SPR/frame_000_pal_<palette SHA256>.png
+  revived_config/texture_dumps/CD/TRACK1/FACTO.SPR/frame_000_pal_<palette SHA256>.png
+
+The world directory names are FAC, TIB, EXT, LUN, BAY and BRO. CARS contains vehicle textures, OBJS contains objects and equipment, DATA640 contains menu/background/UI assets, SOURIS contains pointer graphics, and TEXTE contains font atlases. Disc TRACK1/TRACK2 directories include loading images and HUD sprites. Additional original directories, such as INSTALL, are preserved when present.
+
+Paths are not automatically separated by game language. Original filenames can be reused by the English, French and German editions. Use a pack intended for your edition, especially for images with baked-in text. Keep separate dumps/packs when switching languages; move an old dump aside to avoid preserving an export from a different edition. Editing a PNG does not translate text baked into that image.
+
+Texture filenames are internal image names, which may differ from the displayed vehicle or model name. The exporter writes an .M3D.txt reference file beside each model's source-relative location. It lists its materials, material types and the exact texture PNG paths. These references help identify which texture belongs to which vehicle, object or effect.
+
+KEEP THE COMPLETE RELATIVE PATH AND FILENAME, including .HLZ.png, frame number, palette identifier and capitalization. On Linux filenames are case-sensitive. The original path components use uppercase; .png and the hexadecimal palette hash use the spelling emitted by the exporter.
+
+To replace a background, copy:
+
+  revived_config/texture_dumps/LOCAL/DATA640/MENUFOND.HLZ.png
+
+to:
+
+  revived_config/texture_replacements/LOCAL/DATA640/MENUFOND.HLZ.png
+
+Then edit that second file. Do not put the texture_dumps directory itself inside texture_replacements. Sidecar .txt files and README/status files are reference information and are not loaded as textures.
+
+4. SPRITE FRAMES AND PALETTES
+
+SPR files contain multiple indexed frames without an embedded palette. Their actual colors depend on the screen or track that uses them. OpenMR2 therefore exports each frame with a SHA-256 identifier of its original 768-byte display palette.
+
+For example, frame_000 and frame_001 are separate images. The same frame may have several palette variants with different names. Edit the variant used on the screen you want to change, or edit all relevant variants. The directory catalog includes the real palettes from the sprite's source directory; not every exported combination is necessarily displayed by the game. While a catalog export is running, runtime drawing also exports any further palette variant actually encountered.
+
+The palette identifier is calculated from the ORIGINAL game palette. It is not a hash of your edited PNG. Changing colors, alpha or resolution does not require renaming the file. Leave the identifier intact.
+
+Track HUD exports include the reserved HUD palette colors used by the renderer. Vehicle/object exports resolve only explicit magenta/green accent markers at entries 248/249 through PAL_RACE. Real palette colors, including the white barrel skull at entry 250, remain unchanged.
+
+5. PNG FORMAT, ALPHA AND TRANSPARENCY
+
+The exporter writes RGBA PNG images with 8 bits per channel and STRAIGHT (unassociated) alpha. RGB values under fully transparent pixels are retained. There is no baked background and no premultiplication.
+
+  Alpha 0:   fully transparent.
+  Alpha 255: fully opaque.
+  Alpha between 0 and 255: partial coverage.
+
+Original SPR palette index 0 becomes alpha 0. Its other palette entries become alpha 255. Ordinary HLZ pictures/model textures are opaque unless their original drawing material provides blending. Original font atlases export neutral white ink and gray secondary ink, tinted with the normal UI text color at runtime; separators and non-ink background become transparent. This converts the source palette markers into the actual displayed ink coverage.
+
+For edited images, save normal non-interlaced RGBA PNG for the simplest workflow. The loader also accepts standard PNG RGB, indexed color with palette transparency, grayscale and 16-bit PNG input, converting them to RGBA8. PNG color is used directly; this feature does not apply an ICC color-management pipeline. Keep an sRGB-style working color space for predictable results.
+
+Do NOT use premultiplied alpha: it can create dark edges. Keep sensible RGB colors in transparent border pixels to avoid filtering fringes. JPEG, DDS, KTX, WebP and animation are not supported. These are color/coverage replacements; separate normal, roughness, metallic or displacement maps, custom shaders and HDR textures are not supported.
+
+M3D material properties are separate from image transparency. Original additive effects, translucent surfaces, flat colors and shadows keep their original material behavior. PNG coverage is respected for textured/additive surfaces; replacing a PNG does not convert an opaque material into a different material type or replace untextured geometry. Soft transparent 3D surfaces still have the renderer's existing depth/order behavior; this is not a new general-purpose transparent-mesh sorting system. The model's .M3D.txt documents material types.
+
+6. HIGHER RESOLUTIONS AND DISPLAY SIZE
+
+You can enlarge an image, for example from 256x256 to 1024x1024. Use the same aspect ratio and preserve the original content alignment. Integer scale factors such as 2x or 4x are convenient but are not required. Non-power-of-two PNG sizes are accepted.
+
+The image keeps its original on-screen rectangle. Model UV normalization uses the original texture dimensions, not the replacement dimensions. A larger replacement therefore adds detail without stretching the model's UV layout. UI and HUD images are drawn as ordered GPU layers at the original logical positions; they are not first reduced to the old 640x480 CPU canvas. The final detail visible still depends on the window/render-target size.
+
+Changing the aspect ratio stretches the replacement into the original rectangle. Adding padding shifts visible content inside that rectangle. Changing a sprite's PNG does not move its hit box or create a larger clickable button. Sprite .png.txt sidecars record original coordinates and dimensions for reference; editing the sidecar does not change layout.
+
+Font atlas replacements preserve original glyph locations and text measurements. Scale the ENTIRE atlas uniformly and keep glyph cells in their original proportional positions. Replacement glyphs receive the normal UI text color and shadow, so do not rearrange the atlas or expect replacement character spacing.
+
+7. ENABLING AND RELOADING REPLACEMENTS
+
+Open Options > Advanced Graphics and check "Enable custom textures" in Revived mode. The setup file stores this as:
+
+  custom_textures = 1
+
+Retro Mode always disables replacement loading and grays out the checkbox. Its Revived preference is retained, so switching back restores the previous choice. Original assets remain available for immediate fallback.
+
+PNG files, missing-path results and invalid-file results are cached to avoid reading the disk every frame. After editing, adding or removing PNG files, disable and re-enable "Enable custom textures", or restart the game. Returning from Retro to Revived also starts a fresh replacement cache. Textures are refreshed without changing model geometry or UI layout.
+
+Exporting is an independent one-shot debug action and works in either graphics mode. It has no persistent on/off config key. Legacy dump_textures entries are ignored and disappear on the next settings save. Once export completes, no further dumping is done until you click the button again. With no export running and custom textures off, this system does not scan/export files or look for replacement PNGs in the background.
+
+8. LIMITS AND FALLBACK
+
+The PNG loader limits each dimension to 8192 pixels, each decoded image to 16,777,216 pixels, and compressed input to less than 64 MiB. The graphics device may impose a smaller texture limit. Keep individual images and packs modest: the replacement cache allows up to 256 MiB of decoded RGBA pixels and 8192 distinct lookup entries per cache cycle. GPU textures and mipmaps require additional graphics memory.
+
+A missing file, invalid PNG, unsupported size or exhausted cache falls back to the original image. The game can start with an empty or absent texture_replacements folder. Debug-console messages explain successful loads, file dimensions/alpha, missing replacements, invalid data, memory limits and cache resets. Enable the Debug console before reproducing an issue. With the console disabled, these optional diagnostic messages are not formatted or recorded.
+
+The feature covers static HLZ images, individual SPR frames, model textures, pointers, HUD, loading/menu backgrounds and font atlases. Prerendered track scenery and Lance Boyle scenes are UBB videos, not static image textures; their video frames are not exported or replaced. Procedurally drawn text decorations/status bars and untextured model colors do not have original image files to replace. Supported original data editions remain the English, French and German GOG versions.
+
+9. A PRACTICAL WORKFLOW
+
+1. Enable the Debug console and click Dump textures. Wait for completion.
+2. Find the model/screen image in texture_dumps. Consult .M3D.txt and sprite sidecars where useful.
+3. Copy ONLY the PNGs you want to edit into matching paths beneath texture_replacements.
+4. Back up your work. Upscale or redraw the images, preserve layout and export straight-alpha PNG.
+5. Enable custom textures in Revived. Visit the relevant screen/track and inspect the result.
+6. After each edit, toggle custom textures off/on to reload. Check English console messages if a file falls back.
+7. Check different resolutions, HUD states and palette variants. Test Retro to confirm original assets still appear there.
+
+10. SHARING A TEXTURE PACK
+
+Distribute only the replacement files you have permission to share, preserving paths beneath texture_replacements. Include your own README stating the intended game language/edition, pack version, resolution scale, authorship and installation instructions. Dumped originals and game files should not be included merely because they were exported. Texture packs do not include or change the project's source-code license.
+
+Storage update in 0.7.6: the exporter and loader use only revived_config/texture_dumps and revived_config/texture_replacements. Move older folders into revived_config, retaining all LOCAL/CD subdirectories. Old replacement PNGs with baked-in incorrect colors are still honored; replace/remove such PNGs manually using corrected exports rather than expecting the game to recolor artwork.
+
+
+REVIVED TYPEFACE (0.7.7)
+Without a font-atlas replacement, all runtime game text in Revived uses the
+embedded scalable Rajdhani SemiBold typeface. A supplied TEXTE font-atlas PNG
+overrides that typeface for the matching original font only, with the original
+glyph locations, spacing and tinting described above. Other fonts remain
+scalable. Retro always uses the game's original bitmap fonts. Text already
+baked into images or video remains part of those images or video.
+
+Vehicle lights in Revived Mode (0.7.11)
+---------------------------------------
+Emission follows the original model texture's lamp-marker UV footprint, restricted
+to front headlights and rear tail lights on non-wheel body geometry. Isolated red
+marker groups smaller than four connected pixels do not emit. Painting bodywork
+red/yellow in a replacement image cannot create new lamps. Existing lamp areas
+can be darkened or made transparent; transparent pixels do not emit. The same
+rules and intensity setting apply in both vehicle selection menus and races.

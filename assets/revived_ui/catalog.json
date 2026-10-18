@@ -1,0 +1,1766 @@
+[
+  {
+    "id": 0,
+    "category": "hud",
+    "w": 20,
+    "h": 15,
+    "source_keys": [
+      "CD/TRACK1/FACTO.SPR/frame_000_pal_815959b9d8e023ade6e93b5b52b6f1e67feb632d5c44630bf6eb7be79ba0fa9a.png"
+    ],
+    "source_frames": [
+      [
+        "CD/TRACK1/FACTO.SPR",
+        0
+      ]
+    ],
+    "original_png": "original-000.png",
+    "remaster_enabled": true,
+    "cell": [
+      0,
+      0
+    ],
+    "input_rect": [
+      24,
+      50,
+      208,
+      156
+    ],
+    "asset_png": "sprite-000.png"
+  },
+  {
+    "id": 1,
+    "category": "hud",
+    "w": 17,
+    "h": 12,
+    "source_keys": [
+      "CD/TRACK1/FACTO.SPR/frame_001_pal_815959b9d8e023ade6e93b5b52b6f1e67feb632d5c44630bf6eb7be79ba0fa9a.png"
+    ],
+    "source_frames": [
+      [
+        "CD/TRACK1/FACTO.SPR",
+        1
+      ]
+    ],
+    "original_png": "original-001.png",
+    "remaster_enabled": true,
+    "cell": [
+      1,
+      0
+    ],
+    "input_rect": [
+      280,
+      54,
+      208,
+      147
+    ],
+    "asset_png": "sprite-001.png"
+  },
+  {
+    "id": 2,
+    "category": "hud",
+    "w": 16,
+    "h": 13,
+    "source_keys": [
+      "CD/TRACK1/FACTO.SPR/frame_002_pal_815959b9d8e023ade6e93b5b52b6f1e67feb632d5c44630bf6eb7be79ba0fa9a.png"
+    ],
+    "source_frames": [
+      [
+        "CD/TRACK1/FACTO.SPR",
+        2
+      ]
+    ],
+    "original_png": "original-002.png",
+    "remaster_enabled": true,
+    "cell": [
+      2,
+      0
+    ],
+    "input_rect": [
+      536,
+      43,
+      208,
+      169
+    ],
+    "asset_png": "sprite-002.png"
+  },
+  {
+    "id": 3,
+    "category": "hud",
+    "w": 14,
+    "h": 23,
+    "source_keys": [
+      "CD/TRACK1/FACTO.SPR/frame_003_pal_815959b9d8e023ade6e93b5b52b6f1e67feb632d5c44630bf6eb7be79ba0fa9a.png"
+    ],
+    "source_frames": [
+      [
+        "CD/TRACK1/FACTO.SPR",
+        3
+      ]
+    ],
+    "original_png": "original-003.png",
+    "remaster_enabled": true,
+    "cell": [
+      3,
+      0
+    ],
+    "input_rect": [
+      841,
+      38,
+      110,
+      180
+    ],
+    "asset_png": "sprite-003.png"
+  },
+  {
+    "id": 4,
+    "category": "hud",
+    "w": 16,
+    "h": 28,
+    "source_keys": [
+      "CD/TRACK1/FACTO.SPR/frame_004_pal_815959b9d8e023ade6e93b5b52b6f1e67feb632d5c44630bf6eb7be79ba0fa9a.png"
+    ],
+    "source_frames": [
+      [
+        "CD/TRACK1/FACTO.SPR",
+        4
+      ]
+    ],
+    "original_png": "original-004.png",
+    "remaster_enabled": true,
+    "cell": [
+      4,
+      0
+    ],
+    "input_rect": [
+      1100,
+      38,
+      103,
+      180
+    ],
+    "asset_png": "sprite-004.png"
+  },
+  {
+    "id": 5,
+    "category": "hud",
+    "w": 20,
+    "h": 22,
+    "source_keys": [
+      "CD/TRACK1/FACTO.SPR/frame_005_pal_815959b9d8e023ade6e93b5b52b6f1e67feb632d5c44630bf6eb7be79ba0fa9a.png"
+    ],
+    "source_frames": [
+      [
+        "CD/TRACK1/FACTO.SPR",
+        5
+      ]
+    ],
+    "original_png": "original-005.png",
+    "remaster_enabled": true,
+    "cell": [
+      0,
+      1
+    ],
+    "input_rect": [
+      46,
+      294,
+      164,
+      180
+    ],
+    "asset_png": "sprite-005.png"
+  },
+  {
+    "id": 6,
+    "category": "hud",
+    "w": 20,
+    "h": 15,
+    "source_keys": [
+      "CD/TRACK1/TIBET.SPR/frame_000_pal_fdb0208034947d14192d3b4ec867ed3609bc648568f03869a16fed71a490455d.png",
+      "CD/TRACK2/BRONX.SPR/frame_000_pal_fdb0208034947d14192d3b4ec867ed3609bc648568f03869a16fed71a490455d.png"
+    ],
+    "source_frames": [
+      [
+        "CD/TRACK1/TIBET.SPR",
+        0
+      ],
+      [
+        "CD/TRACK2/BRONX.SPR",
+        0
+      ]
+    ],
+    "original_png": "original-006.png",
+    "remaster_enabled": true,
+    "cell": [
+      1,
+      1
+    ],
+    "input_rect": [
+      280,
+      306,
+      208,
+      156
+    ],
+    "asset_png": "sprite-006.png"
+  },
+  {
+    "id": 7,
+    "category": "hud",
+    "w": 17,
+    "h": 12,
+    "source_keys": [
+      "CD/TRACK1/TIBET.SPR/frame_001_pal_fdb0208034947d14192d3b4ec867ed3609bc648568f03869a16fed71a490455d.png",
+      "CD/TRACK2/LUNAR.SPR/frame_001_pal_fdb0208034947d14192d3b4ec867ed3609bc648568f03869a16fed71a490455d.png",
+      "CD/TRACK2/BRONX.SPR/frame_001_pal_fdb0208034947d14192d3b4ec867ed3609bc648568f03869a16fed71a490455d.png"
+    ],
+    "source_frames": [
+      [
+        "CD/TRACK1/TIBET.SPR",
+        1
+      ],
+      [
+        "CD/TRACK2/LUNAR.SPR",
+        1
+      ],
+      [
+        "CD/TRACK2/BRONX.SPR",
+        1
+      ]
+    ],
+    "original_png": "original-007.png",
+    "remaster_enabled": true,
+    "cell": [
+      2,
+      1
+    ],
+    "input_rect": [
+      536,
+      310,
+      208,
+      147
+    ],
+    "asset_png": "sprite-007.png"
+  },
+  {
+    "id": 8,
+    "category": "hud",
+    "w": 16,
+    "h": 13,
+    "source_keys": [
+      "CD/TRACK1/TIBET.SPR/frame_002_pal_fdb0208034947d14192d3b4ec867ed3609bc648568f03869a16fed71a490455d.png",
+      "CD/TRACK2/LUNAR.SPR/frame_002_pal_fdb0208034947d14192d3b4ec867ed3609bc648568f03869a16fed71a490455d.png",
+      "CD/TRACK2/BRONX.SPR/frame_002_pal_fdb0208034947d14192d3b4ec867ed3609bc648568f03869a16fed71a490455d.png"
+    ],
+    "source_frames": [
+      [
+        "CD/TRACK1/TIBET.SPR",
+        2
+      ],
+      [
+        "CD/TRACK2/LUNAR.SPR",
+        2
+      ],
+      [
+        "CD/TRACK2/BRONX.SPR",
+        2
+      ]
+    ],
+    "original_png": "original-008.png",
+    "remaster_enabled": true,
+    "cell": [
+      3,
+      1
+    ],
+    "input_rect": [
+      792,
+      299,
+      208,
+      169
+    ],
+    "asset_png": "sprite-008.png"
+  },
+  {
+    "id": 9,
+    "category": "hud",
+    "w": 14,
+    "h": 23,
+    "source_keys": [
+      "CD/TRACK1/TIBET.SPR/frame_003_pal_fdb0208034947d14192d3b4ec867ed3609bc648568f03869a16fed71a490455d.png",
+      "CD/TRACK2/BRONX.SPR/frame_003_pal_fdb0208034947d14192d3b4ec867ed3609bc648568f03869a16fed71a490455d.png"
+    ],
+    "source_frames": [
+      [
+        "CD/TRACK1/TIBET.SPR",
+        3
+      ],
+      [
+        "CD/TRACK2/BRONX.SPR",
+        3
+      ]
+    ],
+    "original_png": "original-009.png",
+    "remaster_enabled": true,
+    "cell": [
+      4,
+      1
+    ],
+    "input_rect": [
+      1097,
+      294,
+      110,
+      180
+    ],
+    "asset_png": "sprite-009.png"
+  },
+  {
+    "id": 10,
+    "category": "hud",
+    "w": 16,
+    "h": 28,
+    "source_keys": [
+      "CD/TRACK1/TIBET.SPR/frame_004_pal_fdb0208034947d14192d3b4ec867ed3609bc648568f03869a16fed71a490455d.png",
+      "CD/TRACK2/LUNAR.SPR/frame_004_pal_fdb0208034947d14192d3b4ec867ed3609bc648568f03869a16fed71a490455d.png",
+      "CD/TRACK2/BRONX.SPR/frame_004_pal_fdb0208034947d14192d3b4ec867ed3609bc648568f03869a16fed71a490455d.png"
+    ],
+    "source_frames": [
+      [
+        "CD/TRACK1/TIBET.SPR",
+        4
+      ],
+      [
+        "CD/TRACK2/LUNAR.SPR",
+        4
+      ],
+      [
+        "CD/TRACK2/BRONX.SPR",
+        4
+      ]
+    ],
+    "original_png": "original-010.png",
+    "remaster_enabled": true,
+    "cell": [
+      0,
+      2
+    ],
+    "input_rect": [
+      76,
+      550,
+      103,
+      180
+    ],
+    "asset_png": "sprite-010.png"
+  },
+  {
+    "id": 11,
+    "category": "hud",
+    "w": 20,
+    "h": 22,
+    "source_keys": [
+      "CD/TRACK1/TIBET.SPR/frame_005_pal_fdb0208034947d14192d3b4ec867ed3609bc648568f03869a16fed71a490455d.png",
+      "CD/TRACK2/LUNAR.SPR/frame_005_pal_fdb0208034947d14192d3b4ec867ed3609bc648568f03869a16fed71a490455d.png",
+      "CD/TRACK2/BRONX.SPR/frame_005_pal_fdb0208034947d14192d3b4ec867ed3609bc648568f03869a16fed71a490455d.png"
+    ],
+    "source_frames": [
+      [
+        "CD/TRACK1/TIBET.SPR",
+        5
+      ],
+      [
+        "CD/TRACK2/LUNAR.SPR",
+        5
+      ],
+      [
+        "CD/TRACK2/BRONX.SPR",
+        5
+      ]
+    ],
+    "original_png": "original-011.png",
+    "remaster_enabled": true,
+    "cell": [
+      1,
+      2
+    ],
+    "input_rect": [
+      302,
+      550,
+      164,
+      180
+    ],
+    "asset_png": "sprite-011.png"
+  },
+  {
+    "id": 12,
+    "category": "hud",
+    "w": 20,
+    "h": 15,
+    "source_keys": [
+      "CD/TRACK1/EXTRA.SPR/frame_000_pal_76788ff9a2123c5f2a62ba90a7b437868b56f379f41449871c8aa0ffe6c360c5.png"
+    ],
+    "source_frames": [
+      [
+        "CD/TRACK1/EXTRA.SPR",
+        0
+      ]
+    ],
+    "original_png": "original-012.png",
+    "remaster_enabled": true,
+    "cell": [
+      2,
+      2
+    ],
+    "input_rect": [
+      536,
+      562,
+      208,
+      156
+    ],
+    "asset_png": "sprite-012.png"
+  },
+  {
+    "id": 13,
+    "category": "hud",
+    "w": 17,
+    "h": 12,
+    "source_keys": [
+      "CD/TRACK1/EXTRA.SPR/frame_001_pal_76788ff9a2123c5f2a62ba90a7b437868b56f379f41449871c8aa0ffe6c360c5.png"
+    ],
+    "source_frames": [
+      [
+        "CD/TRACK1/EXTRA.SPR",
+        1
+      ]
+    ],
+    "original_png": "original-013.png",
+    "remaster_enabled": true,
+    "cell": [
+      3,
+      2
+    ],
+    "input_rect": [
+      792,
+      566,
+      208,
+      147
+    ],
+    "asset_png": "sprite-013.png"
+  },
+  {
+    "id": 14,
+    "category": "hud",
+    "w": 16,
+    "h": 13,
+    "source_keys": [
+      "CD/TRACK1/EXTRA.SPR/frame_002_pal_76788ff9a2123c5f2a62ba90a7b437868b56f379f41449871c8aa0ffe6c360c5.png"
+    ],
+    "source_frames": [
+      [
+        "CD/TRACK1/EXTRA.SPR",
+        2
+      ]
+    ],
+    "original_png": "original-014.png",
+    "remaster_enabled": true,
+    "cell": [
+      4,
+      2
+    ],
+    "input_rect": [
+      1048,
+      555,
+      208,
+      169
+    ],
+    "asset_png": "sprite-014.png"
+  },
+  {
+    "id": 15,
+    "category": "hud",
+    "w": 14,
+    "h": 23,
+    "source_keys": [
+      "CD/TRACK1/EXTRA.SPR/frame_003_pal_76788ff9a2123c5f2a62ba90a7b437868b56f379f41449871c8aa0ffe6c360c5.png"
+    ],
+    "source_frames": [
+      [
+        "CD/TRACK1/EXTRA.SPR",
+        3
+      ]
+    ],
+    "original_png": "original-015.png",
+    "remaster_enabled": true,
+    "cell": [
+      0,
+      3
+    ],
+    "input_rect": [
+      73,
+      806,
+      110,
+      180
+    ],
+    "asset_png": "sprite-015.png"
+  },
+  {
+    "id": 16,
+    "category": "hud",
+    "w": 16,
+    "h": 28,
+    "source_keys": [
+      "CD/TRACK1/EXTRA.SPR/frame_004_pal_76788ff9a2123c5f2a62ba90a7b437868b56f379f41449871c8aa0ffe6c360c5.png"
+    ],
+    "source_frames": [
+      [
+        "CD/TRACK1/EXTRA.SPR",
+        4
+      ]
+    ],
+    "original_png": "original-016.png",
+    "remaster_enabled": true,
+    "cell": [
+      1,
+      3
+    ],
+    "input_rect": [
+      332,
+      806,
+      103,
+      180
+    ],
+    "asset_png": "sprite-016.png"
+  },
+  {
+    "id": 17,
+    "category": "hud",
+    "w": 20,
+    "h": 22,
+    "source_keys": [
+      "CD/TRACK1/EXTRA.SPR/frame_005_pal_76788ff9a2123c5f2a62ba90a7b437868b56f379f41449871c8aa0ffe6c360c5.png"
+    ],
+    "source_frames": [
+      [
+        "CD/TRACK1/EXTRA.SPR",
+        5
+      ]
+    ],
+    "original_png": "original-017.png",
+    "remaster_enabled": true,
+    "cell": [
+      2,
+      3
+    ],
+    "input_rect": [
+      558,
+      806,
+      164,
+      180
+    ],
+    "asset_png": "sprite-017.png"
+  },
+  {
+    "id": 18,
+    "category": "hud",
+    "w": 20,
+    "h": 15,
+    "source_keys": [
+      "CD/TRACK2/LUNAR.SPR/frame_000_pal_fdb0208034947d14192d3b4ec867ed3609bc648568f03869a16fed71a490455d.png"
+    ],
+    "source_frames": [
+      [
+        "CD/TRACK2/LUNAR.SPR",
+        0
+      ]
+    ],
+    "original_png": "original-018.png",
+    "remaster_enabled": true,
+    "cell": [
+      3,
+      3
+    ],
+    "input_rect": [
+      792,
+      818,
+      208,
+      156
+    ],
+    "asset_png": "sprite-018.png"
+  },
+  {
+    "id": 19,
+    "category": "hud",
+    "w": 14,
+    "h": 23,
+    "source_keys": [
+      "CD/TRACK2/LUNAR.SPR/frame_003_pal_fdb0208034947d14192d3b4ec867ed3609bc648568f03869a16fed71a490455d.png"
+    ],
+    "source_frames": [
+      [
+        "CD/TRACK2/LUNAR.SPR",
+        3
+      ]
+    ],
+    "original_png": "original-019.png",
+    "remaster_enabled": true,
+    "cell": [
+      4,
+      3
+    ],
+    "input_rect": [
+      1097,
+      806,
+      110,
+      180
+    ],
+    "asset_png": "sprite-019.png"
+  },
+  {
+    "id": 20,
+    "category": "hud",
+    "w": 20,
+    "h": 15,
+    "source_keys": [
+      "CD/TRACK2/BAYOU.SPR/frame_000_pal_2114047a1a923899c67b2c3a8b789677177a1be4a44dfa1d61afcdb09cf7b254.png"
+    ],
+    "source_frames": [
+      [
+        "CD/TRACK2/BAYOU.SPR",
+        0
+      ]
+    ],
+    "original_png": "original-020.png",
+    "remaster_enabled": true,
+    "cell": [
+      0,
+      4
+    ],
+    "input_rect": [
+      24,
+      1074,
+      208,
+      156
+    ],
+    "asset_png": "sprite-020.png"
+  },
+  {
+    "id": 21,
+    "category": "hud",
+    "w": 17,
+    "h": 12,
+    "source_keys": [
+      "CD/TRACK2/BAYOU.SPR/frame_001_pal_2114047a1a923899c67b2c3a8b789677177a1be4a44dfa1d61afcdb09cf7b254.png"
+    ],
+    "source_frames": [
+      [
+        "CD/TRACK2/BAYOU.SPR",
+        1
+      ]
+    ],
+    "original_png": "original-021.png",
+    "remaster_enabled": true,
+    "cell": [
+      1,
+      4
+    ],
+    "input_rect": [
+      280,
+      1078,
+      208,
+      147
+    ],
+    "asset_png": "sprite-021.png"
+  },
+  {
+    "id": 22,
+    "category": "hud",
+    "w": 16,
+    "h": 13,
+    "source_keys": [
+      "CD/TRACK2/BAYOU.SPR/frame_002_pal_2114047a1a923899c67b2c3a8b789677177a1be4a44dfa1d61afcdb09cf7b254.png"
+    ],
+    "source_frames": [
+      [
+        "CD/TRACK2/BAYOU.SPR",
+        2
+      ]
+    ],
+    "original_png": "original-022.png",
+    "remaster_enabled": true,
+    "cell": [
+      2,
+      4
+    ],
+    "input_rect": [
+      536,
+      1067,
+      208,
+      169
+    ],
+    "asset_png": "sprite-022.png"
+  },
+  {
+    "id": 23,
+    "category": "hud",
+    "w": 14,
+    "h": 23,
+    "source_keys": [
+      "CD/TRACK2/BAYOU.SPR/frame_003_pal_2114047a1a923899c67b2c3a8b789677177a1be4a44dfa1d61afcdb09cf7b254.png"
+    ],
+    "source_frames": [
+      [
+        "CD/TRACK2/BAYOU.SPR",
+        3
+      ]
+    ],
+    "original_png": "original-023.png",
+    "remaster_enabled": true,
+    "cell": [
+      3,
+      4
+    ],
+    "input_rect": [
+      841,
+      1062,
+      110,
+      180
+    ],
+    "asset_png": "sprite-023.png"
+  },
+  {
+    "id": 24,
+    "category": "hud",
+    "w": 16,
+    "h": 28,
+    "source_keys": [
+      "CD/TRACK2/BAYOU.SPR/frame_004_pal_2114047a1a923899c67b2c3a8b789677177a1be4a44dfa1d61afcdb09cf7b254.png"
+    ],
+    "source_frames": [
+      [
+        "CD/TRACK2/BAYOU.SPR",
+        4
+      ]
+    ],
+    "original_png": "original-024.png",
+    "remaster_enabled": true,
+    "cell": [
+      4,
+      4
+    ],
+    "input_rect": [
+      1100,
+      1062,
+      103,
+      180
+    ],
+    "asset_png": "sprite-024.png"
+  },
+  {
+    "id": 25,
+    "category": "hud",
+    "w": 20,
+    "h": 22,
+    "source_keys": [
+      "CD/TRACK2/BAYOU.SPR/frame_005_pal_2114047a1a923899c67b2c3a8b789677177a1be4a44dfa1d61afcdb09cf7b254.png"
+    ],
+    "source_frames": [
+      [
+        "CD/TRACK2/BAYOU.SPR",
+        5
+      ]
+    ],
+    "original_png": "original-025.png",
+    "remaster_enabled": true,
+    "cell": [
+      0,
+      5
+    ],
+    "input_rect": [
+      46,
+      1318,
+      164,
+      180
+    ],
+    "asset_png": "sprite-025.png"
+  },
+  {
+    "id": 26,
+    "category": "arsenal_buttons",
+    "w": 49,
+    "h": 41,
+    "source_keys": [
+      "LOCAL/DATA640/ICON.SPR/frame_000_pal_38f1c245a4f84a8a18191f2e9f277075fa1ea83d9b3a3583fdfaeac674853024.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/ICON.SPR",
+        0
+      ]
+    ],
+    "original_png": "original-026.png",
+    "remaster_enabled": true,
+    "cell": [
+      0,
+      0
+    ],
+    "input_rect": [
+      24,
+      41,
+      208,
+      174
+    ],
+    "asset_png": "sprite-026.png"
+  },
+  {
+    "id": 27,
+    "category": "arsenal_buttons",
+    "w": 50,
+    "h": 41,
+    "source_keys": [
+      "LOCAL/DATA640/ICON.SPR/frame_001_pal_38f1c245a4f84a8a18191f2e9f277075fa1ea83d9b3a3583fdfaeac674853024.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/ICON.SPR",
+        1
+      ]
+    ],
+    "original_png": "original-027.png",
+    "remaster_enabled": true,
+    "cell": [
+      1,
+      0
+    ],
+    "input_rect": [
+      280,
+      42,
+      208,
+      171
+    ],
+    "asset_png": "sprite-027.png"
+  },
+  {
+    "id": 28,
+    "category": "arsenal_buttons",
+    "w": 50,
+    "h": 41,
+    "source_keys": [
+      "LOCAL/DATA640/ICON.SPR/frame_002_pal_38f1c245a4f84a8a18191f2e9f277075fa1ea83d9b3a3583fdfaeac674853024.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/ICON.SPR",
+        2
+      ]
+    ],
+    "original_png": "original-028.png",
+    "remaster_enabled": true,
+    "cell": [
+      2,
+      0
+    ],
+    "input_rect": [
+      536,
+      42,
+      208,
+      171
+    ],
+    "asset_png": "sprite-028.png"
+  },
+  {
+    "id": 29,
+    "category": "arsenal_buttons",
+    "w": 50,
+    "h": 41,
+    "source_keys": [
+      "LOCAL/DATA640/ICON.SPR/frame_003_pal_38f1c245a4f84a8a18191f2e9f277075fa1ea83d9b3a3583fdfaeac674853024.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/ICON.SPR",
+        3
+      ]
+    ],
+    "original_png": "original-029.png",
+    "remaster_enabled": true,
+    "cell": [
+      3,
+      0
+    ],
+    "input_rect": [
+      792,
+      42,
+      208,
+      171
+    ],
+    "asset_png": "sprite-029.png"
+  },
+  {
+    "id": 30,
+    "category": "arsenal_buttons",
+    "w": 49,
+    "h": 41,
+    "source_keys": [
+      "LOCAL/DATA640/ICON.SPR/frame_004_pal_38f1c245a4f84a8a18191f2e9f277075fa1ea83d9b3a3583fdfaeac674853024.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/ICON.SPR",
+        4
+      ]
+    ],
+    "original_png": "original-030.png",
+    "remaster_enabled": true,
+    "cell": [
+      0,
+      1
+    ],
+    "input_rect": [
+      24,
+      297,
+      208,
+      174
+    ],
+    "asset_png": "sprite-030.png"
+  },
+  {
+    "id": 31,
+    "category": "arsenal_buttons",
+    "w": 49,
+    "h": 41,
+    "source_keys": [
+      "LOCAL/DATA640/ICON.SPR/frame_005_pal_38f1c245a4f84a8a18191f2e9f277075fa1ea83d9b3a3583fdfaeac674853024.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/ICON.SPR",
+        5
+      ]
+    ],
+    "original_png": "original-031.png",
+    "remaster_enabled": true,
+    "cell": [
+      1,
+      1
+    ],
+    "input_rect": [
+      280,
+      297,
+      208,
+      174
+    ],
+    "asset_png": "sprite-031.png"
+  },
+  {
+    "id": 32,
+    "category": "arsenal_buttons",
+    "w": 49,
+    "h": 41,
+    "source_keys": [
+      "LOCAL/DATA640/ICON.SPR/frame_006_pal_38f1c245a4f84a8a18191f2e9f277075fa1ea83d9b3a3583fdfaeac674853024.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/ICON.SPR",
+        6
+      ]
+    ],
+    "original_png": "original-032.png",
+    "remaster_enabled": true,
+    "cell": [
+      2,
+      1
+    ],
+    "input_rect": [
+      536,
+      297,
+      208,
+      174
+    ],
+    "asset_png": "sprite-032.png"
+  },
+  {
+    "id": 33,
+    "category": "arsenal_buttons",
+    "w": 49,
+    "h": 41,
+    "source_keys": [
+      "LOCAL/DATA640/ICON.SPR/frame_007_pal_38f1c245a4f84a8a18191f2e9f277075fa1ea83d9b3a3583fdfaeac674853024.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/ICON.SPR",
+        7
+      ]
+    ],
+    "original_png": "original-033.png",
+    "remaster_enabled": true,
+    "cell": [
+      3,
+      1
+    ],
+    "input_rect": [
+      792,
+      297,
+      208,
+      174
+    ],
+    "asset_png": "sprite-033.png"
+  },
+  {
+    "id": 34,
+    "category": "arsenal_buttons",
+    "w": 49,
+    "h": 41,
+    "source_keys": [
+      "LOCAL/DATA640/ICON.SPR/frame_008_pal_38f1c245a4f84a8a18191f2e9f277075fa1ea83d9b3a3583fdfaeac674853024.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/ICON.SPR",
+        8
+      ]
+    ],
+    "original_png": "original-034.png",
+    "remaster_enabled": true,
+    "cell": [
+      0,
+      2
+    ],
+    "input_rect": [
+      24,
+      553,
+      208,
+      174
+    ],
+    "asset_png": "sprite-034.png"
+  },
+  {
+    "id": 35,
+    "category": "arsenal_buttons",
+    "w": 50,
+    "h": 41,
+    "source_keys": [
+      "LOCAL/DATA640/ICON.SPR/frame_009_pal_38f1c245a4f84a8a18191f2e9f277075fa1ea83d9b3a3583fdfaeac674853024.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/ICON.SPR",
+        9
+      ]
+    ],
+    "original_png": "original-035.png",
+    "remaster_enabled": true,
+    "cell": [
+      1,
+      2
+    ],
+    "input_rect": [
+      280,
+      554,
+      208,
+      171
+    ],
+    "asset_png": "sprite-035.png"
+  },
+  {
+    "id": 36,
+    "category": "arsenal_buttons",
+    "w": 50,
+    "h": 41,
+    "source_keys": [
+      "LOCAL/DATA640/ICON.SPR/frame_010_pal_38f1c245a4f84a8a18191f2e9f277075fa1ea83d9b3a3583fdfaeac674853024.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/ICON.SPR",
+        10
+      ]
+    ],
+    "original_png": "original-036.png",
+    "remaster_enabled": true,
+    "cell": [
+      2,
+      2
+    ],
+    "input_rect": [
+      536,
+      554,
+      208,
+      171
+    ],
+    "asset_png": "sprite-036.png"
+  },
+  {
+    "id": 37,
+    "category": "arsenal",
+    "w": 43,
+    "h": 30,
+    "source_keys": [
+      "LOCAL/DATA640/ICON.SPR/frame_011_pal_38f1c245a4f84a8a18191f2e9f277075fa1ea83d9b3a3583fdfaeac674853024.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/ICON.SPR",
+        11
+      ]
+    ],
+    "original_png": "original-037.png",
+    "remaster_enabled": true,
+    "cell": [
+      0,
+      0
+    ],
+    "input_rect": [
+      24,
+      55,
+      208,
+      145
+    ],
+    "asset_png": "sprite-037.png"
+  },
+  {
+    "id": 38,
+    "category": "arsenal",
+    "w": 41,
+    "h": 30,
+    "source_keys": [
+      "LOCAL/DATA640/ICON.SPR/frame_012_pal_38f1c245a4f84a8a18191f2e9f277075fa1ea83d9b3a3583fdfaeac674853024.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/ICON.SPR",
+        12
+      ]
+    ],
+    "original_png": "original-038.png",
+    "remaster_enabled": true,
+    "cell": [
+      1,
+      0
+    ],
+    "input_rect": [
+      280,
+      52,
+      208,
+      152
+    ],
+    "asset_png": "sprite-038.png"
+  },
+  {
+    "id": 39,
+    "category": "arsenal",
+    "w": 41,
+    "h": 30,
+    "source_keys": [
+      "LOCAL/DATA640/ICON.SPR/frame_013_pal_38f1c245a4f84a8a18191f2e9f277075fa1ea83d9b3a3583fdfaeac674853024.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/ICON.SPR",
+        13
+      ]
+    ],
+    "original_png": "original-039.png",
+    "remaster_enabled": true,
+    "cell": [
+      2,
+      0
+    ],
+    "input_rect": [
+      536,
+      52,
+      208,
+      152
+    ],
+    "asset_png": "sprite-039.png"
+  },
+  {
+    "id": 40,
+    "category": "arsenal",
+    "w": 41,
+    "h": 30,
+    "source_keys": [
+      "LOCAL/DATA640/ICON.SPR/frame_014_pal_38f1c245a4f84a8a18191f2e9f277075fa1ea83d9b3a3583fdfaeac674853024.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/ICON.SPR",
+        14
+      ]
+    ],
+    "original_png": "original-040.png",
+    "remaster_enabled": true,
+    "cell": [
+      3,
+      0
+    ],
+    "input_rect": [
+      792,
+      52,
+      208,
+      152
+    ],
+    "asset_png": "sprite-040.png"
+  },
+  {
+    "id": 41,
+    "category": "arsenal",
+    "w": 41,
+    "h": 30,
+    "source_keys": [
+      "LOCAL/DATA640/ICON.SPR/frame_015_pal_38f1c245a4f84a8a18191f2e9f277075fa1ea83d9b3a3583fdfaeac674853024.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/ICON.SPR",
+        15
+      ]
+    ],
+    "original_png": "original-041.png",
+    "remaster_enabled": true,
+    "cell": [
+      0,
+      1
+    ],
+    "input_rect": [
+      24,
+      308,
+      208,
+      152
+    ],
+    "asset_png": "sprite-041.png"
+  },
+  {
+    "id": 42,
+    "category": "arsenal",
+    "w": 41,
+    "h": 30,
+    "source_keys": [
+      "LOCAL/DATA640/ICON.SPR/frame_016_pal_38f1c245a4f84a8a18191f2e9f277075fa1ea83d9b3a3583fdfaeac674853024.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/ICON.SPR",
+        16
+      ]
+    ],
+    "original_png": "original-042.png",
+    "remaster_enabled": true,
+    "cell": [
+      1,
+      1
+    ],
+    "input_rect": [
+      280,
+      308,
+      208,
+      152
+    ],
+    "asset_png": "sprite-042.png"
+  },
+  {
+    "id": 43,
+    "category": "arsenal",
+    "w": 41,
+    "h": 30,
+    "source_keys": [
+      "LOCAL/DATA640/ICON.SPR/frame_017_pal_38f1c245a4f84a8a18191f2e9f277075fa1ea83d9b3a3583fdfaeac674853024.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/ICON.SPR",
+        17
+      ]
+    ],
+    "original_png": "original-043.png",
+    "remaster_enabled": true,
+    "cell": [
+      2,
+      1
+    ],
+    "input_rect": [
+      536,
+      308,
+      208,
+      152
+    ],
+    "asset_png": "sprite-043.png"
+  },
+  {
+    "id": 44,
+    "category": "arsenal",
+    "w": 41,
+    "h": 30,
+    "source_keys": [
+      "LOCAL/DATA640/ICON.SPR/frame_018_pal_38f1c245a4f84a8a18191f2e9f277075fa1ea83d9b3a3583fdfaeac674853024.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/ICON.SPR",
+        18
+      ]
+    ],
+    "original_png": "original-044.png",
+    "remaster_enabled": true,
+    "cell": [
+      3,
+      1
+    ],
+    "input_rect": [
+      792,
+      308,
+      208,
+      152
+    ],
+    "asset_png": "sprite-044.png"
+  },
+  {
+    "id": 45,
+    "category": "arsenal",
+    "w": 42,
+    "h": 30,
+    "source_keys": [
+      "LOCAL/DATA640/ICON.SPR/frame_019_pal_38f1c245a4f84a8a18191f2e9f277075fa1ea83d9b3a3583fdfaeac674853024.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/ICON.SPR",
+        19
+      ]
+    ],
+    "original_png": "original-045.png",
+    "remaster_enabled": true,
+    "cell": [
+      0,
+      2
+    ],
+    "input_rect": [
+      24,
+      565,
+      208,
+      149
+    ],
+    "asset_png": "sprite-045.png"
+  },
+  {
+    "id": 46,
+    "category": "arsenal",
+    "w": 41,
+    "h": 30,
+    "source_keys": [
+      "LOCAL/DATA640/ICON.SPR/frame_020_pal_38f1c245a4f84a8a18191f2e9f277075fa1ea83d9b3a3583fdfaeac674853024.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/ICON.SPR",
+        20
+      ]
+    ],
+    "original_png": "original-046.png",
+    "remaster_enabled": true,
+    "cell": [
+      1,
+      2
+    ],
+    "input_rect": [
+      280,
+      564,
+      208,
+      152
+    ],
+    "asset_png": "sprite-046.png"
+  },
+  {
+    "id": 47,
+    "category": "arsenal",
+    "w": 42,
+    "h": 30,
+    "source_keys": [
+      "LOCAL/DATA640/ICON.SPR/frame_021_pal_38f1c245a4f84a8a18191f2e9f277075fa1ea83d9b3a3583fdfaeac674853024.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/ICON.SPR",
+        21
+      ]
+    ],
+    "original_png": "original-047.png",
+    "remaster_enabled": true,
+    "cell": [
+      2,
+      2
+    ],
+    "input_rect": [
+      536,
+      565,
+      208,
+      149
+    ],
+    "asset_png": "sprite-047.png"
+  },
+  {
+    "id": 48,
+    "category": "shop",
+    "w": 44,
+    "h": 67,
+    "source_keys": [
+      "LOCAL/DATA640/SHOP.SPR/frame_000_pal_38f1c245a4f84a8a18191f2e9f277075fa1ea83d9b3a3583fdfaeac674853024.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/SHOP.SPR",
+        0
+      ]
+    ],
+    "original_png": "original-048.png",
+    "remaster_enabled": false,
+    "exclusion_reason": "Background-integrated button: preserve original artwork."
+  },
+  {
+    "id": 49,
+    "category": "shop",
+    "w": 49,
+    "h": 68,
+    "source_keys": [
+      "LOCAL/DATA640/SHOP.SPR/frame_001_pal_38f1c245a4f84a8a18191f2e9f277075fa1ea83d9b3a3583fdfaeac674853024.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/SHOP.SPR",
+        1
+      ]
+    ],
+    "original_png": "original-049.png",
+    "remaster_enabled": false,
+    "exclusion_reason": "Background-integrated button: preserve original artwork."
+  },
+  {
+    "id": 50,
+    "category": "shop",
+    "w": 83,
+    "h": 43,
+    "source_keys": [
+      "LOCAL/DATA640/SHOP.SPR/frame_002_pal_38f1c245a4f84a8a18191f2e9f277075fa1ea83d9b3a3583fdfaeac674853024.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/SHOP.SPR",
+        2
+      ]
+    ],
+    "original_png": "original-050.png",
+    "remaster_enabled": false,
+    "exclusion_reason": "Background-integrated button: preserve original artwork."
+  },
+  {
+    "id": 51,
+    "category": "shop",
+    "w": 75,
+    "h": 47,
+    "source_keys": [
+      "LOCAL/DATA640/SHOP.SPR/frame_003_pal_38f1c245a4f84a8a18191f2e9f277075fa1ea83d9b3a3583fdfaeac674853024.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/SHOP.SPR",
+        3
+      ]
+    ],
+    "original_png": "original-051.png",
+    "remaster_enabled": false,
+    "exclusion_reason": "Background-integrated button: preserve original artwork."
+  },
+  {
+    "id": 52,
+    "category": "shop",
+    "w": 82,
+    "h": 39,
+    "source_keys": [
+      "LOCAL/DATA640/SHOP2.SPR/frame_000_pal_38f1c245a4f84a8a18191f2e9f277075fa1ea83d9b3a3583fdfaeac674853024.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/SHOP2.SPR",
+        0
+      ]
+    ],
+    "original_png": "original-052.png",
+    "remaster_enabled": false,
+    "exclusion_reason": "Background-integrated button: preserve original artwork."
+  },
+  {
+    "id": 53,
+    "category": "shop",
+    "w": 82,
+    "h": 44,
+    "source_keys": [
+      "LOCAL/DATA640/SHOP2.SPR/frame_001_pal_38f1c245a4f84a8a18191f2e9f277075fa1ea83d9b3a3583fdfaeac674853024.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/SHOP2.SPR",
+        1
+      ]
+    ],
+    "original_png": "original-053.png",
+    "remaster_enabled": false,
+    "exclusion_reason": "Background-integrated button: preserve original artwork."
+  },
+  {
+    "id": 54,
+    "category": "shop",
+    "w": 67,
+    "h": 37,
+    "source_keys": [
+      "LOCAL/DATA640/SHOP2.SPR/frame_002_pal_38f1c245a4f84a8a18191f2e9f277075fa1ea83d9b3a3583fdfaeac674853024.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/SHOP2.SPR",
+        2
+      ]
+    ],
+    "original_png": "original-054.png",
+    "remaster_enabled": false,
+    "exclusion_reason": "Background-integrated button: preserve original artwork."
+  },
+  {
+    "id": 55,
+    "category": "shop",
+    "w": 51,
+    "h": 45,
+    "source_keys": [
+      "LOCAL/DATA640/SHOP2.SPR/frame_003_pal_38f1c245a4f84a8a18191f2e9f277075fa1ea83d9b3a3583fdfaeac674853024.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/SHOP2.SPR",
+        3
+      ]
+    ],
+    "original_png": "original-055.png",
+    "remaster_enabled": false,
+    "exclusion_reason": "Background-integrated button: preserve original artwork."
+  },
+  {
+    "id": 56,
+    "category": "shop",
+    "w": 97,
+    "h": 44,
+    "source_keys": [
+      "LOCAL/DATA640/SHOP2.SPR/frame_004_pal_38f1c245a4f84a8a18191f2e9f277075fa1ea83d9b3a3583fdfaeac674853024.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/SHOP2.SPR",
+        4
+      ]
+    ],
+    "original_png": "original-056.png",
+    "remaster_enabled": false,
+    "exclusion_reason": "Background-integrated button: preserve original artwork."
+  },
+  {
+    "id": 57,
+    "category": "shop",
+    "w": 82,
+    "h": 41,
+    "source_keys": [
+      "LOCAL/DATA640/SHOP2.SPR/frame_005_pal_38f1c245a4f84a8a18191f2e9f277075fa1ea83d9b3a3583fdfaeac674853024.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/SHOP2.SPR",
+        5
+      ]
+    ],
+    "original_png": "original-057.png",
+    "remaster_enabled": false,
+    "exclusion_reason": "Background-integrated button: preserve original artwork."
+  },
+  {
+    "id": 58,
+    "category": "controls",
+    "w": 28,
+    "h": 22,
+    "source_keys": [
+      "LOCAL/DATA640/VAL.SPR/frame_000_pal_a9e4732f44d49ed7bc5baeaa5b4c89b2836c526b39fcd0caa08204f2a58abdf3.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/VAL.SPR",
+        0
+      ]
+    ],
+    "original_png": "original-058.png",
+    "remaster_enabled": false,
+    "exclusion_reason": "Background-integrated button: preserve original artwork."
+  },
+  {
+    "id": 59,
+    "category": "controls",
+    "w": 28,
+    "h": 22,
+    "source_keys": [
+      "LOCAL/DATA640/BUT.SPR/frame_000_pal_a9e4732f44d49ed7bc5baeaa5b4c89b2836c526b39fcd0caa08204f2a58abdf3.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/BUT.SPR",
+        0
+      ]
+    ],
+    "original_png": "original-059.png",
+    "remaster_enabled": false,
+    "exclusion_reason": "Background-integrated button: preserve original artwork."
+  },
+  {
+    "id": 60,
+    "category": "controls",
+    "w": 50,
+    "h": 23,
+    "source_keys": [
+      "LOCAL/DATA640/EXIT.SPR/frame_000_pal_a9e4732f44d49ed7bc5baeaa5b4c89b2836c526b39fcd0caa08204f2a58abdf3.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/EXIT.SPR",
+        0
+      ]
+    ],
+    "original_png": "original-060.png",
+    "remaster_enabled": false,
+    "exclusion_reason": "Background-integrated button: preserve original artwork."
+  },
+  {
+    "id": 61,
+    "category": "storage",
+    "w": 101,
+    "h": 53,
+    "source_keys": [
+      "LOCAL/DATA640/SAVE.SPR/frame_000_pal_3b5dd847e81b8fcbb283dddfd4dbac9c7b8ba9b9be7e07aaa5cff64a2c775723.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/SAVE.SPR",
+        0
+      ]
+    ],
+    "original_png": "original-061.png",
+    "remaster_enabled": false,
+    "exclusion_reason": "Background-integrated button: preserve original artwork."
+  },
+  {
+    "id": 62,
+    "category": "storage",
+    "w": 87,
+    "h": 48,
+    "source_keys": [
+      "LOCAL/DATA640/SAVE.SPR/frame_001_pal_3b5dd847e81b8fcbb283dddfd4dbac9c7b8ba9b9be7e07aaa5cff64a2c775723.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/SAVE.SPR",
+        1
+      ]
+    ],
+    "original_png": "original-062.png",
+    "remaster_enabled": false,
+    "exclusion_reason": "Background-integrated button: preserve original artwork."
+  },
+  {
+    "id": 63,
+    "category": "storage",
+    "w": 83,
+    "h": 45,
+    "source_keys": [
+      "LOCAL/DATA640/SAVE.SPR/frame_002_pal_3b5dd847e81b8fcbb283dddfd4dbac9c7b8ba9b9be7e07aaa5cff64a2c775723.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/SAVE.SPR",
+        2
+      ]
+    ],
+    "original_png": "original-063.png",
+    "remaster_enabled": false,
+    "exclusion_reason": "Background-integrated button: preserve original artwork."
+  },
+  {
+    "id": 64,
+    "category": "storage",
+    "w": 96,
+    "h": 45,
+    "source_keys": [
+      "LOCAL/DATA640/REPL_P.SPR/frame_000_pal_3b5dd847e81b8fcbb283dddfd4dbac9c7b8ba9b9be7e07aaa5cff64a2c775723.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/REPL_P.SPR",
+        0
+      ]
+    ],
+    "original_png": "original-064.png",
+    "remaster_enabled": false,
+    "exclusion_reason": "Background-integrated button: preserve original artwork."
+  },
+  {
+    "id": 65,
+    "category": "storage",
+    "w": 81,
+    "h": 44,
+    "source_keys": [
+      "LOCAL/DATA640/REPL_P.SPR/frame_001_pal_3b5dd847e81b8fcbb283dddfd4dbac9c7b8ba9b9be7e07aaa5cff64a2c775723.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/REPL_P.SPR",
+        1
+      ]
+    ],
+    "original_png": "original-065.png",
+    "remaster_enabled": false,
+    "exclusion_reason": "Background-integrated button: preserve original artwork."
+  },
+  {
+    "id": 66,
+    "category": "storage",
+    "w": 80,
+    "h": 42,
+    "source_keys": [
+      "LOCAL/DATA640/REPL_P.SPR/frame_002_pal_3b5dd847e81b8fcbb283dddfd4dbac9c7b8ba9b9be7e07aaa5cff64a2c775723.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/DATA640/REPL_P.SPR",
+        2
+      ]
+    ],
+    "original_png": "original-066.png",
+    "remaster_enabled": false,
+    "exclusion_reason": "Background-integrated button: preserve original artwork."
+  },
+  {
+    "id": 67,
+    "category": "controls",
+    "w": 28,
+    "h": 30,
+    "source_keys": [
+      "LOCAL/SOURIS/FLECHE.SPR/frame_000_pal_50d64014f0b0bad186aee1a8a0dc3aca0192feffb2ea4d5ed2e9993981996c3a.png"
+    ],
+    "source_frames": [
+      [
+        "LOCAL/SOURIS/FLECHE.SPR",
+        0
+      ]
+    ],
+    "original_png": "original-067.png",
+    "remaster_enabled": true,
+    "cell": [
+      0,
+      0
+    ],
+    "input_rect": [
+      44,
+      38,
+      168,
+      180
+    ],
+    "asset_png": "sprite-067.png"
+  }
+]

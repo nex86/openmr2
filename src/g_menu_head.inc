@@ -76,6 +76,7 @@ struct GameUI {
   int opts_menusfx;              // sound effects in the menus
 };
 static GameUI G;
+static int gameover_audio_silence(){return G.state==GS_GAMEOVER;}
 static int g_options_return=-1,g_options_pause;
 static void options_close();
 static void extras_open_model();

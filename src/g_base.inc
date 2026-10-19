@@ -63,8 +63,16 @@ static Mixer MX;
 static int g_engine_suppressed;
 static Sound g_music, g_fmv_snd;
 static int g_music_voice = -1, g_fmv_voice = -1;
+static int gameover_audio_silence();
 
 void app_audio_fill(int16_t *dst, int frames) {
+  // The static Game Over screen has no audio. Enforce the actual screen state,
+  // independently of sample names, voice buses and retained playback handles.
+  if(gameover_audio_silence()){
+    for(int k=0;k<NVOICES;k++)MX.v[k].active=0;
+    mem_zero(dst,(size_t)frames*2*sizeof(int16_t));
+    sys_encoder_audio(dst,frames);return;
+  }
   const int diagnostics=sys_debug_enabled();if(diagnostics)MX.filled += frames;
   for (int i = 0; i < frames; i++) {
     float l = 0, r = 0;

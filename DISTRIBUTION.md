@@ -3,10 +3,10 @@
 The Git repository contains development source and documentation. Downloadable
 assets are kept under GitHub Releases, separate from tracked source files:
 
-- `OpenMR2-0.7.14-dev-source.tar.gz`: complete source snapshot, upstream source
+- `OpenMR2-0.7.15-dev-source.tar.gz`: complete source snapshot, upstream source
   and license texts, tools, build scripts, documentation and graphics provenance.
-- `OpenMR2-0.7.14-dev-Windows-x64.zip`: Windows executable and runtime documents.
-- `OpenMR2-0.7.14-dev-Linux-x86_64.zip`: native Linux executable and runtime
+- `OpenMR2-0.7.15-dev-Windows-x64.zip`: Windows executable and runtime documents.
+- `OpenMR2-0.7.15-dev-Linux-x86_64.zip`: native Linux executable and runtime
   documents; uses host libraries, without bundled AppImage dependencies.
 - `SHA256SUMS.txt`: SHA-256 hashes of the three downloadable archives.
 

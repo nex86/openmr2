@@ -28,6 +28,7 @@ static void check(int condition, const char *name) {
 #include "remastered_ui.inc"
 #include "controls_0713.inc"
 #include "revision_0714.inc"
+#include "revision_0715.inc"
 extern "C" void WinMainCRTStartup(void) {
   g_heap = GetProcessHeap();
 #define USE_EARLY_STUB(ret,name,args) name=test_##name;
@@ -316,6 +317,7 @@ extern "C" void WinMainCRTStartup(void) {
   test_remastered_ui();
   test_controls_0713();
   test_revision_0714();
+  test_revision_0715();
   s_cat(report, "Assertions: ", sizeof report); str_int(report, sizeof report, assertions);
   s_cat(report, "\r\nFailures: ", sizeof report); str_int(report, sizeof report, failures); s_cat(report, "\r\n", sizeof report);
   sys_write_file("regression-results.txt", report, s_len(report));

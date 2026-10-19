@@ -76,6 +76,7 @@ struct GameUI {
   int opts_menusfx;              // sound effects in the menus
 };
 static GameUI G;
+static int gameover_audio_silence(){return G.state==GS_GAMEOVER;}
 static int g_options_return=-1,g_options_pause;
 static void options_close();
 static void extras_open_model();
@@ -791,7 +792,7 @@ static void go(int state) {
     }
     case GS_RESULTS: game_set_bg("DATA640/CLASS.HLZ"); menu_music_start(); if (G.vox_ok && G.opts_clips) { voice_play(&G.vox, 1.0f); MX.v[1].rate = 44100.0 / 22050.0; } break;
     case GS_PRIZE: game_set_bg("DATA640/PORTES.HLZ"); menu_music_start(); break;
-    case GS_GAMEOVER: snd_stop_all_sfx();music_stop();G.menu_music_on=0;voice_stop();sys_audio_flush();game_set_bg("DATA640/PERDU.HLZ"); menu_music_stop(); msfx(S_SCREAM, 0.8f); hiscore_offer(); PF.active = 0; save_game(); break;
+    case GS_GAMEOVER: snd_stop_all_sfx();music_stop();G.menu_music_on=0;voice_stop();sys_audio_flush();game_set_bg("DATA640/PERDU.HLZ"); menu_music_stop(); hiscore_offer(); PF.active = 0; save_game(); break;
     case GS_HISCORE: game_set_bg("DATA640/HISCORE2.HLZ"); menu_music_start(); if (PF.active && G.hi_edit < 0) hiscore_offer(); break;
     case GS_EXTRAS: case GS_OPTIONS: case GS_RETRO_SOUND: game_set_bg("DATA640/OPTION3.HLZ"); menu_music_start(); break;
     case GS_SAVELOAD: game_set_bg("DATA640/SAVE2.HLZ"); menu_music_start(); G.slot = 0; break;
@@ -1788,6 +1789,7 @@ static int game_frame(int W, int H, double dt, const Input *in) {
   mouse_virtual(in, H, &G.mx, &G.my);
   G.click = in->lmb_pressed;
   G.t += dt; G.anim_t += dt;
+  if(A.graphics_test==22&&G.state==GS_RACE&&G.t>=5)go(GS_GAMEOVER); // Actual audio-transition capture.
   if (G.state == GS_QUIT) return 0;
   glClearColor(0, 0, 0, 1); glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   if (G.state == GS_CLIP) return clip_frame(W, H, dt, in);

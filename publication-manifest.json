@@ -1,7 +1,7 @@
 {
   "date": "2026-10-19",
   "target": "https://github.com/nex86/openmr2",
-  "version": "0.7.14-dev",
+  "version": "0.7.15-dev",
   "classification": "complete local development source snapshot, not legal clearance",
   "original_game_data_included": false,
   "bundled_executables_included": false,
@@ -36,8 +36,8 @@
     },
     {
       "path": "CHANGELOG.md",
-      "bytes": 12188,
-      "sha256": "3f2a1ff8229fcbfcc1969d544f65fa40e88011812bded6276c825a234c7468d2",
+      "bytes": 12683,
+      "sha256": "d3d89ddfe5dadc37c6b762f7d4ce19bb09e378df1634f6e6c85cb7a0f373976f",
       "classification": "project development material; scope in LICENSING.md"
     },
     {
@@ -55,7 +55,7 @@
     {
       "path": "DISTRIBUTION.md",
       "bytes": 2426,
-      "sha256": "c2a5f4808baebc39bdd1a5a0e7f03c13f2de29be438132c26d547e763bbaf2af",
+      "sha256": "4db241e6d0a96442c584f6ed56ff674bf6186cc640c217046d9f82b579bf9b8e",
       "classification": "project development material; scope in LICENSING.md"
     },
     {
@@ -102,8 +102,8 @@
     },
     {
       "path": "PHYSICS.md",
-      "bytes": 4865,
-      "sha256": "d4ff0a05ac6548e458b787462b4d3ba35845c003eca287017805278882edabdb",
+      "bytes": 3295,
+      "sha256": "2016682bf709311732b11f029c0b5470be8e97b20db7a1d0039317afa7bb27c9",
       "classification": "project development material; scope in LICENSING.md"
     },
     {
@@ -114,8 +114,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 9460,
-      "sha256": "3908cfa0804e8ef61e5a6d24ec739316dd4de03c7f64ff12cc02dd2e7b57154f",
+      "bytes": 9474,
+      "sha256": "2ac8e50d448dbdaa26b5ff8ba7e4ceef5fa7a776c73fb5a097acb5fa249584b2",
       "classification": "project development material; scope in LICENSING.md"
     },
     {
@@ -126,14 +126,14 @@
     },
     {
       "path": "RELEASE_NOTES.md",
-      "bytes": 15371,
-      "sha256": "ec48af77c0c9da402ba8135f157c6e5785d7e1475e4f394fe6c1ca056b2a9724",
+      "bytes": 15866,
+      "sha256": "22ccf0c6a601eb0762e768a2600c1b16213af66df806bbd20c39859876e858b7",
       "classification": "project development material; scope in LICENSING.md"
     },
     {
       "path": "RETRO_RENDERER.md",
-      "bytes": 5930,
-      "sha256": "6439e8d7d33359405543fefa5742d95d1cf0e63991885697d9c440db5cdc0ea2",
+      "bytes": 5983,
+      "sha256": "9a31ef43554165f6ff0ddbfe012a9a3c4a9fe9bfde4ed440f41d472f64d8917f",
       "classification": "project development material; scope in LICENSING.md"
     },
     {
@@ -659,6 +659,12 @@
       "classification": "project development material; scope in LICENSING.md"
     },
     {
+      "path": "docs/physics/rolling-start-0715.json",
+      "bytes": 3896,
+      "sha256": "46ded7160a6ab8f9393b4e823511dbe5603ad2eeccc2c4c6c4f6b8833b1ee73e",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
       "path": "localization.tsv",
       "bytes": 27442,
       "sha256": "5cfa987ecf9a8a749018757e5acc2be03a8d74819ab4236ae1a3de719830f2d9",
@@ -714,8 +720,8 @@
     },
     {
       "path": "src/g_base.inc",
-      "bytes": 28817,
-      "sha256": "ee3efd9051708df6d5906ec0c554e808418d357c03f9fcb9624315b4fe4cbc06",
+      "bytes": 29191,
+      "sha256": "0d5314cbb0e9319a51c235954c665b09694587a8c1362f2c35d1c532a10c663f",
       "classification": "project development material; scope in LICENSING.md"
     },
     {
@@ -738,14 +744,14 @@
     },
     {
       "path": "src/g_menu.inc",
-      "bytes": 126303,
-      "sha256": "6c8342b4606814455136b5fe6d2f3212428fd4930e590f2285295ceb2561cb97",
+      "bytes": 126451,
+      "sha256": "2e19e422419092ef776a457502ed834e2d16d69da8fd088cdd69f61f4ca141e0",
       "classification": "project development material; scope in LICENSING.md"
     },
     {
       "path": "src/g_menu_head.inc",
-      "bytes": 8326,
-      "sha256": "66ad6dcf236b5c0f65db32042e3d65d8df7f0c3af8ef74f552065eb60bbf6c3e",
+      "bytes": 8392,
+      "sha256": "c71e47dc136ac10353648d54fc697286b6fdf76c1b393c2cceff0f73e88cff43",
       "classification": "project development material; scope in LICENSING.md"
     },
     {
@@ -756,8 +762,8 @@
     },
     {
       "path": "src/g_menu_tail.inc",
-      "bytes": 101205,
-      "sha256": "2300c48d89dfd78cee13d270a6ff4e75194f16ecb9401b96e69b50392752bed2",
+      "bytes": 101287,
+      "sha256": "51316fd77a77af2c9c7f4e7412b5f34d5a20c5136c3a356f2932861cc21b5a95",
       "classification": "project development material; scope in LICENSING.md"
     },
     {
@@ -774,8 +780,8 @@
     },
     {
       "path": "src/g_race.inc",
-      "bytes": 102613,
-      "sha256": "6fa94dc17e1c21f85e285a4e2184adfacca525e7c75500e288cd36637067f0f8",
+      "bytes": 103158,
+      "sha256": "8c80044484e6572a5078c0cd1ba9b534467b4626e569b0fad803d4e44e353522",
       "classification": "project development material; scope in LICENSING.md"
     },
     {
@@ -967,7 +973,7 @@
     {
       "path": "src/sys.h",
       "bytes": 4508,
-      "sha256": "0a95164bc606c6ef23a5955573caf0f23a5f25edaa2bfed88f7725763cdbe4fd",
+      "sha256": "e1b5ef5db3894eea2a1056eea3d96272e8c551ca7e64253d3906a5734e65fe39",
       "classification": "project development material; scope in LICENSING.md"
     },
     {
@@ -1176,8 +1182,8 @@
     },
     {
       "path": "tests/audio_fonts.inc",
-      "bytes": 6934,
-      "sha256": "989ab62c3e97bf93119a4c94ac37aa3ed4a22561e42497239b36d30311310dd5",
+      "bytes": 6953,
+      "sha256": "1bb42a55535a8543cc91c19383b4939602baa5d303090334d4aec87ed56c816f",
       "classification": "project development material; scope in LICENSING.md"
     },
     {
@@ -1214,6 +1220,12 @@
       "path": "tests/engine_retro.inc",
       "bytes": 5515,
       "sha256": "7cb32a1a5bcb73d9c066ece44661099f6adfbfcb65fd05c46513f57bf2b874b0",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/gameover_audio_windows.py",
+      "bytes": 3859,
+      "sha256": "e8283bc18a5856ed7ed73dd8e930f0a43660d5ccf7f9a547877691841e70b042",
       "classification": "project development material; scope in LICENSING.md"
     },
     {
@@ -1320,8 +1332,8 @@
     },
     {
       "path": "tests/regression.cpp",
-      "bytes": 27655,
-      "sha256": "d4a2bee51f36543bb28bed25f51b7bc4f43ee1b6f45e6192a6d8e29d412236c2",
+      "bytes": 27708,
+      "sha256": "13e688aebf0b524a2788c32906fb4b6483551405f3e929d5f6d95382fd8b15e1",
       "classification": "project development material; scope in LICENSING.md"
     },
     {
@@ -1362,14 +1374,32 @@
     },
     {
       "path": "tests/revision_0714.inc",
-      "bytes": 2367,
-      "sha256": "51956471de68856e5351c9e22b118287d8d631237d704bce21651351384fd292",
+      "bytes": 1815,
+      "sha256": "b88ae6064a0fbec915392f1c091054d8eccd0934c36181fe83841225bda0ccd3",
       "classification": "project development material; scope in LICENSING.md"
     },
     {
       "path": "tests/revision_0714_graphics.py",
       "bytes": 3068,
       "sha256": "c267a773e0617620cd44c955fde70c8539af04f5dd9ded7deadd19c5e4eddbac",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/revision_0715.inc",
+      "bytes": 2016,
+      "sha256": "27638e6a1447da68f597dfb2cb6f92b04d48ecbedb241bdf7fe07774b1421868",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/rolling_start_compare.py",
+      "bytes": 979,
+      "sha256": "64a2a412d7a0f566e29b3f9b0ce19794ecdb9a197f0be4af86e710ee5aa85a14",
+      "classification": "project development material; scope in LICENSING.md"
+    },
+    {
+      "path": "tests/rolling_start_probe.cpp",
+      "bytes": 1474,
+      "sha256": "e38b1a40d7c27f109bfa4b830711330b0c15aba5f187c2021c2457fd462a2a38",
       "classification": "project development material; scope in LICENSING.md"
     },
     {
@@ -1561,7 +1591,7 @@
     {
       "path": "tools/prepare_github.py",
       "bytes": 11756,
-      "sha256": "ec878d9e455a1a106c4f6cb5c4a9c4624c4d128afbde1e2b043a5595e19f4991",
+      "sha256": "158e1ebbd7365b9739a7492ea3382d09f48034933956edea7c83afab732a2d65",
       "classification": "project development material; scope in LICENSING.md"
     },
     {

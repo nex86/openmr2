@@ -57,6 +57,6 @@ moves down with the original 80-row menu, including video, models and HUD.
 Original canvas pixels retain straight-alpha nearest sampling; premultiplied
 filtering for Revived never alters Retro's CPU framebuffer.
 
-See PHYSICS.md for the separately validated driving and wall kernels and the
-remaining integration differences. Full visual and simulation parity is not
-claimed.
+See PHYSICS.md for the restored 0.7.13 driving/AI behavior, rolling-start
+validation and remaining approximations. The rejected 0.7.14 integration is
+research only. Full visual and simulation parity is not claimed.

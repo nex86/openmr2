@@ -1,0 +1,153 @@
+{
+  "rows": 3600,
+  "tracks": 6,
+  "cars": 8,
+  "steps_per_track": 75,
+  "seconds_per_track": 3,
+  "restored_fields": [
+    "autopilot",
+    "node",
+    "x",
+    "heading",
+    "steer",
+    "lateral",
+    "speed",
+    "damage"
+  ],
+  "differences_from_0713": 0,
+  "first_differences": [],
+  "metrics": [
+    {
+      "track": 0,
+      "samples_per_version": 600,
+      "0.7.13": {
+        "rolling_samples": 600,
+        "rms_heading_deg": 2.883284947904366,
+        "max_lateral_speed": 12233.155374614,
+        "max_damage": 0.0
+      },
+      "0.7.14": {
+        "rolling_samples": 600,
+        "rms_heading_deg": 24.035110313439965,
+        "max_lateral_speed": 86399.989700317,
+        "max_damage": 0.0
+      },
+      "0.7.15": {
+        "rolling_samples": 600,
+        "rms_heading_deg": 2.883284947904366,
+        "max_lateral_speed": 12233.155374614,
+        "max_damage": 0.0
+      }
+    },
+    {
+      "track": 1,
+      "samples_per_version": 600,
+      "0.7.13": {
+        "rolling_samples": 600,
+        "rms_heading_deg": 2.092745657682689,
+        "max_lateral_speed": 10961.050827171,
+        "max_damage": 0.0
+      },
+      "0.7.14": {
+        "rolling_samples": 600,
+        "rms_heading_deg": 19.57104688683177,
+        "max_lateral_speed": 82591.160073876,
+        "max_damage": 0.609724264
+      },
+      "0.7.15": {
+        "rolling_samples": 600,
+        "rms_heading_deg": 2.092745657682689,
+        "max_lateral_speed": 10961.050827171,
+        "max_damage": 0.0
+      }
+    },
+    {
+      "track": 2,
+      "samples_per_version": 600,
+      "0.7.13": {
+        "rolling_samples": 600,
+        "rms_heading_deg": 2.792562416648073,
+        "max_lateral_speed": 11868.13394781,
+        "max_damage": 0.0
+      },
+      "0.7.14": {
+        "rolling_samples": 600,
+        "rms_heading_deg": 23.137994327014912,
+        "max_lateral_speed": 90077.81608291,
+        "max_damage": 0.0
+      },
+      "0.7.15": {
+        "rolling_samples": 600,
+        "rms_heading_deg": 2.792562416648073,
+        "max_lateral_speed": 11868.13394781,
+        "max_damage": 0.0
+      }
+    },
+    {
+      "track": 3,
+      "samples_per_version": 600,
+      "0.7.13": {
+        "rolling_samples": 600,
+        "rms_heading_deg": 1.8177200473427122,
+        "max_lateral_speed": 10764.229773462,
+        "max_damage": 0.0
+      },
+      "0.7.14": {
+        "rolling_samples": 600,
+        "rms_heading_deg": 19.201054665583865,
+        "max_lateral_speed": 88159.20339087,
+        "max_damage": 0.0
+      },
+      "0.7.15": {
+        "rolling_samples": 600,
+        "rms_heading_deg": 1.8177200473427122,
+        "max_lateral_speed": 10764.229773462,
+        "max_damage": 0.0
+      }
+    },
+    {
+      "track": 4,
+      "samples_per_version": 600,
+      "0.7.13": {
+        "rolling_samples": 600,
+        "rms_heading_deg": 2.336840953580606,
+        "max_lateral_speed": 10311.747764146,
+        "max_damage": 0.0
+      },
+      "0.7.14": {
+        "rolling_samples": 600,
+        "rms_heading_deg": 17.02109769963448,
+        "max_lateral_speed": 71012.659288384,
+        "max_damage": 0.619701619
+      },
+      "0.7.15": {
+        "rolling_samples": 600,
+        "rms_heading_deg": 2.336840953580606,
+        "max_lateral_speed": 10311.747764146,
+        "max_damage": 0.0
+      }
+    },
+    {
+      "track": 5,
+      "samples_per_version": 600,
+      "0.7.13": {
+        "rolling_samples": 600,
+        "rms_heading_deg": 2.0946070407050335,
+        "max_lateral_speed": 8723.219469244,
+        "max_damage": 0.0
+      },
+      "0.7.14": {
+        "rolling_samples": 600,
+        "rms_heading_deg": 20.20289899010742,
+        "max_lateral_speed": 86599.989676476,
+        "max_damage": 0.0
+      },
+      "0.7.15": {
+        "rolling_samples": 600,
+        "rms_heading_deg": 2.0946070407050335,
+        "max_lateral_speed": 8723.219469244,
+        "max_damage": 0.0
+      }
+    }
+  ]
+}

@@ -1,3 +1,5 @@
+0.7.15-dev (2026-10-19): rolled back the rejected 0.7.14 driving/contact integration to the accepted 0.7.13 behavior in both modes. Six-track/eight-car rolling-start traces match the stable reference in all 3,600 samples. Restored contact cooldowns; collisions vary among three original samples without consecutive repeats. The static Game Over screen is now silent at the mixer state boundary and no longer starts SCREAM.WAV. Strict Retro and independent graphics/audio teardown fixes remain.
+
 0.7.14-dev (2026-10-19): original fixed-point driving and wall-response kernels, verified against the DOS executable; shared update cadence in both modes; removal of invented contact kicks and random heavy-barrel impulses. Removed the Retro effects Easter egg and legacy physics toggle. Premultiplied filtered canvas eliminates dark transparent-edge fringes in Revived. Retro pause displaces the entire scene. Engine-bus teardown blocks stale Game Over loops. Remaining parity limits are documented in PHYSICS.md and RETRO_RENDERER.md.
 
 # Changelog

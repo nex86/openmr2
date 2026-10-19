@@ -18,7 +18,9 @@ runtime_license=build/'tools/AppImage-runtime-LICENSE'
 if not runtime_license.exists():raise RuntimeError('Fetch the official runtime license before packaging')
 shutil.copy2(runtime_license,licenses/'AppImage-runtime-LICENSE')
 shutil.copy2(build/'tools/downloads.json',licenses/'AppImage-build-tools.json')
-for doc in ('LICENSE','LICENSING.md','PUBLICATION_AUDIT.md','KEYBOARD.md','DISTRIBUTION.md','RECORDING.md','VIDEO_UPSCALING.md','TODO.md','REVIVE_EFFECTS.md','ENGINE_AUDIO.md','custom_textures.txt','THIRD_PARTY_NOTICES.txt','README.md','BUILDING.md','CONFIGURATION.md','LOCALIZATION_REVIEW.md','RETRO_RENDERER.md','CHANGELOG.md','HUD_RESEARCH.md','LICENSE_STATUS.md','RELEASE_NOTES.md'):
+manual_docs = ('LICENSE','DOCUMENTATION.md','custom_textures.txt','THIRD_PARTY_NOTICES.txt','README.md')
+legacy_docs = ('LICENSE','LICENSING.md','PUBLICATION_AUDIT.md','KEYBOARD.md','DISTRIBUTION.md','RECORDING.md','VIDEO_UPSCALING.md','TODO.md','REVIVE_EFFECTS.md','ENGINE_AUDIO.md','custom_textures.txt','THIRD_PARTY_NOTICES.txt','README.md','BUILDING.md','CONFIGURATION.md','LOCALIZATION_REVIEW.md','RETRO_RENDERER.md','CHANGELOG.md','HUD_RESEARCH.md','LICENSE_STATUS.md','RELEASE_NOTES.md')
+for doc in manual_docs if (root/'DOCUMENTATION.md').is_file() else legacy_docs:
     shutil.copy2(root/doc,licenses.parent/doc)
 # Private QA reports are not distributed in the public source snapshot.
 # Their absence must not prevent building an optional AppImage from a clone.

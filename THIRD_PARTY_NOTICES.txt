@@ -3,7 +3,7 @@ OpenMR2 third-party image components
 stb_image v2.30 and stb_image_write v1.16 by Sean Barrett and contributors.
 Upstream: https://github.com/nothings/stb
 Both components are used under the following upstream dual-license terms.
-The license of the inherited OpenMR2 source is separate; see LICENSE_STATUS.md.
+The license scope of the OpenMR2 source is separate; see DOCUMENTATION.md#license-status.
 
 ALTERNATIVE A - MIT License
 Copyright (c) 2017 Sean Barrett

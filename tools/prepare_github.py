@@ -1,7 +1,7 @@
 """Export canonical development sources to an existing local GitHub clone.
 
 Never uploads, stages or commits. A complete source snapshot includes the
-unresolved components identified in PUBLICATION_AUDIT.md. Technical export
+unresolved components identified in the documentation's publication audit. Technical export
 validation is not a determination of redistribution rights.
 """
 from pathlib import Path
@@ -12,6 +12,9 @@ import re
 import shutil
 import subprocess
 import sys
+sys.dont_write_bytecode = True
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from publication_docs import MANUAL, consolidate_documents
 
 ROOT = Path(__file__).resolve().parents[1]
 TREES = {
@@ -68,8 +71,8 @@ def classification(name):
     if name.startswith('assets/effects/') or name == 'src/fire_atlas_data.h':
         return 'text-generated project fire asset'
     if name == 'LICENSE':
-        return 'GPL version 3 license text; scope in LICENSING.md'
-    return 'project development material; scope in LICENSING.md'
+        return 'GPL version 3 license text; scope in DOCUMENTATION.md#licensing'
+    return 'project development material; scope in DOCUMENTATION.md#licensing'
 
 
 def selected():
@@ -84,8 +87,12 @@ def selected():
                 continue
             result[path.relative_to(ROOT).as_posix()] = path
     for name in DOCS:
-        result[name] = ROOT / name
-    result['README.md'] = ROOT / 'README_GITHUB.md'
+        path = ROOT / name
+        if path.exists() or not name.endswith('.md'):
+            result[name] = path
+    if (ROOT / MANUAL).exists():
+        result[MANUAL] = ROOT / MANUAL
+    result['README.md'] = ROOT / ('README_GITHUB.md' if (ROOT / 'README_GITHUB.md').exists() else 'README.md')
     return result
 
 
@@ -124,6 +131,10 @@ def check(folder):
         if digest(path) != item['sha256']:
             findings.append((name, 'SHA-256 mismatch; regenerate the export manifest'))
     expected.add('publication-manifest.json')
+    if manifest.get('documentation', {}).get('format') == 'single-manual':
+        markdown = {name for name in expected if name.lower().endswith('.md')}
+        if markdown != {'README.md', MANUAL}:
+            findings.append((MANUAL, 'publication must contain only README.md and DOCUMENTATION.md'))
     actual = set()
     for path in folder.rglob('*'):
         relative = path.relative_to(folder)
@@ -162,10 +173,28 @@ def export(destination):
         for name, reason in findings:
             print(f'{reason}: {name}')
         raise SystemExit('Source inspection failed; no files exported')
+    markdown = {name: path.read_text(encoding='utf-8') for name, path in paths.items() if name.endswith('.md')}
+    documents = consolidate_documents(markdown)
+    previous_manifest = destination / 'publication-manifest.json'
+    old_files = json.loads(previous_manifest.read_text(encoding='utf-8'))['files'] if previous_manifest.exists() else []
+    # Retire only Markdown files from the previous reviewed publication inventory.
+    for item in old_files:
+        name = item['path']
+        if name.endswith('.md') and name not in documents:
+            target = (destination / name).resolve()
+            if not target.is_relative_to(destination):
+                raise SystemExit('Unsafe obsolete documentation path')
+            if target.is_file():
+                target.unlink()
+    paths = {name: path for name, path in paths.items() if not name.endswith('.md')}
     for name, source in paths.items():
         target = destination / name
         target.parent.mkdir(parents=True, exist_ok=True)
         shutil.copyfile(source, target)
+    for name, text in documents.items():
+        target = destination / name
+        target.write_text(text, encoding='utf-8', newline='\n')
+        paths[name] = target
     # Preserve the existing repository's GPL text, never replace it with guessed ownership.
     license_path = destination / 'LICENSE'
     if not license_path.is_file():
@@ -203,6 +232,8 @@ def export(destination):
         'original_game_data_included': False,
         'bundled_executables_included': False,
         'unresolved': ['P01 decoder translation', 'P02 AI-edited original artwork'],
+        'documentation': {'format': 'single-manual', 'manual': MANUAL,
+                          'source_documents': sorted(set(markdown)-{'README.md', MANUAL})},
         'files': [{'path': name, 'bytes': (destination/name).stat().st_size,
                    'sha256': digest(destination/name), 'classification': classification(name)}
                   for name in sorted(paths)],

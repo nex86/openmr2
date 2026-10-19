@@ -8,41 +8,15 @@ Original game files are not included. Original CD editions are not yet supported
 
 ## Features and improvements
 
-- Native Windows/Linux C++ port with GPU-accelerated OpenGL 3.3 rendering.
-- Original or 60 FPS presentation; automatic interpolation at 60 FPS, with game
-  simulation separated from rendering and original video source timing retained.
-- **Revived Mode:** sharp scalable fonts across the game, AI-remastered HUD,
-  weapon/equipment icons and cursor; higher-resolution 3D rendering, MSAA, FXAA
-  and texture filtering that also covers menu backgrounds.
-- Optional real-time vehicle/object shadows; front/rear lamp glow, brighter brake
-  lights and rear light trails, including vehicle-selection previews.
-- Enhanced explosions with smoke and flying, fading debris; translucent oil,
-  missile flames/smoke trails and impact/grinding sparks.
-- Progressive damage smoke/fire and mesh deformation for player and opponent
-  vehicles. Six effect groups have individual switches, intensity sliders and reset.
-- High-resolution PNG texture replacements for models, UI and backgrounds;
-  a one-shot texture dump with progress and English diagnostics.
-- Experimental GPU video filters: FSR, HQ4x, 4xBR and Lanczos3 for cinematics and
-  track-video backgrounds. This is shader filtering, not a runtime AI neural model.
-- **Retro Mode:** original assets/fonts and timing, with output scaling/filter
-  choices. Retro remains an approximation of the original renderer; it is not
-  claimed to be pixel-identical to DOS. Modern effects are always disabled.
-  The former effects Easter egg has been removed.
-- Stable classic driving/AI restored after the 0.7.14 rolling-start regression;
-  shared driving rules in both modes, varied original collision sounds. See
-  [PHYSICS.md](PHYSICS.md) for trajectory validation and remaining differences.
-- Championship, configurable single races, upgrades, replay/save slots and
-  remappable Windows XInput controls alongside keyboard/mouse input.
-- English/French/German menus; separate sound, engine, race-music, menu-music
-  and menu-sound sliders. A category at 0% is disabled, including its asset loading.
-- Per-car original engine sounds, track-edge scraping audio, corrected model
-  mirroring/palettes, projectile models and destructible hazard interactions.
-- Startup mode choice with a remember option, saved data-directory discovery,
-  language detection and one-time file verification with progress.
-- GOG DOSBox launch entry; Debug / Cheats console, model viewer and scrollable
-  cinematic Extras list. Disabled diagnostics do not collect background logs.
-- Global F1-F12 controls, in-race full options, H.264/AAC recording with external
-  FFmpeg and quality-98 JPEG screenshots with transient capture notifications.
+- Native Windows and Linux support.
+- High-resolution rendering, optional 60 FPS, texture filtering and antialiasing.
+- Sharper fonts, HUD graphics and icons.
+- Real-time shadows, vehicle lights, enhanced explosions and damage effects.
+- Custom texture packs and PNG texture dumping.
+- Experimental video upscaling filters.
+- Controller support and remappable controls.
+- Separate volume controls for engines, effects and music.
+- Video recording and screenshots.
 
 ## Retro and Revived comparisons
 
@@ -138,7 +112,7 @@ Optionally install `ffmpeg` for F11 recording; screenshots need no encoder.
 | Esc or P | Pause/resume race; Esc also returns from menus/viewers |
 
 Mode-specific shortcuts respect Retro's restrictions. See the
-[complete controls list](KEYBOARD.md) for shop, save/load, replay, cinematic,
+[complete controls list](DOCUMENTATION.md#keyboard) for shop, save/load, replay, cinematic,
 Extras and model-viewer controls.
 
 ## Build and run
@@ -161,19 +135,14 @@ sh build_linux.sh
 At runtime an OpenGL 3.3-capable driver is needed. Linux uses X11/Xwayland and
 PulseAudio or PipeWire's PulseAudio compatibility server. Windows can find the
 game files beside the executable or prompt for the installation directory.
-See [BUILDING.md](BUILDING.md) for toolchains and the separate original-data
+See the [build instructions](DOCUMENTATION.md#building) for toolchains and the separate original-data
 tests. CI compiles without fetching or uploading proprietary game data.
 
 ## Documentation
 
-- [Settings and data discovery](CONFIGURATION.md)
-- [Function keys, screenshots and recording](RECORDING.md)
-- [Custom textures](custom_textures.txt)
-- [Revived effects](REVIVE_EFFECTS.md) and [video filters](VIDEO_UPSCALING.md)
-- [Retro renderer and limits](RETRO_RENDERER.md)
-- [Changes](CHANGELOG.md) and [development TODO](TODO.md)
-- [License scope](LICENSING.md), [third-party notices](THIRD_PARTY_NOTICES.txt)
-  and [publication audit](PUBLICATION_AUDIT.md)
+[OpenMR2 Documentation](DOCUMENTATION.md) covers settings, controls, graphics,
+troubleshooting, development notes and licensing. Texture-pack instructions
+are also available in [custom_textures.txt](custom_textures.txt).
 
 ## Licensing and status
 
@@ -187,4 +156,4 @@ This is an unofficial project with no asserted affiliation or endorsement by
 the original game's rightsholders. Do not submit original game files, extracted
 assets, personal configuration or saves to the repository or its issues.
 
-Source and binary downloads are separate; see [distribution layout](DISTRIBUTION.md).
+Source and binary downloads are separate; see [distribution layout](DOCUMENTATION.md#distribution).

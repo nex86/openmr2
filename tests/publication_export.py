@@ -81,6 +81,41 @@ class ExportChecks(unittest.TestCase):
         (self.folder/'winlib/gdi32.lib').write_bytes(b'generated import library')
         self.checked()
 
+    def test_consolidation_keeps_sections_links_and_nested_images(self):
+        result = module.consolidate_documents({
+            'README.md': '# Project\n[Settings](CONFIGURATION.md#advanced)\n',
+            'CONFIGURATION.md': '# Settings\n## Advanced\nKeep this setting.\n[Art](assets/art/README.md)\n',
+            'assets/art/README.md': '# Artwork\n![Icon](icon.png)\n[Settings](../../CONFIGURATION.md)\n',
+        })
+        self.assertEqual(set(result), {'README.md', 'DOCUMENTATION.md'})
+        self.assertIn('DOCUMENTATION.md#configuration--advanced', result['README.md'])
+        manual = result['DOCUMENTATION.md']
+        self.assertIn('id="configuration--advanced"', manual)
+        self.assertIn('Keep this setting.', manual)
+        self.assertIn('](#assets-art-readme)', manual)
+        self.assertIn('![Icon](assets/art/icon.png)', manual)
+        self.assertIn('](#configuration)', manual)
+
+    def test_consolidation_preserves_fenced_examples(self):
+        example = '```sh\n# Keep this comment\n[example](OLD.md)\n```\n'
+        result = module.consolidate_documents({'README.md': '# Project\n',
+                                               'BUILDING.md': '# Build\n'+example})
+        self.assertIn(example, result['DOCUMENTATION.md'])
+
+    def test_existing_consolidated_snapshot_is_stable(self):
+        files = {'README.md': '# Project\n', 'DOCUMENTATION.md': '# Manual\n'}
+        self.assertEqual(module.consolidate_documents(files), files)
+
+    def test_public_layout_rejects_extra_markdown(self):
+        self.manifest({'README.md': b'Project\n', 'DOCUMENTATION.md': b'Manual\n',
+                       'nested/NOTES.md': b'Notes\n'})
+        path = self.folder/'publication-manifest.json'
+        data = json.loads(path.read_text())
+        data['documentation'] = {'format': 'single-manual'}
+        path.write_text(json.dumps(data))
+        with self.assertRaises(SystemExit):
+            self.checked()
+
 
 if __name__ == '__main__':
     unittest.main()

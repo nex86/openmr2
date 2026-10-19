@@ -9,162 +9,77 @@
     "P01 decoder translation",
     "P02 AI-edited original artwork"
   ],
+  "documentation": {
+    "format": "single-manual",
+    "manual": "DOCUMENTATION.md",
+    "source_documents": [
+      "BUILDING.md",
+      "CHANGELOG.md",
+      "CONFIGURATION.md",
+      "CONTRIBUTING.md",
+      "DISTRIBUTION.md",
+      "ENGINE_AUDIO.md",
+      "HUD_RESEARCH.md",
+      "KEYBOARD.md",
+      "LICENSE_STATUS.md",
+      "LICENSING.md",
+      "LOCALIZATION_REVIEW.md",
+      "PHYSICS.md",
+      "PUBLICATION_AUDIT.md",
+      "RECORDING.md",
+      "RELEASE_NOTES.md",
+      "RETRO_RENDERER.md",
+      "REVIVE_EFFECTS.md",
+      "TODO.md",
+      "VIDEO_UPSCALING.md",
+      "assets/effects/README.md",
+      "assets/revived_ui/README.md",
+      "docs/VALIDATION.md",
+      "src/third_party/README.md"
+    ]
+  },
   "files": [
     {
       "path": ".gitattributes",
       "bytes": 149,
       "sha256": "107ca82717ad7d8e490e50188301fa1d0c3728fc375ec0c78d05556178e8beb2",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": ".github/workflows/build.yml",
       "bytes": 1669,
       "sha256": "61c71282cd278ca2a5044545ae0d2345aedeb924c7c46dfc649559f6dff6fd52",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": ".gitignore",
       "bytes": 829,
       "sha256": "4c1c5ea33f68dce126339d0a372d80426e3638cf12c38192e583b5a884b0cf89",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
-      "path": "BUILDING.md",
-      "bytes": 5196,
-      "sha256": "aab452eb480bbcae9d2181e65fb805ef7560a57a9085db6ff4e26983e135f994",
-      "classification": "project development material; scope in LICENSING.md"
-    },
-    {
-      "path": "CHANGELOG.md",
-      "bytes": 12683,
-      "sha256": "d3d89ddfe5dadc37c6b762f7d4ce19bb09e378df1634f6e6c85cb7a0f373976f",
-      "classification": "project development material; scope in LICENSING.md"
-    },
-    {
-      "path": "CONFIGURATION.md",
-      "bytes": 16107,
-      "sha256": "7f71ba2eee8ccac87466ec00f29e8db71c4fc80fb4138dabaf12469d8c134b3a",
-      "classification": "project development material; scope in LICENSING.md"
-    },
-    {
-      "path": "CONTRIBUTING.md",
-      "bytes": 1323,
-      "sha256": "3fa0cd1a1a6941785afa3fac6345d5cf16fd416cd02ec9e919b929914acc8944",
-      "classification": "project development material; scope in LICENSING.md"
-    },
-    {
-      "path": "DISTRIBUTION.md",
-      "bytes": 2426,
-      "sha256": "4db241e6d0a96442c584f6ed56ff674bf6186cc640c217046d9f82b579bf9b8e",
-      "classification": "project development material; scope in LICENSING.md"
-    },
-    {
-      "path": "ENGINE_AUDIO.md",
-      "bytes": 2996,
-      "sha256": "a567792c11c217eb2ea9140f4f2c14ccbb3881b4f049196927236505bfefdea9",
-      "classification": "project development material; scope in LICENSING.md"
-    },
-    {
-      "path": "HUD_RESEARCH.md",
-      "bytes": 4745,
-      "sha256": "26cd2fb22717f36ab7fc7e1970bf8c12bbf6ab7744638e3599be85780f2223df",
-      "classification": "project development material; scope in LICENSING.md"
-    },
-    {
-      "path": "KEYBOARD.md",
-      "bytes": 3862,
-      "sha256": "a30e9cf8dceddb5962bab199a29057b9dd77159310c94876fe2d2e5af51fe6b1",
-      "classification": "project development material; scope in LICENSING.md"
+      "path": "DOCUMENTATION.md",
+      "bytes": 121665,
+      "sha256": "7de88d12cdaaead75bdcbc839610ed37553046d82323bdc30b3bf225f1542c1b",
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "LICENSE",
       "bytes": 35149,
       "sha256": "3972dc9744f6499f0f9b2dbf76696f2ae7ad8af9b23dde66d6af86c9dfb36986",
-      "classification": "GPL version 3 license text; scope in LICENSING.md"
-    },
-    {
-      "path": "LICENSE_STATUS.md",
-      "bytes": 2950,
-      "sha256": "b1ce58a6eb037a402ffd142142c45fe55fa3031f0119251ef1f6e4228223ce99",
-      "classification": "project development material; scope in LICENSING.md"
-    },
-    {
-      "path": "LICENSING.md",
-      "bytes": 2599,
-      "sha256": "95aa68d5d114a67b8082e07a8f15f18362ca8edc9096a602fb01d6d038de7174",
-      "classification": "project development material; scope in LICENSING.md"
-    },
-    {
-      "path": "LOCALIZATION_REVIEW.md",
-      "bytes": 2517,
-      "sha256": "f96396939c536a120e6e0e1e851cc162f6f6366947113e591e2f27f3884cdbc0",
-      "classification": "project development material; scope in LICENSING.md"
-    },
-    {
-      "path": "PHYSICS.md",
-      "bytes": 3295,
-      "sha256": "2016682bf709311732b11f029c0b5470be8e97b20db7a1d0039317afa7bb27c9",
-      "classification": "project development material; scope in LICENSING.md"
-    },
-    {
-      "path": "PUBLICATION_AUDIT.md",
-      "bytes": 4286,
-      "sha256": "00635a67062468ab4939c169d826dc5fd3e5198b11961d795202189e7fc5f0b6",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "GPL version 3 license text; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "README.md",
-      "bytes": 9474,
-      "sha256": "2ac8e50d448dbdaa26b5ff8ba7e4ceef5fa7a776c73fb5a097acb5fa249584b2",
-      "classification": "project development material; scope in LICENSING.md"
-    },
-    {
-      "path": "RECORDING.md",
-      "bytes": 5409,
-      "sha256": "2c8562b57cade378ef00ad682394774880ee8480eb6d5724ee8602c55075c082",
-      "classification": "project development material; scope in LICENSING.md"
-    },
-    {
-      "path": "RELEASE_NOTES.md",
-      "bytes": 15866,
-      "sha256": "22ccf0c6a601eb0762e768a2600c1b16213af66df806bbd20c39859876e858b7",
-      "classification": "project development material; scope in LICENSING.md"
-    },
-    {
-      "path": "RETRO_RENDERER.md",
-      "bytes": 5983,
-      "sha256": "9a31ef43554165f6ff0ddbfe012a9a3c4a9fe9bfde4ed440f41d472f64d8917f",
-      "classification": "project development material; scope in LICENSING.md"
-    },
-    {
-      "path": "REVIVE_EFFECTS.md",
-      "bytes": 10028,
-      "sha256": "6052f3d12fa6c6043210c1cfdf811aec62c472bdf5463c3e35dcce98cee28beb",
-      "classification": "project development material; scope in LICENSING.md"
+      "bytes": 7097,
+      "sha256": "fc1a067d3b6840f9364c5cbca28d23dad45c53acad6016821ec0f5d223529b2e",
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "THIRD_PARTY_NOTICES.txt",
-      "bytes": 10077,
-      "sha256": "9a6e11d5b20d8de10e2ad4dbd76469f30750cc00ed565d57debed335910d410b",
-      "classification": "project development material; scope in LICENSING.md"
-    },
-    {
-      "path": "TODO.md",
-      "bytes": 1682,
-      "sha256": "010c6134d52b07c37221e1481862851ac18596a9f3e9a8ee983ed8b586d32781",
-      "classification": "project development material; scope in LICENSING.md"
-    },
-    {
-      "path": "VIDEO_UPSCALING.md",
-      "bytes": 3573,
-      "sha256": "0a61954b4768853e079b447e763762053207be90313c0105f9a44edba8c3ba3c",
-      "classification": "project development material; scope in LICENSING.md"
-    },
-    {
-      "path": "assets/effects/README.md",
-      "bytes": 1645,
-      "sha256": "f11b80ad705eb66efdb548022fa995b1a301c87ef885dba85f6aec9b01c2b8f6",
-      "classification": "text-generated project fire asset"
+      "bytes": 10087,
+      "sha256": "47024ad13e2c2e272ed7b86fb5bf826230f6a61150c0400e005b9f25f685416f",
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "assets/effects/vehicle-fire-atlas-v1.png",
@@ -201,12 +116,6 @@
       "bytes": 112023,
       "sha256": "368dc92248638f037300e3fe9d5df1b5226c4256ce38f48ceab95f6b7f20b280",
       "classification": "SIL OFL font and derived atlas"
-    },
-    {
-      "path": "assets/revived_ui/README.md",
-      "bytes": 2688,
-      "sha256": "3dbdbf773e61b1b66914c9342a971cf4a354cebada5cf1f9ad6f4abd335f1d11",
-      "classification": "P02: AI-edited original artwork; rights unresolved"
     },
     {
       "path": "assets/revived_ui/arsenal-generated.png",
@@ -548,169 +457,163 @@
       "path": "build_linux.sh",
       "bytes": 574,
       "sha256": "f526b086ed3d2172ac9615c8fc45d2cae561336c2238826622fa2488da05afe4",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "build_win.sh",
       "bytes": 1358,
       "sha256": "d7eca99f3c4054c63446f3757223403392fab30dd2b639e278e9345fefac991f",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "build_windows.ps1",
       "bytes": 2008,
       "sha256": "c9aeb85c81fd35160ae3f12069cec43d635ed0b86529f107bab78e179baedc02",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "custom_textures.txt",
       "bytes": 15438,
       "sha256": "2330d7efed04b98e14374a5c035f1743e11d8106fd0d41dfd5858747f6a11f7b",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "docs/VALIDATION.json",
       "bytes": 1567,
       "sha256": "789d182e50a540ccbc5802777e69ad363ebb91a84a14533ce9d25af413deee78",
-      "classification": "project development material; scope in LICENSING.md"
-    },
-    {
-      "path": "docs/VALIDATION.md",
-      "bytes": 1339,
-      "sha256": "a01b25afd9d0f56abb73ef7b5ea0e3e78cf0bc2ccdc54a2cdcfa6651ee69af91",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "docs/images/effect-brakelights.png",
       "bytes": 1409231,
       "sha256": "5ea0cb389da1be2fe2e0fb57bc9a2d0b3c00d7ed7ecf291fc5dfeaedac63e8cc",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "docs/images/effect-damage.png",
       "bytes": 862827,
       "sha256": "adc04f44b55e3bab7cc58287b8d39eb10db85dc777bec6994ddd943a46451312",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "docs/images/effect-explosion.png",
       "bytes": 876913,
       "sha256": "31a9b9cbcfb89afd15bb855c40e95db11352a79046c8c81eed18921af8236fca",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "docs/images/effect-headlights.png",
       "bytes": 1422512,
       "sha256": "2b795d724856125acc4607374e4038b4a6f6435aa810075e7eece1d38723242c",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "docs/images/effect-oil.png",
       "bytes": 862206,
       "sha256": "e08583675985f1e3ee079bb9568cfc1d629c892aaec3f57e74d498608775f240",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "docs/images/effect-sparks.png",
       "bytes": 876587,
       "sha256": "90eb5a17c2d8958d5efc3e5913dd17ae0918a2268e5e6fc436d05b1bfb2d8f06",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "docs/images/provenance.json",
       "bytes": 2810,
       "sha256": "fd1e544d12a0ffa319fd733f52ca38c7f141b05b4b22488d24f30c5139ee92de",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "docs/images/retro-car.png",
       "bytes": 333959,
       "sha256": "3208fab916277653bb3072eab7d1c720a328ce0de315166b69b25e3f3068a6ea",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "docs/images/retro-options.png",
       "bytes": 321156,
       "sha256": "2acecd71c6741928dd15f6fdac0c467b32de5150de2394f6f2e02338351c8690",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "docs/images/retro-race.png",
       "bytes": 190097,
       "sha256": "4a57692ca26c3bb165894fb8c0a63ba53dbab1bde59a2d21f448c5cef56dec52",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "docs/images/revived-car.png",
       "bytes": 1408745,
       "sha256": "c1528c04b83f06bf104487aab9f0b3919e2be522773479937c93b3794e012bf9",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "docs/images/revived-options.png",
       "bytes": 1616124,
       "sha256": "8f2667c489b6005ac145b44bcf522089088fcc78fa62b2c3d37f104b5af20466",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "docs/images/revived-race.png",
       "bytes": 862347,
       "sha256": "d9402295af6cdb289cb1765b85a31d1af266ade20acc4782780fd6072832fe21",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "docs/physics/rolling-start-0715.json",
       "bytes": 3896,
       "sha256": "46ded7160a6ab8f9393b4e823511dbe5603ad2eeccc2c4c6c4f6b8833b1ee73e",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "localization.tsv",
       "bytes": 27442,
       "sha256": "5cfa987ecf9a8a749018757e5acc2be03a8d74819ab4236ae1a3de719830f2d9",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/audio_pulse.inc",
       "bytes": 2074,
       "sha256": "49f5f26ac793fdb5bb096f5e3d1788e0f240cbe2f8f59cbe28b700057ad135b6",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/config_keys.h",
       "bytes": 1727,
       "sha256": "6726e7867a9a8adfd87039695ac3af42b2ff05ed2235e2128dbb22105556b6cf",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/core.cpp",
       "bytes": 63322,
       "sha256": "a08ede4bfdbddccb0d2ca61901a8a8d3f6e7a21975ff27c3c22f09ba8a968252",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/debug_console_win32.inc",
       "bytes": 3594,
       "sha256": "275ad46770d0b549100f767b6d16a162eed3ca32df9f0eb71e8bea2ff6a166a4",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/dos_win32.inc",
       "bytes": 1922,
       "sha256": "62b6249569c02c198f9e09fc3dbeef10d2f6e91d9e7210df59f1f63eb8cff61d",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/encoder_win32.inc",
       "bytes": 4239,
       "sha256": "5c7b11b4ac550ef4538776370345a92d4f4e7760e3416e605a4807819b469431",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/encoder_x11.inc",
       "bytes": 3216,
       "sha256": "2df7bc75c19bdfdfd954372769ab2b5b256b180b02b69247425ed337e6a57aa9",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/fire_atlas_data.h",
@@ -722,187 +625,187 @@
       "path": "src/g_base.inc",
       "bytes": 29191,
       "sha256": "0d5314cbb0e9319a51c235954c665b09694587a8c1362f2c35d1c532a10c663f",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/g_effects.inc",
       "bytes": 17500,
       "sha256": "7090592a082a5b7d96faf30f6489c24e47c65ae573a9610dda3731991c68bc72",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/g_extras.inc",
       "bytes": 3001,
       "sha256": "11dd2ecda8a4d544587bb6330f6b667bb65091bad85a2c5fe383d4295dd76ac6",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/g_lights.inc",
       "bytes": 8112,
       "sha256": "f1cd2cd22c6ce89f1029db7484a46ade6cd1ea89b771bb9f19b58023cf2cda2d",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/g_menu.inc",
       "bytes": 126451,
       "sha256": "2e19e422419092ef776a457502ed834e2d16d69da8fd088cdd69f61f4ca141e0",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/g_menu_head.inc",
       "bytes": 8392,
       "sha256": "c71e47dc136ac10353648d54fc697286b6fdf76c1b393c2cceff0f73e88cff43",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/g_menu_mid.inc",
       "bytes": 16772,
       "sha256": "e741f3a612e6f5023f731dafdb740457b7c8a58ef8b101bdd7e7fb99ea97d1d3",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/g_menu_tail.inc",
       "bytes": 101287,
       "sha256": "51316fd77a77af2c9c7f4e7412b5f34d5a20c5136c3a356f2932861cc21b5a95",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/g_missile_effects.inc",
       "bytes": 4834,
       "sha256": "bcf7a74f318c2c843d48999f9a3da0669161b4fe4d0268332b247354ac84e7dd",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/g_projectiles.inc",
       "bytes": 5231,
       "sha256": "1fa9c5d01a9a5083b277d7424c91f1f1a408d6381f07806ed29258cba9f84528",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/g_race.inc",
       "bytes": 103158,
       "sha256": "8c80044484e6572a5078c0cd1ba9b534467b4626e569b0fad803d4e44e353522",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/g_replay.inc",
       "bytes": 12683,
       "sha256": "6144277a156160fdc98647e77829c26416f72a8de1974fb3f7ed40bd2a39e91d",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/g_retro_menu.inc",
       "bytes": 9043,
       "sha256": "8a7ef0f763119b7d5c32f337425d34cafc4e84b1fdf08d9486e5e83cc1923e21",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/g_shadows.inc",
       "bytes": 9040,
       "sha256": "4024efeb24dc5241b0c3df3858926c95b4cb6a303e388716b8950e682a982d4b",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/g_track.inc",
       "bytes": 32770,
       "sha256": "5c47d29952ce7b829ace27370b3e01a8253eac9af17a6cb3058bdc607364994d",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/game_directory.h",
       "bytes": 4164,
       "sha256": "98dfaab963a0f54fcd98e93f9204d7b7a183d1e4bbd6458f7a267d8a19a5c696",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/gamedir_win32.inc",
       "bytes": 6261,
       "sha256": "5ff8d0b9fe46a29644cc0d078b073debb95315c4a795fa5ba8b655ff1f38b9ca",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/gamedir_x11.inc",
       "bytes": 4778,
       "sha256": "5cb758ba60f7bf848e2ecf28b99c98d03167031cab570503d4f4a0e5a05e05d3",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/gamefiles.h",
       "bytes": 6587,
       "sha256": "234697eb4297ea9eef8c68688b7db0d6f923da299b244a710c3506999f9fbd1d",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/gl.h",
       "bytes": 7011,
       "sha256": "d10f72ab286693cd3a0f1de3a06b8d2edaf720a14e787d528c88695a6883c143",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/global_shortcuts.inc",
       "bytes": 5389,
       "sha256": "0af5e5b4a89c2ba135ae2ddb8832c95bab6aece18c07edc04674dd464c277138",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/gog_manifest.h",
       "bytes": 56425,
       "sha256": "2e6982a29e76ed2ec19cb5a20df9a1d2db2dd3acb1fb434e585c4636c4c293ff",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/gog_verify.h",
       "bytes": 3636,
       "sha256": "ae31f0696bff7014c73d9238c8d02fd969b0939f0c235239d54f9113d794e320",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/i18n.h",
       "bytes": 109862,
       "sha256": "749d0cd0e09b04e13b809a59bee967ee9959ea2c3e3c561820656157538ad679",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/media.cpp",
       "bytes": 17615,
       "sha256": "4f4d4d2cfba99714dd8d59819a03ddf3a514d361bf2e01b0402f7ec3444c4e8c",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/media.h",
       "bytes": 2165,
       "sha256": "92bb5cbd852af5dbba7e7adf5a85900c680972227df0de7c4709aa9e6f6536b3",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/modes.inc",
       "bytes": 26403,
       "sha256": "e2a1493b6e651d5454001ce5566c1180f261b1a77d7052f58a7ca42e46fe4d8a",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/original_contact.h",
       "bytes": 790,
       "sha256": "67f503d0e1c5a151acf7f32999b2b26a7934f00592279e47a6298d4d6ffcbc1a",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/original_drive.h",
       "bytes": 4577,
       "sha256": "64ab82467d791c60eeaa3ac8c16e060dc140116e05bcf268cb07b371a121ad9f",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/original_wall.h",
       "bytes": 941,
       "sha256": "a063cc9d246ad4d953591546b99e9317be6e6f6aca3bedce009f1fa2fda0b256",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/original_wall_rules.h",
       "bytes": 166986,
       "sha256": "b87790d4a03a2ca3554f59d99ac8d704a6880c6795875b4782d33f2b18950794",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/output_filter_data.h",
@@ -914,19 +817,19 @@
       "path": "src/output_filters.inc",
       "bytes": 3889,
       "sha256": "91cb031435f38f99132f7b87953d7ecd246355f6bf847921c283cd834122b05a",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/png.inc",
       "bytes": 1897,
       "sha256": "d02e41a9b1b26bd600757fa47fed86c4e099f0b35fb07b064b6677e7f3548e23",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/recording.inc",
       "bytes": 3545,
       "sha256": "62094c66652b266e04f874cfa37bd149b94c97d5fcc6296cf180357b32d53014",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/remastered_ui_data.h",
@@ -938,7 +841,7 @@
       "path": "src/retro_palette.inc",
       "bytes": 2789,
       "sha256": "eeb6e108309382cceff154b773d6b254d76822eae6f88b6fc51ac95ebb013339",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/revived_font_data.h",
@@ -950,55 +853,49 @@
       "path": "src/sha256.h",
       "bytes": 3173,
       "sha256": "af9b6b9cbcb2ff4dc48e7d1cf7b0163b08b5d1e21d31d830aaba1f43e7834aad",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/startup_choice.h",
       "bytes": 2116,
       "sha256": "337ad93743313775be4ad6889739eaa6adb56f6a41468012e2f44c9493bab5ff",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/startup_win32.inc",
       "bytes": 2677,
       "sha256": "642a0983af410cd30581426729f67fd4c5d92ac60222645123cdf7aec94416f4",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/startup_x11.inc",
       "bytes": 3947,
       "sha256": "21a68678cc74ea922373df2cd9ffec044384c0fddcf70a36cb4224d1cef1a309",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/sys.h",
       "bytes": 4508,
       "sha256": "e1b5ef5db3894eea2a1056eea3d96272e8c551ca7e64253d3906a5734e65fe39",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/texture_canvas.inc",
       "bytes": 5299,
       "sha256": "35904e1abb0fe111cfca5c53ea8c7fc0f6d6dc4b4ba578da5a533a359f8715ef",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/texture_dump.inc",
       "bytes": 11230,
       "sha256": "2be43a2c9b14482979e85bfdc391ab029d7451f85442ba0bcd393d26dffe0216",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/textures.inc",
       "bytes": 5649,
       "sha256": "791af874e83b3bb4f514d9b84c44d1ef4dc7d631a0a62a33c637e8ead83ef868",
-      "classification": "project development material; scope in LICENSING.md"
-    },
-    {
-      "path": "src/third_party/README.md",
-      "bytes": 332,
-      "sha256": "920dc6dd2ad29104a0f9094c89aa4d060cc6dbff21a97919f05e397e9e300693",
-      "classification": "third-party component; upstream terms retained"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/third_party/fsr1/LICENSE.txt",
@@ -1148,7 +1045,7 @@
       "path": "src/verify_progress_win32.inc",
       "bytes": 2320,
       "sha256": "e8999449e852baa52d4267545c96cf490b82da4f82c22b87c62153bc0165b6f1",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/video_filter_data.h",
@@ -1166,469 +1063,475 @@
       "path": "src/video_upscale.inc",
       "bytes": 9519,
       "sha256": "95b98072dfc4a24f19a8262d8d736820caee8ff99026f719c1229173e1305802",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/win32_main.cpp",
       "bytes": 31716,
       "sha256": "b90bb77fb6f2a1440c43ed7f5d42557a1fa453b47e9a9be3301c9636eec5ef9e",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/x11_main.cpp",
       "bytes": 13735,
       "sha256": "8063e6e5cf4dee358f32f5f115a7eb6d1687d935deaea9cc11f86b6f2b9d8e95",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/audio_fonts.inc",
       "bytes": 6953,
       "sha256": "1bb42a55535a8543cc91c19383b4939602baa5d303090334d4aec87ed56c816f",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/console_startup_windows.ps1",
       "bytes": 1890,
       "sha256": "88f420eafc637c0a10f0f72baada678e039c68486da5cf3dafebec5b2ba400ce",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/console_windows.cpp",
       "bytes": 7247,
       "sha256": "2d0c5be62af39a92a7e5126412fb74c68f57f6b162fe6ca332af5a6fb25b7701",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/controls_0713.inc",
       "bytes": 5317,
       "sha256": "9bcd58df580b98acfa36e7000d5ad1cfb6258aacdb989e51e08844de828e774e",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/custom_textures.py",
       "bytes": 8816,
       "sha256": "fed38889967208c5b475c2d2b8d40b8501d302a05ae6e03a0c32ee2ed9407f51",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/dos_launch_linux.cpp",
       "bytes": 2468,
       "sha256": "d3cdad9f7df228b39282d99bc3e6c8fbdbf62dcd6f50b9368ecb3a120a959ae3",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/engine_retro.inc",
       "bytes": 5515,
       "sha256": "7cb32a1a5bcb73d9c066ece44661099f6adfbfcb65fd05c46513f57bf2b874b0",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/gameover_audio_windows.py",
       "bytes": 3859,
       "sha256": "e8283bc18a5856ed7ed73dd8e930f0a43660d5ccf7f9a547877691841e70b042",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/gameplay_graphics.inc",
       "bytes": 20392,
       "sha256": "10684c70862727e8241c3e4e02e18ad1a9f98f2d3fb29b71aa671b10961d96a6",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/gameplay_graphics.py",
       "bytes": 7258,
       "sha256": "cba6270228a6cdefdc8ac20c3c73aeb020620118e431dc3a6d49a0340a7fcbcb",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/light_effects_graphics.py",
       "bytes": 5822,
       "sha256": "21db91dcf837e5360dfc6a541347737648472d9d7fe651ce6417150c8253a58e",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/localization_screens_windows.ps1",
       "bytes": 2006,
       "sha256": "f40875b02d70e3f81496ae9d2c0537d56d5764c042af6e59a9d8545d092b1774",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/missile_graphics.py",
       "bytes": 3060,
       "sha256": "eff1eebdbcda29fc2551cafed70dcd5ac4c9dff4e15447834a86ea75cc6eba41",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/object_palettes.py",
       "bytes": 2866,
       "sha256": "0eaa3ba4bdd9ee620d8238760504ea1158b6b00fb3af06f48aedbe06f9e9d40f",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/options_layout.py",
       "bytes": 2785,
       "sha256": "b697aa6672b1512fad8b6e0ae4e2608e220e6f32c08145580a4771062ee20581",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/original_contact_cli.cpp",
       "bytes": 226,
       "sha256": "fe10609a7377bea8ed7fb574f688acbcd4bd8847dc552b2b4a9a77fe43aaaf5d",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/original_contact_reference.py",
       "bytes": 2025,
       "sha256": "bcd3d3889eb7f0715fcd5c59f13a6aea86a9ede7a1d2f7164a27f063199189db",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/original_drive_cli.cpp",
       "bytes": 833,
       "sha256": "40b24d2db462e3c5868af24dfc81fbf302a3e4ae5019c06ffc81281bf624afbc",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/original_drive_reference.py",
       "bytes": 4493,
       "sha256": "14eb6ef559cd267b7d0c174c6a1f0861941886d2062ab89a1f78c9957a6745c3",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/original_wall_cli.cpp",
       "bytes": 326,
       "sha256": "093f164edc495dee02841bd9cdabfbf6c8853965f7fc6f10c74563865a347454",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/original_wall_reference.py",
       "bytes": 5266,
       "sha256": "ea7b946a87b19a376277586a174ddf05d4606aa264a51f2f81e98a60718e73ea",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/output_filters.py",
       "bytes": 5874,
       "sha256": "b5fa83663469e1c6acba658e28ad1bb247806c52f1a854dfbc87c17bc0917c35",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/platform_stdio.inc",
       "bytes": 3460,
       "sha256": "4b281987f1fa95b76d194412797c057e44db06e0b4acd8ad0b7b2b838566d1d0",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/publication_export.py",
-      "bytes": 2992,
-      "sha256": "caf9abdfbc57d6a74654205d7497bc22124ab883413186f14a2b0d846b353698",
-      "classification": "project development material; scope in LICENSING.md"
+      "bytes": 4936,
+      "sha256": "811f5eaa527a962ab55e0c37311e8e1f428f27d48110c04e6e9baa57828a98cb",
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/publication_smoke.py",
       "bytes": 3190,
       "sha256": "6bc22fb4a178ab4dc95f977bd4995ecaff5f7e550359e04e0219e1c5b34ecddf",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/regression.cpp",
       "bytes": 27708,
       "sha256": "13e688aebf0b524a2788c32906fb4b6483551405f3e929d5f6d95382fd8b15e1",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/remastered_ui.inc",
       "bytes": 3319,
       "sha256": "025d411fd446d4957c934356f23e06cc337935070f0b3ea6ba305d0b48a2e4fc",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/remastered_ui_graphics.py",
       "bytes": 4513,
       "sha256": "b42f20d6489790c3b74130593f45cd0d245cbe203d702762f5a5eae3f6678846",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/render_pacing.py",
       "bytes": 3455,
       "sha256": "6aecbdad3894c5b824b39d083a87dad34662f0bba043d2f8a35cdbd96c532f5a",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/retro_linux.py",
       "bytes": 2043,
       "sha256": "3b63a106031b60cfd6d3a6e69ce639e31b4aa26a72d60f6a17435d0f13106a3d",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/retro_windows.ps1",
       "bytes": 2234,
       "sha256": "c5ae4da98cad8222a96f2c3ebfd8cd6627cc393beb3b8d18cc35eec636861673",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/revision_0713_graphics.py",
       "bytes": 4620,
       "sha256": "24b697fbb16f6cdf752b35123a8df257a22f5426956f129f88e6fa35a15a4c9f",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/revision_0714.inc",
       "bytes": 1815,
       "sha256": "b88ae6064a0fbec915392f1c091054d8eccd0934c36181fe83841225bda0ccd3",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/revision_0714_graphics.py",
       "bytes": 3068,
       "sha256": "c267a773e0617620cd44c955fde70c8539af04f5dd9ded7deadd19c5e4eddbac",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/revision_0715.inc",
       "bytes": 2016,
       "sha256": "27638e6a1447da68f597dfb2cb6f92b04d48ecbedb241bdf7fe07774b1421868",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/rolling_start_compare.py",
       "bytes": 979,
       "sha256": "64a2a412d7a0f566e29b3f9b0ce19794ecdb9a197f0be4af86e710ee5aa85a14",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/rolling_start_probe.cpp",
       "bytes": 1474,
       "sha256": "e38b1a40d7c27f109bfa4b830711330b0c15aba5f187c2021c2457fd462a2a38",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/run_console_windows.ps1",
       "bytes": 1398,
       "sha256": "542e56ee58ef0d6ac53cd57227fe3cf8fc02a1551dcc45a202cc3fac54724327",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/run_linux.sh",
       "bytes": 370,
       "sha256": "580f8fa877be9500acbbfd042221f8df8d693c093049f2cdaf5ef21194bfd3e7",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/run_windows.ps1",
       "bytes": 1153,
       "sha256": "1e82cbb988bbd00d9430ea930e9f0a4822beb8e5669287ff698d2139b8f4cf7b",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/runtime_smoke_linux.py",
       "bytes": 1918,
       "sha256": "66351b347270919b35cca13e6abbc517b6479cedc67cee5a5955aef0c1afe7b8",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/runtime_smoke_windows.ps1",
       "bytes": 2042,
       "sha256": "988787866a17c84ce044f510e74029cdbdfb6b27fd16bf1eff5b28dbd551c344",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/shortcuts_recording.py",
       "bytes": 10263,
       "sha256": "10b5397064679c61703abeb802dd88d95f11cc120dc5cc4168beeb3b4dee51cc",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/startup_dialog.py",
       "bytes": 7949,
       "sha256": "bab5af9bf603bcb44ec98006a6aec6839d4c085fa4f9358e7eb9ca607d44543c",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/startup_dos.inc",
       "bytes": 5348,
       "sha256": "6f60eed3931d1cc74d265cd91279e7441e8b5775cc3bfa7475278a8d59a7356c",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/startup_windows.ps1",
       "bytes": 2488,
       "sha256": "dad8be0986ae664514d068ed12abb0e2883c8f38f8bf499404c0684d42dff7b3",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/vehicle_models.py",
       "bytes": 2294,
       "sha256": "18c3ecc986c78de2b779f9556d56c28781ea6b4cd09a45cc5e70695bc9481585",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/verification_startup_windows.ps1",
       "bytes": 2709,
       "sha256": "35f28982c781487bb1c9b274c4662ad17ae73a4103ba033e07889a8634bae3b4",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tests/video_upscale_graphics.py",
       "bytes": 3801,
       "sha256": "0fecd24845221754056a6c3b4bfcadf142aa249e24ab3e482c9b2a44fca0cfad",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tools/audit_localization.py",
       "bytes": 1520,
       "sha256": "4811d00d1721ffdcdbd139633336d410da43db41bd47d1df324a62f7c68c4b09",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tools/audit_vehicle_lights.py",
       "bytes": 4879,
       "sha256": "8c6987a838425f13fc8c485b11df420de313d7e8298ee1fc681e87ccb1b04c9d",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tools/build_appimage.py",
-      "bytes": 6897,
-      "sha256": "95f553069958d744f4b7712a353d0cf27ddbeb7291c3ad52da4ec4ab63d22b6a",
-      "classification": "project development material; scope in LICENSING.md"
+      "bytes": 7084,
+      "sha256": "5f55c50e7f0800bbf11a07d56614ea3b0fb57abbef757a66736123ede820421b",
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tools/build_effect_asset.py",
       "bytes": 671,
       "sha256": "42dc3265b428ee1afe704be6e73451d3f7df23a94905039062c7f675a1e9b212",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tools/build_output_filters.py",
       "bytes": 1286,
       "sha256": "b3a72657a2eb049697a6d6cf4ad4eb33cbbf8145dddcf33371927a1a003a1dfb",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tools/build_revived_font.py",
       "bytes": 2209,
       "sha256": "b5bf491a10632fdae9282a8e8499f73fedba27f8a5222aeea4640362f45d6a7b",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tools/build_ui_remaster.py",
       "bytes": 4230,
       "sha256": "33924797b3b5af9ca9d4173a88b211b7cf0c340700f9ee6d319991f965ed0443",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tools/build_video_filters.py",
       "bytes": 2577,
       "sha256": "e76b5d8f798e323748d83278668f4761108ce9c905b860b4adbb73a0ca0684da",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tools/build_video_fsr.py",
       "bytes": 2320,
       "sha256": "3a820187647e4cb1572aa418ec3ecf9a6348da2be494a789112f508a1f606d2f",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tools/compare_hud.py",
       "bytes": 2358,
       "sha256": "d24740285fb0aa23446feb2f3849e52b89796ab8c8e10e42ee14ddb26c215052",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tools/fetch_appimage_tools.py",
       "bytes": 1610,
       "sha256": "41ea8315fd636aa381463cd36d22fe94c5c82d35688ac99ea0d3ac1d1d6e3035",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tools/font_atlas.py",
       "bytes": 1041,
       "sha256": "f967b87942fe9b3ef7c1f219a74b59551360f10dd0ea7251c1907d68b698055a",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tools/generate_localization.py",
       "bytes": 1509,
       "sha256": "4d147542597ab72150432bf39916c85eb49dcc5d2744dcb1d8c427d780eb4601",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tools/generate_manifest.py",
       "bytes": 1265,
       "sha256": "7c0c292c07815413b3e84fb99cb37d49859524e3f2b1a7c5b9729599558a40f1",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tools/inspect_assets.py",
       "bytes": 2680,
       "sha256": "79e31b725f1843b36dc65ef44240d8b851baca41d2ae91df2eb0bca54c8b61a9",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tools/inspect_engine_audio.py",
       "bytes": 2264,
       "sha256": "943861d3e9fe34d5e25836c82fe46d1c73754c532f72a2a0f585d752b1190fe6",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tools/inspect_executable.py",
       "bytes": 3137,
       "sha256": "1479c80886fa21d7df60b5b03c7eeea7357f4525be47dcc4699f04cc56ed568a",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tools/localize_builders.py",
       "bytes": 1491,
       "sha256": "6d94a934efcb92c9bf4aa599b7002020a6aad6c8adf03ff01e782a2ad5d64f1f",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tools/package_github_release.py",
-      "bytes": 6478,
-      "sha256": "f0487cb453a38ed0006405c769cfc2dd2d34d8bd2d56a045b0fc4cf9418ee234",
-      "classification": "project development material; scope in LICENSING.md"
+      "bytes": 6205,
+      "sha256": "37c2c1e78658fb69607b45671fc9c34330d75410b058bcffd48fa154947a341a",
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tools/prepare_github.py",
-      "bytes": 11756,
-      "sha256": "158e1ebbd7365b9739a7492ea3382d09f48034933956edea7c83afab732a2d65",
-      "classification": "project development material; scope in LICENSING.md"
+      "bytes": 13664,
+      "sha256": "adc44d661bfba4794e6f75bec66513d56805c9a61a3760086f6e28c9558035dc",
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tools/prepare_release_images.py",
       "bytes": 1998,
       "sha256": "30252e3acf7fb34165d1d5afaa54404af440b423ff17d8b0244256a2a05304a3",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tools/prepare_ui_remaster.py",
       "bytes": 5005,
       "sha256": "dec4e44e0361b39feb4071c4a2c7e33f5ed444684d285d8a6fe3d88abe156a55",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
+    },
+    {
+      "path": "tools/publication_docs.py",
+      "bytes": 4706,
+      "sha256": "c7ab0a1ae10834e68e6b8ee1ca3bcb91b45ba88e43d16c1a0fa62d5cc2ef6c67",
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "tools/smoke_candidate_appimage.py",
       "bytes": 1547,
       "sha256": "7e59c89d2974ca23ecf8b2660beb044b622fde01e352c3d0f934a6c0d8de90af",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "winlib/gdi32.def",
       "bytes": 177,
       "sha256": "9ea1cda55694f3ab2185045c1d3b15e18a5f4556c93b97101c293fc5c41af4bd",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "winlib/kernel32.def",
       "bytes": 596,
       "sha256": "898827b0674b2e25c4810746e4b87d7eb78dcaca6757653490c06c03d469780c",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "winlib/user32.def",
       "bytes": 471,
       "sha256": "83c19edb76c7563512c7d4f4c6f5aa2a4322f02764bc95b8f90ac055b9d261a5",
-      "classification": "project development material; scope in LICENSING.md"
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     }
   ]
 }

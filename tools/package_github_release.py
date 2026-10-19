@@ -44,7 +44,7 @@ def main():
     parser.add_argument('--output', type=Path, required=True)
     args = parser.parse_args()
     root = args.source.resolve()
-    subprocess.run([sys.executable, str(root/'tools/prepare_github.py'), '--check', str(root)], check=True)
+    subprocess.run([sys.executable, '-B', str(root/'tools/prepare_github.py'), '--check', str(root)], check=True)
     manifest = json.loads((root/'publication-manifest.json').read_text(encoding='utf-8'))
     version = manifest['version']
     files = {entry['path'] for entry in manifest['files']} | {'publication-manifest.json'}
@@ -65,11 +65,8 @@ def main():
         raise SystemExit('Expected a Linux x86-64 ELF executable')
     source_tar(source, root, files, f'OpenMR2-{version}-source')
     source_hash = sha(source)
-    documents = ['README.md', 'LICENSE', 'LICENSING.md', 'LICENSE_STATUS.md',
-                 'PUBLICATION_AUDIT.md', 'THIRD_PARTY_NOTICES.txt', 'KEYBOARD.md',
-                 'RECORDING.md', 'CONFIGURATION.md', 'custom_textures.txt',
-                 'REVIVE_EFFECTS.md', 'RETRO_RENDERER.md', 'PHYSICS.md', 'VIDEO_UPSCALING.md',
-                 'CHANGELOG.md', 'RELEASE_NOTES.md', 'DISTRIBUTION.md', 'BUILDING.md']
+    documents = ['README.md', 'DOCUMENTATION.md', 'LICENSE',
+                 'THIRD_PARTY_NOTICES.txt', 'custom_textures.txt']
     documents += sorted(name for name in files if name.startswith('docs/'))
     # Preserve complete notices and separately rebuildable shader sources.
     documents += sorted(name for name in files if name.startswith('src/third_party/'))
@@ -93,7 +90,7 @@ def main():
             'Publish the source tarball alongside these ZIPs in the same GitHub release.\n'
             'Dependency sources and licenses are included in that tarball.\n'
             'No game files or FFmpeg encoder are bundled in this ZIP.\n'
-            'See LICENSING.md and PUBLICATION_AUDIT.md for unresolved rights findings.\n'
+            'See DOCUMENTATION.md#licensing and #publication-audit for unresolved rights findings.\n'
         )
         with zipfile.ZipFile(destination, 'w', compression=zipfile.ZIP_DEFLATED) as archive:
             add_zip(archive, prefix+'/'+name, path.read_bytes(), executable=True)

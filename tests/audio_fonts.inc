@@ -1,5 +1,6 @@
 // Integrated with the real mixer/loaders and input handlers; no user files are used.
 static void test_audio_fonts(){
+  g_engine_suppressed=0; // This isolated mixer test explicitly enters an engine-enabled scene.
   static const char legacy_audio[]="sound_effects = 0\nrace_music = 1\nmenu_music = 0\nmenu_sounds = 1\n";
   sys_write_file("revived_config/openmr2_setup.cfg",legacy_audio,sizeof legacy_audio-1);setup_load();
   check(!g_audio_percent[0]&&!g_audio_percent[1]&&g_audio_percent[2]==100&&!g_audio_percent[3]&&g_audio_percent[4]==100,"legacy audio toggles migrate to five independent percentages");

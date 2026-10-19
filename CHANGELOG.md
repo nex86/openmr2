@@ -1,3 +1,5 @@
+0.7.14-dev (2026-10-19): original fixed-point driving and wall-response kernels, verified against the DOS executable; shared update cadence in both modes; removal of invented contact kicks and random heavy-barrel impulses. Removed the Retro effects Easter egg and legacy physics toggle. Premultiplied filtered canvas eliminates dark transparent-edge fringes in Revived. Retro pause displaces the entire scene. Engine-bus teardown blocks stale Game Over loops. Remaining parity limits are documented in PHYSICS.md and RETRO_RENDERER.md.
+
 # Changelog
 
 ## 0.7.13-dev

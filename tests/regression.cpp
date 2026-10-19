@@ -27,6 +27,7 @@ static void check(int condition, const char *name) {
 #include "gameplay_graphics.inc"
 #include "remastered_ui.inc"
 #include "controls_0713.inc"
+#include "revision_0714.inc"
 extern "C" void WinMainCRTStartup(void) {
   g_heap = GetProcessHeap();
 #define USE_EARLY_STUB(ret,name,args) name=test_##name;
@@ -285,11 +286,11 @@ extern "C" void WinMainCRTStartup(void) {
   check(!late_nonzero,"Game Over mixer is silent after its finite entry effect finishes");
   race_end_sounds();track_free();
   // One-shot export action: repeated activation, view changes, completion and exact Apply sample.
-  G.opts_menusfx=1;G.state=GS_DEBUG;G.sel=10;G.kbd=1;G.click=0;Input export_press={};export_press.pressed[K_ENTER]=1;
+  G.opts_menusfx=1;G.state=GS_DEBUG;G.sel=9;G.kbd=1;G.click=0;Input export_press={};export_press.pressed[K_ENTER]=1;
   screen_debug(&export_press);check(g_dump_active && !g_dump_complete && g_dump_assets.n>500,"Dump textures action starts one complete catalog job");
   texture_dump_step();int exported_index=g_dump_index;screen_debug(&export_press);
   check(g_dump_active && g_dump_index==exported_index,"clicking Dump textures again does not stop or restart it");
-  G.sel=15;screen_debug(&export_press);check(g_dump_active,"resetting debug options does not cancel a running export");
+  G.sel=14;screen_debug(&export_press);check(g_dump_active,"resetting debug options does not cancel a running export");
   A.mode=MODE_VIEWER;A.export_textures=0;texture_dump_frame_tick();check(g_dump_index>exported_index,"export ticks independently of selected game/viewer mode");
   g_dump_index=g_dump_assets.n/2;texture_dump_overlay_draw(640,480);
   check(g_cv[426*CW+180]==ORANGE && g_cv[426*CW+460]==rgba(20,18,16,255) && g_cv[418*CW+168]==rgba(150,140,120,255),"export overlay uses the shared track loading bar with correct partial fill and frame");
@@ -314,6 +315,7 @@ extern "C" void WinMainCRTStartup(void) {
   test_gameplay_graphics();
   test_remastered_ui();
   test_controls_0713();
+  test_revision_0714();
   s_cat(report, "Assertions: ", sizeof report); str_int(report, sizeof report, assertions);
   s_cat(report, "\r\nFailures: ", sizeof report); str_int(report, sizeof report, failures); s_cat(report, "\r\n", sizeof report);
   sys_write_file("regression-results.txt", report, s_len(report));

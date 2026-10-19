@@ -6,17 +6,17 @@ static ContactBurst g_contacts[128];static int g_contact_next;
 struct EnginePuff{double W[3],up[3],birth;float damage;unsigned seed;int alive;};
 static EnginePuff g_engine_puffs[8][64];static int g_engine_slots[8];static double g_engine_time=-1;
 static int damage_stage(double percent){return percent>=100?4:percent>=90?3:percent>=85?2:percent>=70?1:0;}
-static int modern_fx(const Fx &f){return !(g_tex_nearest&&!g_retro_effects)&&(f.scale>=2?g_damage_effects:g_modern_explosions);}
+static int modern_fx(const Fx &f){return !(g_tex_nearest)&&(f.scale>=2?g_damage_effects:g_modern_explosions);}
 static ExplosionEvent g_explosions[48];static int g_explosion_next;static double g_effect_time=-1;
 static void missile_effect_reset();
 static void effects_reset(){missile_effect_reset();mem_zero(g_contacts,sizeof g_contacts);g_contact_next=0;mem_zero(g_engine_puffs,sizeof g_engine_puffs);for(int i=0;i<8;i++)g_engine_slots[i]=-10000;g_engine_time=-1;mem_zero(g_explosions,sizeof g_explosions);g_explosion_next=0;g_effect_time=-1;}
 static unsigned effect_hash(unsigned x){x^=x>>16;x*=0x7feb352du;x^=x>>15;x*=0x846ca68bu;return x^(x>>16);}
 static float effect_random(unsigned &x){x=effect_hash(x+0x9e3779b9u);return (x&0xffffff)/16777215.f;}
 static void contact_sparks(const double *W,const double *up,const double *velocity,float intensity,int grinding){
-  if(!g_damage_effects||(g_tex_nearest&&!g_retro_effects))return;ContactBurst &e=g_contacts[g_contact_next++%128];e.alive=1;e.grinding=grinding;e.birth=RC.t;e.intensity=intensity;e.seed=effect_hash((unsigned)(int)(RC.t*1000)^(unsigned)(int)W[0]^((unsigned)(int)W[2]<<3));for(int k=0;k<3;k++){e.W[k]=W[k];e.up[k]=up[k];e.velocity[k]=velocity[k];}
+  if(!g_damage_effects||(g_tex_nearest))return;ContactBurst &e=g_contacts[g_contact_next++%128];e.alive=1;e.grinding=grinding;e.birth=RC.t;e.intensity=intensity;e.seed=effect_hash((unsigned)(int)(RC.t*1000)^(unsigned)(int)W[0]^((unsigned)(int)W[2]<<3));for(int k=0;k<3;k++){e.W[k]=W[k];e.up[k]=up[k];e.velocity[k]=velocity[k];}
 }
 static void effects_sync(){
-  if((g_tex_nearest&&!g_retro_effects)||(!g_modern_explosions&&!g_damage_effects&&!g_missile_effects)){if(g_effect_time>=0)effects_reset();return;}
+  if((g_tex_nearest)||(!g_modern_explosions&&!g_damage_effects&&!g_missile_effects)){if(g_effect_time>=0)effects_reset();return;}
   for(int i=0;i<48;i++)if(g_explosions[i].alive&&!(g_explosions[i].scale>=2?g_damage_effects:g_modern_explosions))g_explosions[i].alive=0;
   if(g_effect_time>=0&&(RC.t<g_effect_time-0.001||RC.t>g_effect_time+1.5))effects_reset();
   g_effect_time=RC.t;
@@ -48,7 +48,7 @@ static void effect_quad(const double *cam,V3 center,float size,float stretch,int
 }
 #include "g_missile_effects.inc"
 static void engine_effects_sync(const double *cam){
-  if(!g_damage_effects||(g_tex_nearest&&!g_retro_effects)){if(g_engine_time>=0){mem_zero(g_engine_puffs,sizeof g_engine_puffs);for(int i=0;i<8;i++)g_engine_slots[i]=-10000;g_engine_time=-1;}return;}
+  if(!g_damage_effects||(g_tex_nearest)){if(g_engine_time>=0){mem_zero(g_engine_puffs,sizeof g_engine_puffs);for(int i=0;i<8;i++)g_engine_slots[i]=-10000;g_engine_time=-1;}return;}
   if(g_engine_time>=0&&RC.t<g_engine_time){mem_zero(g_engine_puffs,sizeof g_engine_puffs);for(int i=0;i<8;i++)g_engine_slots[i]=-10000;}
   g_engine_time=RC.t;int slot=(int)(RC.t*20);
   for(int i=0;i<g_scene_count;i++){const SceneModel &s=g_scene[i];if(s.car<0||s.car>=8||damage_stage(RC.car[s.car].damage)==0||g_engine_slots[s.car]==slot)continue;
@@ -60,7 +60,7 @@ static void engine_effects_sync(const double *cam){
   }
 }
 static void engine_effects_build(const double *cam,int pass){
-  g_particle_strength=g_effect_strength[4];if(!g_damage_effects||(g_tex_nearest&&!g_retro_effects)||(pass!=1&&pass!=3))return;
+  g_particle_strength=g_effect_strength[4];if(!g_damage_effects||(g_tex_nearest)||(pass!=1&&pass!=3))return;
   for(int car=0;car<8;car++)for(int i=0;i<64;i++){EnginePuff &p=g_engine_puffs[car][i];if(!p.alive)continue;float t=(float)(RC.t-p.birth),life=p.damage>=85?2.6f:2.1f;if(t<0||t>life){p.alive=0;continue;}if(pass==3&&(p.damage<90||t>.5f))continue;
     unsigned seed=p.seed;float a=effect_random(seed),b=effect_random(seed);double world[3];for(int k=0;k<3;k++)world[k]=p.W[k]+p.up[k]*(t*2100+t*t*900)+(k==0?(a-.5)*t*1100:k==2?(b-.5)*t*1100:0);
     V3 center=shadow_eye(cam,world);if(center.z>-2)continue;float fade=m_clamp((life-t)/.8f,0,1);
@@ -69,7 +69,7 @@ static void engine_effects_build(const double *cam,int pass){
   }
 }
 static void contact_effects_build(const double *cam,int pass){
-  g_particle_strength=g_effect_strength[4];if(!g_damage_effects||(g_tex_nearest&&!g_retro_effects)){for(int i=0;i<128;i++)g_contacts[i].alive=0;return;}if(pass!=2)return;
+  g_particle_strength=g_effect_strength[4];if(!g_damage_effects||(g_tex_nearest)){for(int i=0;i<128;i++)g_contacts[i].alive=0;return;}if(pass!=2)return;
   for(int i=0;i<128;i++){ContactBurst &e=g_contacts[i];if(!e.alive)continue;float t=(float)(RC.t-e.birth);if(t<0||t>.58f){e.alive=0;continue;}unsigned seed=e.seed;int count=e.grinding?24+(int)(e.intensity*40):14+(int)(e.intensity*24);
     for(int j=0;j<count;j++){float a=effect_random(seed),b=effect_random(seed),life=e.grinding?.22f+a*.34f:.10f+a*.23f;if(t>life)continue;double p[3],v[3];for(int k=0;k<3;k++){v[k]=e.velocity[k]*(.40+a*.9)+e.up[k]*(1700+6500*b)+(k==0?(a-.5)*8000:k==2?(b-.5)*8000:0);p[k]=e.W[k]+v[k]*t-e.up[k]*12500*t*t;}
       V3 center=shadow_eye(cam,p),motion=shadow_axis(cam,v);if(center.z>-2)continue;V3 axis=norm(v3(motion.x,motion.y,0)),across=v3(-axis.y,axis.x,0);float width=m_max((35+50*a)*MODEL_SCALE,-center.z*1.0f/m_max(.1f,g_proj.m[0]*g_effect_screen_width*.5f)),length=(180+(e.grinding?1700:900)*e.intensity)*(1-t/life*.6f)*MODEL_SCALE;
@@ -117,7 +117,7 @@ static void effects_build(const double *cam,int pass){
   engine_effects_build(cam,pass);contact_effects_build(cam,pass);missile_effects_build(cam,pass);
 }
 static void effects_draw(const double *cam){
-  effects_sync();engine_effects_sync(cam);int missile_active=missile_effects_active();if((!g_modern_explosions&&!g_damage_effects&&!g_missile_effects)||(g_tex_nearest&&!g_retro_effects))return;
+  effects_sync();engine_effects_sync(cam);int missile_active=missile_effects_active();if((!g_modern_explosions&&!g_damage_effects&&!g_missile_effects)||(g_tex_nearest))return;
   int any=missile_active;for(int i=0;i<48;i++)if(g_explosions[i].alive)any=1;for(int car=0;car<8&&!any;car++)for(int i=0;i<64;i++)if(g_engine_puffs[car][i].alive)any=1;for(int i=0;i<128&&!any;i++)if(g_contacts[i].alive&&g_damage_effects)any=1;if(!any)return;
   if(!g_effect_program){g_effect_program=shader_build(VS_EFFECT,FS_EFFECT);if(!g_effect_program)return;
     glGenVertexArrays(1,&g_effect_vao);glGenBuffers(1,&g_effect_vbo);glBindVertexArray(g_effect_vao);glBindBuffer(GL_ARRAY_BUFFER,g_effect_vbo);

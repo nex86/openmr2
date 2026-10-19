@@ -60,6 +60,7 @@ struct Voice { int bus; const Sound *snd; double pos, rate; float vol, pan; int 
 enum { NVOICES = 24 };
 struct Mixer { Voice v[NVOICES]; int serial; int dev; float music_vol, sfx_vol, voice_vol; int muted; long long filled; int peak, clipped; };
 static Mixer MX;
+static int g_engine_suppressed;
 static Sound g_music, g_fmv_snd;
 static int g_music_voice = -1, g_fmv_voice = -1;
 
@@ -69,6 +70,7 @@ void app_audio_fill(int16_t *dst, int frames) {
     float l = 0, r = 0;
     for (int k = 0; k < NVOICES; k++) {
       Voice &v = MX.v[k];
+      if(v.bus==AUDIO_ENGINES&&g_engine_suppressed){v.active=0;continue;}
       if (!v.active || !v.snd || !v.snd->pcm) continue;
       int p = (int)v.pos;
       if (p >= v.snd->frames) { if (v.loop) { v.pos -= v.snd->frames; p = (int)v.pos; if (p >= v.snd->frames) p = 0; } else { v.active = 0; continue; } }
@@ -88,7 +90,7 @@ void app_audio_fill(int16_t *dst, int frames) {
 }
 // returns a voice handle (index + 256*serial) or -1
 static int snd_play(const Sound *s, float vol, float pitch, int loop, float pan, int bus=AUDIO_SOUNDS) {
-  if (!audio_enabled(bus))return -1;
+  if (!audio_enabled(bus)||(bus==AUDIO_ENGINES&&g_engine_suppressed))return -1;
   if (!s || !s->pcm || s->frames <= 0) return -1;
   int best = -1;
   for (int k = 2; k < NVOICES; k++) if (!MX.v[k].active) { best = k; break; }   // 0 = music, 1 = video/voice
@@ -409,13 +411,18 @@ static void screen_compute(int W, int H) {
   if (g_scr_fill) { g_scr.x = 0; g_scr.y = 0; g_scr.w = W; g_scr.h = H; return; }
   fit_rect_px(W, H, 4.0f / 3.0f, &g_scr.x, &g_scr.y, &g_scr.w, &g_scr.h);
 }
+static void canvas_premultiply(uint32_t *dst,const uint32_t *src,int count){
+  for(int i=0;i<count;i++){uint32_t c=src[i],a=c>>24;dst[i]=a==255?c:((c&255)*a+127)/255|((((c>>8)&255)*a+127)/255<<8)|((((c>>16)&255)*a+127)/255<<16)|(a<<24);}
+}
+static uint32_t *g_cv_upload;
 #include "texture_canvas.inc"
 static void canvas_draw(int W, int H) {
   if (!g_cv_tex) { glGenTextures(1, &g_cv_tex); g_cv_dirty = 1; }
   glBindTexture(GL_TEXTURE_2D, g_cv_tex);
   if (g_cv_dirty || g_texture_layers.n) {
     glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
-    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, CW, CH, 0, GL_RGBA, GL_UNSIGNED_BYTE, g_cv);
+    if(g_smooth_filter){if(!g_cv_upload)g_cv_upload=(uint32_t *)sys_alloc(CW*CH*4);canvas_premultiply(g_cv_upload,g_cv,CW*CH);}
+    glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, CW, CH, 0, GL_RGBA, GL_UNSIGNED_BYTE, g_smooth_filter?g_cv_upload:g_cv);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR); glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, g_smooth_filter ? GL_LINEAR : GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE); glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
     g_cv_dirty = 0;
@@ -430,9 +437,11 @@ static void canvas_draw(int W, int H) {
     TextureLayer &l=g_texture_layers.p[i];GLuint tex=l.texture;
     if(l.slice>=0){CanvasSlice &slice=g_canvas_slices.p[l.slice];if(!slice.texture)glGenTextures(1,&slice.texture);tex=slice.texture;
       glBindTexture(GL_TEXTURE_2D,tex);glTexImage2D(GL_TEXTURE_2D,0,GL_RGBA8,CW,CH,0,GL_RGBA,GL_UNSIGNED_BYTE,slice.pixels);glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,g_smooth_filter?GL_LINEAR:GL_NEAREST);glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,g_smooth_filter?GL_LINEAR:GL_NEAREST);glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_S,GL_CLAMP_TO_EDGE);glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_WRAP_T,GL_CLAMP_TO_EDGE);}
+    glBlendFunc(l.slice>=0&&g_smooth_filter?GL_ONE:GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
     glUniform1i(uc_sdf,l.sdf);
     texture_canvas_draw_layer(tex,W,H,l.x,l.y,l.w,l.h,l.u,l.v,l.uw,l.vh,l.tint);
   }
+  glBlendFunc(g_smooth_filter?GL_ONE:GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);
   glUniform1i(uc_sdf,0);glBindTexture(GL_TEXTURE_2D,g_cv_tex);glUniform4f(uc_uv,0,0,1,1);glUniform4f(uc_tint,1,1,1,1);
   glUniform4f(uc_rect, -1 + 2.0f * g_scr.x / W, -1 + 2.0f * g_scr.y / H, -1 + 2.0f * (g_scr.x + g_scr.w) / W, -1 + 2.0f * (g_scr.y + g_scr.h) / H);
   glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);

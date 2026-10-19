@@ -26,7 +26,7 @@ TREES = {
 DOCS = (
     'BUILDING.md CHANGELOG.md CONFIGURATION.md CONTRIBUTING.md ENGINE_AUDIO.md '
     'HUD_RESEARCH.md LICENSE_STATUS.md LICENSING.md LOCALIZATION_REVIEW.md '
-    'PUBLICATION_AUDIT.md RECORDING.md RELEASE_NOTES.md RETRO_RENDERER.md '
+    'PUBLICATION_AUDIT.md RECORDING.md RELEASE_NOTES.md RETRO_RENDERER.md PHYSICS.md '
     'REVIVE_EFFECTS.md THIRD_PARTY_NOTICES.txt TODO.md VIDEO_UPSCALING.md '
     'custom_textures.txt localization.tsv build_windows.ps1 build_win.sh build_linux.sh '
     'KEYBOARD.md DISTRIBUTION.md'
@@ -172,11 +172,14 @@ def export(destination):
         raise SystemExit('Expected the existing repository GPL-3.0 LICENSE')
     paths['LICENSE'] = license_path
     ignore = destination / '.gitignore'
-    with ignore.open('a', encoding='utf-8', newline='\n') as stream:
-        stream.write('\n# Original game files and personal runtime output\n'
-                     '/revived_config/\n/texture_dumps/\n/texture_replacements/\n'
-                     '*.gog\n*.iso\n*.bin\n*.cue\n*.cfg\n*.sav\n'
-                     '*.AppImage\n*.zip\n*.7z\n__pycache__/\n*.pyc\n.env\n.env.*\n')
+    required = ('/revived_config/ /texture_dumps/ /texture_replacements/ '
+                '*.gog *.iso *.bin *.cue *.cfg *.sav *.AppImage *.zip *.7z '
+                '__pycache__/ *.pyc .env .env.*').split()
+    existing = ignore.read_text(encoding='utf-8') if ignore.exists() else ''
+    missing = [line for line in required if line not in existing.splitlines()]
+    if missing:
+        with ignore.open('a', encoding='utf-8', newline='\n') as stream:
+            stream.write('\n# Original game files and personal runtime output\n'+'\n'.join(missing)+'\n')
     paths['.gitignore'] = ignore
     attributes = destination / '.gitattributes'
     attributes.write_text('* text=auto eol=lf\n*.sh text eol=lf\n*.py text eol=lf\n'
@@ -195,7 +198,7 @@ def export(destination):
     manifest = {
         'date': '2026-10-19',
         'target': 'https://github.com/nex86/openmr2',
-        'version': '0.7.13-dev',
+        'version': '0.7.14-dev',
         'classification': 'complete local development source snapshot, not legal clearance',
         'original_game_data_included': False,
         'bundled_executables_included': False,

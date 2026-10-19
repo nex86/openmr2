@@ -18,8 +18,7 @@
 | F12 | Save a quality-98 JPEG screenshot |
 | Alt+Enter | Toggle fullscreen on Windows; Linux uses the fullscreen menu option |
 
-Modern graphics shortcuts remain unavailable in ordinary Retro Mode. F9 also
-mutes/restores the optional Retro `surprise surprise!` effect exception.
+Modern graphics shortcuts, including F9, remain unavailable in Retro Mode.
 Capture notifications appear briefly at the top right and are excluded from
 saved media. Files go to `revived_config/recordings` and
 `revived_config/screenshots`.

@@ -154,21 +154,20 @@ static void pad_apply(Input *in, double dt, int W, int H) {
 
 static void texture_options_apply();
 static void debug_apply(void) {
-  g_retro_effects=G.gfx_mode==1&&G.retro_surprise&&!G.effects_muted;
-  for(int i=0;i<6;i++)g_effect_strength[i]=g_retro_effects?1.f:(float)G.effect_intensity[i]/100.f;
+  for(int i=0;i<6;i++)g_effect_strength[i]=(float)G.effect_intensity[i]/100.f;
   int enabled=G.gfx_mode==0&&!G.effects_muted;
-  g_vehicle_lights=g_retro_effects||(enabled&&G.vehicle_lights&&G.effect_intensity[1]>0);
-  g_damage_effects=g_retro_effects||(enabled&&G.damage_effects&&G.effect_intensity[4]>0);
-  g_enhanced_oil=g_retro_effects||(enabled&&G.enhanced_oil&&G.effect_intensity[2]>0);
-  g_realtime_shadows=g_retro_effects||(enabled&&G.real_time_shadows&&G.effect_intensity[0]>0);
-  g_modern_explosions=g_retro_effects||(enabled&&G.modern_explosions&&G.effect_intensity[3]>0);
-  g_missile_effects=g_retro_effects||(enabled&&G.missile_effects&&G.effect_intensity[5]>0);
+  g_vehicle_lights=(enabled&&G.vehicle_lights&&G.effect_intensity[1]>0);
+  g_damage_effects=(enabled&&G.damage_effects&&G.effect_intensity[4]>0);
+  g_enhanced_oil=(enabled&&G.enhanced_oil&&G.effect_intensity[2]>0);
+  g_realtime_shadows=(enabled&&G.real_time_shadows&&G.effect_intensity[0]>0);
+  g_modern_explosions=(enabled&&G.modern_explosions&&G.effect_intensity[3]>0);
+  g_missile_effects=(enabled&&G.missile_effects&&G.effect_intensity[5]>0);
   graphics_options_apply();   // technical debug options (championship and single race)
   if(A.debug_start_console){G.dbg_console=1;A.debug_start_console=0;}
   G.dbg_console=A.debug_console=sys_debug_console(G.dbg_console);
   texture_options_apply();
   static int cmd_road = -1; if (cmd_road < 0) cmd_road = A.roaddbg;
-  A.roaddbg = G.dbg_road || cmd_road; g_dbg_info = G.dbg_info; g_dbg_fps = G.dbg_fps; g_dbg_noopp = G.dbg_noopp; g_cam_rot_interp = G.gfx_mode==1?0:G.dbg_camrot; g_out_mode = G.dbg_fpsmode == 0 ? 0 : 1; g_ai_rescue = G.gfx_mode==1?0:G.ai_rescue; g_sim_model = G.gfx_mode==1?0:A.sim_revived ? 1 : G.sim_model;
+  A.roaddbg = G.dbg_road || cmd_road; g_dbg_info = G.dbg_info; g_dbg_fps = G.dbg_fps; g_dbg_noopp = G.dbg_noopp; g_cam_rot_interp = G.gfx_mode==1?0:G.dbg_camrot; g_out_mode = G.dbg_fpsmode == 0 ? 0 : 1; g_ai_rescue = G.gfx_mode==1?0:G.ai_rescue; g_sim_model = 0;
   static int last_output=-1;if(last_output!=g_out_mode){sys_log(g_out_mode==1?"[event] Race output: 60fps; interpolation enabled.":"[event] Race output: Original; interpolation disabled.");last_output=g_out_mode;}
   if (G.gfx_mode==1 || G.dbg_stretch) { VIDEO_Y0 = 30; VIDEO_H = 420; } else { VIDEO_Y0 = 45; VIDEO_H = 350; }
 }
@@ -202,7 +201,6 @@ static int cfg_items(CfgItem *it) {
   add("revived_msaa",&G.revived_msaa,0,16,"");
   add("revived_fxaa",&G.revived_fxaa,0,1,"");
   add("revived_frame_rate",&G.revived_fps,0,1,"");
-  add("retro_surprise",&G.retro_surprise,0,1,"");
   add("effects_muted",&G.effects_muted,0,1,"");
   add("vehicle_lights",&G.vehicle_lights,0,1,"");
   add("damage_effects",&G.damage_effects,0,1,"");
@@ -236,7 +234,6 @@ static int cfg_items(CfgItem *it) {
   add("debug_bild_4_3_gestreckt", &G.dbg_stretch, 0, 1, "");
   add("debug_alte_kamera", &G.dbg_camrot, 0, 1, "");
   add("debug_videos_ueberspringen", &G.dbg_noclips, 0, 1, "");
-  add("fahrmodell", &G.sim_model, 0, 1, "Simulation: 0 = Original update, 1 = subdivided Revived model");
   add("ki_notfallhilfe", &G.ai_rescue, 0, 1, "AI recovery assistance (modern, not original)");
   add("cheat_geld", &G.cheat_career.money, 0, 1, "Cheats der Meisterschaft (0/1)");
   add("cheat_munition", &G.cheat_career.ammo, 0, 1, "");
@@ -288,7 +285,7 @@ static void setup_load(void) {
   G.startup_mode=G.remember_startup_mode=0;
   G.gfx_output_filter=0;
   for(int i=0;i<AUDIO_COUNT;i++)g_audio_percent[i]=100;
-  G.retro_surprise=0;G.effects_muted=0;G.video_upscale=0;G.video_filter=0;G.revived_saved=0;G.revived_filter=0;G.revived_msaa=4;G.revived_fxaa=0;G.revived_fps=0;
+  G.effects_muted=0;G.video_upscale=0;G.video_filter=0;G.revived_saved=0;G.revived_filter=0;G.revived_msaa=4;G.revived_fxaa=0;G.revived_fps=0;
   G.opts_gfx = 0; G.opts_sfx = 1; G.opts_music = 1; G.opts_clips = 1; G.opts_laps = 0;
   G.gfx_mode = 0; G.gfx_scale = 2; G.gfx_msaa = 4; G.gfx_fxaa = 0; G.gfx_full = 0; G.opts_menumusic = 1; G.gfx_intscale = 1; G.opts_menusfx = 1; G.ai_rescue = 1; G.dbg_fpsmode = 0; G.dbg_console = 0;
   for (int a = 0; a < PA_COUNT; a++) G.pad_map[a] = PA_DEFAULT[a];
@@ -1116,7 +1113,6 @@ static void screen_debug(const Input *in) {
     {"FPS anzeigen", &G.dbg_fps}, {"Renn-Infos (Videobild, Streckenpunkt, Tempo)", &G.dbg_info}, {"Fahrbahn-Markierungen (H\xfctchen)", &G.dbg_road}, {"Ohne Gegner fahren", &G.dbg_noopp},
     {"Bild 4:3 gestreckt (statt Original 640x400)", &G.dbg_stretch}, {"Alte gegl\xe4ttete Kamera (nicht original)", &G.dbg_camrot}, {"Alle Videos \xfc" "berspringen (auch Intro)", &G.dbg_noclips},
     {"KI-Notfallhilfe (modern, nicht original)", &G.ai_rescue},
-    {"Revived-Fahrmodell (unterteilte Physik)", &G.sim_model},
 #ifdef _WIN32
     {"Debug-Konsole (CMD)", &G.dbg_console},
 #else
@@ -1129,15 +1125,15 @@ static void screen_debug(const Input *in) {
   if(G.sel<0||G.sel>n)G.sel=0;
   // layout: technical options in two columns, cheats below, buttons at the bottom
   int hover = -1;
-  struct P { int x, y; } pos[17] = {{40, 66}, {40, 88}, {40, 110}, {40, 132}, {40, 154}, {40, 176}, {40, 198}, {40, 220}, {40, 242}, {40, 264}, {40, 286}, {40, 342}, {40, 370}, {320, 342}, {320, 370}, {40, 443}, {443, 443}};
+  struct P { int x, y; } pos[16] = {{40, 66}, {40, 88}, {40, 110}, {40, 132}, {40, 154}, {40, 176}, {40, 198}, {40, 220}, {40, 264}, {40, 286}, {40, 342}, {40, 370}, {320, 342}, {320, 370}, {40, 443}, {443, 443}};
   for (int i = 0; i < n; i++) {
     int xx = pos[i].x, yy = pos[i].y;
     if (it[i].val) { const SprFile &sp = *it[i].val ? G.chk_on : G.chk_off; if (sp.n) cv_spr(spr_at(sp.f[0], xx - 3, yy - 2), G.bg.pal, 0, 0, 1); }
-    else if (i == 10 && G.exit_spr.n) cv_spr(spr_at(G.exit_spr.f[0],xx-3,yy-2),G.bg.pal,0,0,1);
+    else if (i == 9 && G.exit_spr.n) cv_spr(spr_at(G.exit_spr.f[0],xx-3,yy-2),G.bg.pal,0,0,1);
     else if (i == n - 1 && G.exit_spr.n) cv_spr(spr_at(G.exit_spr.f[0], xx, yy - 2), G.bg.pal, 0, 0, 1);
     else if (G.chk_off.n) cv_spr(spr_at(G.chk_off.f[0], xx - 3, yy - 2), G.bg.pal, 0, 0, 1);
-    int tx = i == n - 1 ? 496 : xx + (i==10?60:28);
-    cv_text(g_font_h14, tx, yy, it[i].txt, i==10 && g_dump_active?GREY:i == G.sel && G.kbd ? WHITE : BEIGE, 0, 1);
+    int tx = i == n - 1 ? 496 : xx + (i==9?60:28);
+    cv_text(g_font_h14, tx, yy, it[i].txt, i==9 && g_dump_active?GREY:i == G.sel && G.kbd ? WHITE : BEIGE, 0, 1);
     if (hit(xx - 3, yy - 4, tx - xx + 3 + cv_text_w(g_font_h14, it[i].txt, 1), 26)) hover = i;
   }
   cv_text(g_font_small, 40, 400, "Die Cheats f\xfcr das Einzelrennen stellst du im Einzelrennen-Men\xfc ein.", GREY, 0, 1);
@@ -1148,7 +1144,7 @@ static void screen_debug(const Input *in) {
   if(G.exit_spr.n)cv_spr(spr_at(G.exit_spr.f[0],440,284),G.bg.pal,0,0,1);cv_text(g_font_h14,493,286,"Extras",G.sel==n?WHITE:BEIGE,0,1);
   if(hit(440,286,185,27)&&G.click){go(GS_EXTRAS);return;}
   if(G.sel==n){if(in->pressed[K_ENTER]||in->pressed[K_SPACE]){go(GS_EXTRAS);return;}}
-  if(act==10){texture_dump_start();act=-1;}
+  if(act==9){texture_dump_start();act=-1;}
   if (act >= 0 && act<n) {
     msfx(S_MENU2, 0.7f);
     if (it[act].val) *it[act].val ^= 1;
@@ -1216,6 +1212,7 @@ static void replay_start(int ret) {
 static void replay_end(void) {
   if (G.rp_return == GS_RACE) {
     mem_cpy(&RC, &g_rc_backup, sizeof RC); mem_cpy(TK.obj, g_obj_backup, sizeof g_obj_backup);
+    g_engine_suppressed=0;
     RC.eng_voice = car_engine_play(player().car,0,mexe_engine_frequency((int)(player().v/V_RAW))/22050.f); RC.eng2_voice = -1;
     G.state = GS_RACE; RC.paused = 1;
   } else { music_stop(); go(GS_REPLAYS); }

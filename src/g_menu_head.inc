@@ -67,7 +67,7 @@ struct GameUI {
   int custom_textures;
   int video_upscale,video_filter;
   int real_time_shadows,modern_explosions,vehicle_lights,damage_effects,enhanced_oil,missile_effects;
-  int effect_intensity[6]; int effects_muted,retro_surprise;
+  int effect_intensity[6]; int effects_muted;
   int startup_mode, remember_startup_mode;
   int gfx_mode, gfx_scale, gfx_msaa, gfx_fxaa, gfx_full, gfx_output_filter;   // output filter is Retro-only
   int opts_menumusic;            // music in the menus

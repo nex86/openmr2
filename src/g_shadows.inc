@@ -5,7 +5,7 @@ static void scene_add(const Model &model,const M4 &mv,float wheel,int car){
   if(g_scene_count<192)g_scene[g_scene_count++]={&model,mv,wheel,&model==TK.obj_models[OM_OIL],car-1};
 }
 static void scene_damage_uniforms(const SceneModel &s){
-  float damage=s.car>=0&&g_damage_effects&&!(g_tex_nearest&&!g_retro_effects)?(float)(RC.car[s.car].damage/100.0):0;
+  float damage=s.car>=0&&g_damage_effects&&!(g_tex_nearest)?(float)(RC.car[s.car].damage/100.0):0;
   if(damage<1)damage=m_min(damage,.9999f);
   glUniform1f(R.um_damage,damage);if(damage>=.7f){V3 center=(s.model->bmin+s.model->bmax)*.5f,extent=(s.model->bmax-s.model->bmin)*.5f;glUniform3f(R.um_damage_center,center.x,center.y,center.z);glUniform3f(R.um_damage_extent,m_max(extent.x,.01f),m_max(extent.y,.01f),m_max(extent.z,.01f));}
 }
@@ -55,7 +55,7 @@ static void shadow_road_build(const double *cam){
 #include "g_lights.inc"
 static void scene_render(const double *cam,int W,int H){
   g_shadow_active=g_shadow_pass=g_oil_render=0;
-  int enabled=!(g_tex_nearest&&!g_retro_effects)&&g_realtime_shadows&&g_scene_count&&shadow_resources();
+  int enabled=!(g_tex_nearest)&&g_realtime_shadows&&g_scene_count&&shadow_resources();
   if(enabled){
     V3 center=shadow_eye(cam,player().W),up=shadow_axis(cam,player().F);
     double light_world[3];for(int k=0;k<3;k++)light_world[k]=player().U[k]*0.88+player().Rt[k]*0.42+player().F[k]*0.25;
@@ -81,7 +81,7 @@ static void scene_render(const double *cam,int W,int H){
   }
   model_shader_begin(g_proj,RC.gain);
   if(g_shadow_active){glUniformMatrix4fv(R.um_shadow_vp,1,0,SH.matrix.m);glUniform1i(R.um_shadow_enabled,1);glUniform1i(R.um_shadow_map,4);glUniform3f(R.um_light,SH.light.x,SH.light.y,SH.light.z);}
-  for(int i=0;i<g_scene_count;i++){SceneModel &s=g_scene[i];scene_damage_uniforms(s);glUniform1i(R.um_lamps,g_vehicle_lights&&!(g_tex_nearest&&!g_retro_effects)&&s.car>=0);glUniform1f(R.um_brake,s.car>=0&&RC.car[s.car].braking?1.f:0.f);g_oil_render=!(g_tex_nearest&&!g_retro_effects)&&g_enhanced_oil&&s.oil;glUniform1i(R.um_oil,g_oil_render);
+  for(int i=0;i<g_scene_count;i++){SceneModel &s=g_scene[i];scene_damage_uniforms(s);glUniform1i(R.um_lamps,g_vehicle_lights&&!(g_tex_nearest)&&s.car>=0);glUniform1f(R.um_brake,s.car>=0&&RC.car[s.car].braking?1.f:0.f);g_oil_render=!(g_tex_nearest)&&g_enhanced_oil&&s.oil;glUniform1i(R.um_oil,g_oil_render);
     if(g_oil_render){V3 center=(s.model->bmin+s.model->bmax)*0.5f,half=(s.model->bmax-s.model->bmin)*0.5f;glUniform4f(R.um_oil_bounds,center.x,center.z,m_max(half.x,0.001f),m_max(half.z,0.001f));}
     int old_shadow=g_shadow_active;if(s.oil)g_shadow_active=0;draw_model_mv(*s.model,s.mv,s.wheel,0);g_shadow_active=old_shadow;
   }

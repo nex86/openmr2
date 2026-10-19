@@ -144,7 +144,7 @@ static void draw_turntable(int W, int H, int car, double angle, float x, float y
   V3 eye = v3(0, r * 0.9f, r * 2.9f);
   M4 view = m4_look(eye, v3(0, ext.y * 1.1f, 0), v3(0, 1, 0));
   M4 vp = m4_mul(proj, view);
-  model_shader_begin(vp,1);glUniform1i(R.um_lamps,g_vehicle_lights&&(!g_tex_nearest||g_retro_effects));glUniform1i(R.um_rear_only,A.graphics_test==15);glUniform1f(R.um_brake,A.graphics_test==15&&A.test_damage?1.f:0.f);
+  model_shader_begin(vp,1);glUniform1i(R.um_lamps,g_vehicle_lights&&(!g_tex_nearest));glUniform1i(R.um_rear_only,A.graphics_test==15);glUniform1f(R.um_brake,A.graphics_test==15&&A.test_damage?1.f:0.f);
   glUniformMatrix4fv(R.um_vp, 1, GL_FALSE, vp.m); glUniform3f(R.um_cam, eye.x, eye.y, eye.z);
   glUniform1i(R.um_tex, 0); glUniform1f(R.um_lit, 1.0f); glUniform1f(R.um_gain, 1.0f); glUniform1f(R.um_gray, 0.0f);
   V3 c = (m->bmin + m->bmax) * 0.5f;

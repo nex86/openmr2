@@ -42,11 +42,11 @@ static void lamp_bloom_finish(GLint previous,int W,int H,const GLint *viewport){
   glUseProgram(LM.program);glBindVertexArray(R.empty_vao);glDisable(GL_DEPTH_TEST);glDepthMask(GL_FALSE);glDisable(GL_BLEND);glActiveTexture(GL_TEXTURE0);
   GLint step=glGetUniformLocation(LM.program,"uStep"),gain=glGetUniformLocation(LM.program,"uGain");glUniform1i(glGetUniformLocation(LM.program,"uTex"),0);glUniform1f(gain,1);
   for(int i=0;i<2;i++){glBindFramebuffer(GL_FRAMEBUFFER,LM.fbo[i+1]);glViewport(0,0,W/2,H/2);glBindTexture(GL_TEXTURE_2D,LM.tex[i]);glUniform2f(step,i?0:2.f/W,i?2.f/(H/2):0);glDrawArrays(GL_TRIANGLE_STRIP,0,4);}
-  glBindFramebuffer(GL_FRAMEBUFFER,(GLuint)previous);glViewport(0,0,W,H);glEnable(GL_BLEND);glBlendFunc(GL_ONE,GL_ONE);glBindTexture(GL_TEXTURE_2D,LM.tex[2]);glUniform2f(step,0,0);glUniform1f(gain,g_retro_effects?3.2f:.8f);glDrawArrays(GL_TRIANGLE_STRIP,0,4);
+  glBindFramebuffer(GL_FRAMEBUFFER,(GLuint)previous);glViewport(0,0,W,H);glEnable(GL_BLEND);glBlendFunc(GL_ONE,GL_ONE);glBindTexture(GL_TEXTURE_2D,LM.tex[2]);glUniform2f(step,0,0);glUniform1f(gain,.8f);glDrawArrays(GL_TRIANGLE_STRIP,0,4);
   glDisable(GL_BLEND);glDepthMask(GL_TRUE);glEnable(GL_DEPTH_TEST);glViewport(viewport[0],viewport[1],viewport[2],viewport[3]);
 }
 static void vehicle_lights_draw(const double *cam,int W,int H){
-  if(!g_vehicle_lights||(g_tex_nearest&&!g_retro_effects)||W<2||H<2)return;
+  if(!g_vehicle_lights||(g_tex_nearest)||W<2||H<2)return;
   GLint previous=0,viewport[4];glGetIntegerv(0x8CA6,&previous);glGetIntegerv(0x0BA2,viewport);
   if(!lamp_resources(W,H)){glBindFramebuffer(GL_FRAMEBUFFER,(GLuint)previous);return;}
   glBindFramebuffer(GL_READ_FRAMEBUFFER,(GLuint)previous);glBindFramebuffer(GL_DRAW_FRAMEBUFFER,LM.fbo[0]);glBlitFramebuffer(0,0,W,H,0,0,W,H,GL_DEPTH_BUFFER_BIT,GL_NEAREST);
@@ -59,7 +59,7 @@ static void vehicle_lights_draw(const double *cam,int W,int H){
 
 // Same HDR lamp mask/blur as the race, restricted to this car preview's viewport.
 static void preview_lights_draw(const Model &model,const M4 &vp,const M4 &pose,V3 eye,float wheel,int W,int H){
-  if(!g_vehicle_lights||(g_tex_nearest&&!g_retro_effects)||W<2||H<2)return;
+  if(!g_vehicle_lights||(g_tex_nearest)||W<2||H<2)return;
   GLint previous=0,viewport[4];glGetIntegerv(0x8CA6,&previous);glGetIntegerv(0x0BA2,viewport);
   if(!lamp_resources(W,H)){glBindFramebuffer(GL_FRAMEBUFFER,(GLuint)previous);return;}
   glBindFramebuffer(GL_READ_FRAMEBUFFER,(GLuint)previous);glBindFramebuffer(GL_DRAW_FRAMEBUFFER,LM.fbo[0]);glBlitFramebuffer(0,0,W,H,0,0,W,H,GL_DEPTH_BUFFER_BIT,GL_NEAREST);

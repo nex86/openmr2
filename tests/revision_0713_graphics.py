@@ -1,4 +1,4 @@
-"""GPU regressions for background filtering, palette stability, UI fixes and opt-in Retro effects."""
+"""GPU regressions for background filtering, palette stability, UI fixes and strict Retro isolation."""
 from pathlib import Path
 import os,subprocess,json,shutil
 from PIL import Image,ImageChops
@@ -27,13 +27,13 @@ orange=tuple(round((v//4)*255/63) for v in (236,144,40))
 points=[(x,y) for y in range(420,480) for x in range(640) if max(abs(a.getpixel((x,y))[i]-orange[i]) for i in range(3))<=1]
 assert len(points)>20 and all(max(abs(b.getpixel(p)[i]-orange[i]) for i in range(3))<=1 for p in points),(len(points),orange)
 checks.append('Retro credit heading keeps the same orange RGB values across different video palettes')
-a=launch('retro-effects-off',screen=None,retro=1,scene=6,damage=95);b=launch('retro-surprise-damage',screen=None,retro=1,egg=1,scene=6,damage=95);assert different(a,b)>20
-checks.append('Opt-in Retro Easter egg renders actual damage, fire and smoke')
+a=launch('retro-effects-off',screen=None,retro=1,scene=6,damage=95);b=launch('retro-surprise-damage',screen=None,retro=1,egg=1,scene=6,damage=95);assert different(a,b)==0
+checks.append('Removed legacy Easter egg cannot enable damage, fire or smoke')
 for scene,name in ((0,'shadows'),(2,'oil'),(3,'explosion'),(8,'sparks'),(10,'missile-exhaust')):
- a=launch('retro-original-'+name,screen=None,retro=1,scene=scene);b=launch('retro-surprise-'+name,screen=None,retro=1,egg=1,scene=scene);assert different(a,b)>3,name
- checks.append('Easter egg renders '+name+' while plain Retro remains original')
-a=launch('retro-preview-original',screen='carshop',retro=1);b=launch('retro-surprise-preview',screen='carshop',retro=1,egg=1);assert different(a,b)>3
-checks.append('Easter egg enables vehicle-selection lamps')
+ a=launch('retro-original-'+name,screen=None,retro=1,scene=scene);b=launch('retro-surprise-'+name,screen=None,retro=1,egg=1,scene=scene);assert different(a,b)==0,name
+ checks.append('Retro ignores legacy effect override: '+name)
+a=launch('retro-preview-original',screen='carshop',retro=1);b=launch('retro-surprise-preview',screen='carshop',retro=1,egg=1);assert different(a,b)==0
+checks.append('Retro previews ignore the removed override')
 for screen in ('options','gfx','debug','extras','shopmessage','sound'):
  launch('ui-'+screen,screen=screen,retro=screen=='sound')
 checks.append('Changed menus, disabled video arrow, transparent shop notice and scrollable Extras render')
@@ -41,5 +41,5 @@ a=images['ui-shopmessage'];assert sum(max(p)>20 for p in a.crop((0,0,640,190)).g
 checks.append('Shop notice preserves the visible shop scene instead of a full black screen')
 for screen in ('options','gfx','debug','extras'):
  launch('retro-ui-'+screen,screen=screen,retro=1)
-checks.append('Retro Easter egg and Extras controls render with original fonts')
+checks.append('Retro settings and Extras retain original fonts')
 (root/'build'/f'{platform}-revision-0713-results.json').write_text(json.dumps({'captures':len(images),'checks':checks,'failures':0},indent=2));print(platform+f': {len(images)} captures, {len(checks)} current revision checks passed',flush=True)

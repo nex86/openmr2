@@ -49,13 +49,14 @@ for scan conversion, shade tables and index-based shadow/transparency rules.
 
 The supplied DOSBox frames and current test runs use different race states/cameras, so they are not a pixel-exact A/B acceptance test. No invented scanlines, CRT blur, random jitter, arbitrary color-depth filter or deliberately injected clipping bugs are added as substitutes for verified original behavior. Recovering the remaining routines and comparing matched original frames is required before claiming full parity or "all quirks".
 
-## Explicit opt-in exception, 0.7.13
+## Strict Retro, 0.7.14
 
-Retro settings has a **surprise surprise!** checkbox, off by default. It permits
-only the six Revived effect groups, with standard intensities, while preserving
-the original material sampling, fonts, graphics, DAC precision, native size,
-Original timing and every other Retro lock. It does not enable custom textures,
-AI UI, video upscaling, MSAA or FXAA. The user's Revived effect preferences are
-retained separately. Without the checkbox, every modern effect remains bypassed.
-The bloom gain is adjusted for the tiny Retro lamp footprint, without adding
-Revived's general material lighting/specular/rim shader to the original body.
+The former effects Easter egg is removed. Legacy configuration cannot enable
+modern effects. F9 operates only in Revived. On pause, the entire race viewport
+moves down with the original 80-row menu, including video, models and HUD.
+Original canvas pixels retain straight-alpha nearest sampling; premultiplied
+filtering for Revived never alters Retro's CPU framebuffer.
+
+See PHYSICS.md for the separately validated driving and wall kernels and the
+remaining integration differences. Full visual and simulation parity is not
+claimed.

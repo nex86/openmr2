@@ -7,7 +7,7 @@ static MissileSmoke g_missile_smoke[4096];
 static int g_missile_smoke_next;static double g_missile_time=-1;
 static void missile_effect_reset(){mem_zero(g_missile_emitters,sizeof g_missile_emitters);mem_zero(g_missile_smoke,sizeof g_missile_smoke);g_missile_smoke_next=0;g_missile_time=-1;}
 static void missile_effect_pose(const double *cam,int index,const Proj &p,const Model &model,const M4 &mv){
-  if(!g_missile_effects||(g_tex_nearest&&!g_retro_effects)||index<0||index>=32)return;
+  if(!g_missile_effects||(g_tex_nearest)||index<0||index>=32)return;
   if(g_missile_time>=0&&(RC.t<g_missile_time-.001||RC.t>g_missile_time+1.5))missile_effect_reset();g_missile_time=RC.t;
   V3 nozzle=v3((model.bmin.x+model.bmax.x)*.5f,model.bmax.y-(model.bmax.x-model.bmin.x)*.18f,model.bmin.z);
   V3 eye=transform_point(mv,nozzle);double W[3],F[3],U[3];
@@ -37,7 +37,7 @@ static void missile_ribbon(V3 start,V3 end,float width,int kind,float alpha,floa
   const int ids[6]={0,1,2,1,3,2};for(int k=0;k<6;k++){int i=ids[k];effect_vertex((i&2?end:start)+side*((i&1?1:-1)*width),v3(0,0,1),(float)(i&1),(float)((i>>1)&1),kind,alpha,seed,age);}
 }
 static void missile_effects_build(const double *cam,int pass){
-  g_particle_strength=g_effect_strength[5];if(!g_missile_effects||(g_tex_nearest&&!g_retro_effects))return;
+  g_particle_strength=g_effect_strength[5];if(!g_missile_effects||(g_tex_nearest))return;
   if(pass==1)for(int i=0;i<4096;i++){
     MissileSmoke &s=g_missile_smoke[i];if(!s.alive)continue;float t=(float)(RC.t-s.birth);
     if(t<0||t>.65f){s.alive=0;continue;}
@@ -58,7 +58,7 @@ static void missile_effects_build(const double *cam,int pass){
   }
 }
 static int missile_effects_active(){
-  if(!g_missile_effects||(g_tex_nearest&&!g_retro_effects)){if(g_missile_time>=0)missile_effect_reset();return 0;}
+  if(!g_missile_effects||(g_tex_nearest)){if(g_missile_time>=0)missile_effect_reset();return 0;}
   for(int i=0;i<32;i++)if(g_missile_emitters[i].valid&&RC.proj[i].alive&&RC.proj[i].gen==g_missile_emitters[i].gen&&d_abs(RC.t-g_missile_emitters[i].time)<.001)return 1;
   for(int i=0;i<4096;i++)if(g_missile_smoke[i].alive){if(RC.t-g_missile_smoke[i].birth>.65||RC.t<g_missile_smoke[i].birth)g_missile_smoke[i].alive=0;else return 1;}return 0;
 }

@@ -1,7 +1,7 @@
 # OpenMR2 - MegaRace 2 Revived
 
 A recreation of MegaRace 2 for modern Windows and Linux systems, using the
-original game data without DOSBox. Current development version: **0.7.13-dev**.
+original game data without DOSBox. Current development version: **0.7.14-dev**.
 
 **Requires your own English, French or German GOG installation of MegaRace 2.**
 Original game files are not included. Original CD editions are not yet supported.
@@ -26,8 +26,11 @@ Original game files are not included. Original CD editions are not yet supported
   track-video backgrounds. This is shader filtering, not a runtime AI neural model.
 - **Retro Mode:** original assets/fonts and timing, with output scaling/filter
   choices. Retro remains an approximation of the original renderer; it is not
-  claimed to be pixel-identical to DOS. The optional `surprise surprise!` Easter
-  egg enables only the explicitly selected modern effect categories.
+  claimed to be pixel-identical to DOS. Modern effects are always disabled.
+  The former effects Easter egg has been removed.
+- Original fixed-point driving core shared by both modes; original wall-response
+  rules and heading-dependent collision width. See [PHYSICS.md](PHYSICS.md) for
+  executable-reference validation and remaining differences.
 - Championship, configurable single races, upgrades, replay/save slots and
   remappable Windows XInput controls alongside keyboard/mouse input.
 - English/French/German menus; separate sound, engine, race-music, menu-music
@@ -78,7 +81,7 @@ prereleases; availability depends on the current release publication status.
 
 ### Windows x64
 
-1. Extract `OpenMR2-0.7.13-dev-Windows-x64.zip` to a writable folder.
+1. Extract `OpenMR2-0.7.14-dev-Windows-x64.zip` to a writable folder.
 2. Run `OpenMR2.exe` from the extracted directory. Windows 10/11 x64 and an
    OpenGL 3.3-capable graphics driver are the intended target; no Visual C++
    runtime installation is required.
@@ -100,8 +103,8 @@ with glibc 2.39+, X11/Xwayland and OpenGL 3.3 is the tested baseline. On Ubuntu:
 
 ```sh
 sudo apt install unzip libx11-6 libgl1 libgl1-mesa-dri libpulse0 libstdc++6
-unzip OpenMR2-0.7.13-dev-Linux-x86_64.zip
-cd OpenMR2-0.7.13-dev-Linux-x86_64
+unzip OpenMR2-0.7.14-dev-Linux-x86_64.zip
+cd OpenMR2-0.7.14-dev-Linux-x86_64
 chmod +x openmr2_linux
 ./openmr2_linux --game "/path/to/MegaRace 2"
 ```

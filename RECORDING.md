@@ -90,16 +90,8 @@ The full options menu is used, including the correct Retro variant. Applying
 changes restores that scene without restarting a race. Volume changes remain
 effective on return. Global shortcut settings are saved in the normal CFG.
 
-# Retro Easter egg
+# Strict Retro mode
 
-The Retro-only **surprise surprise!** checkbox defaults off. It explicitly
-enables all six effect groups at their standard 100% strength: shadows, vehicle
-lights, oil, explosions, damage/contact sparks and missile exhaust. The separate
-Revived switches and intensities are preserved. F9 can temporarily mute all
-effects, including this exception; enabling the checkbox clears the mute.
-
-This affects effects only. Original HUD/icons/fonts/textures, nearest sampling,
-native render size, DAC precision, Original framerate, output scaling, MSAA/FXAA
-locks, video-upscaling suppression and custom-texture suppression remain intact.
-The checkbox is hidden in Revived. With it off, normal Retro bypasses every
-Revived effect, as before.
+Modern effects are always disabled in Retro. The former effects Easter egg was
+removed in 0.7.14; old `retro_surprise` settings are ignored and removed on save.
+F9 mutes/restores only Revived effects and leaves their individual preferences intact.

@@ -202,13 +202,14 @@ preferences. See VIDEO_UPSCALING.md for processing, caching and limits.
 ## 0.7.13 controls and capture
 
 `effects_muted = 0/1` temporarily mutes all six modern effect groups without
-changing their individual saved switches/intensities. `retro_surprise = 0/1`
-is the Retro-only Easter egg, off by default. It enables only those six effects
-at their default intensities and preserves every other original-mode setting.
-Enabling its checkbox clears `effects_muted`; F9 may mute the exception again.
-F1–F9 preference changes are saved in the same config. F10 does not reset a race.
+changing their individual saved switches/intensities. The obsolete
+`retro_surprise` key is ignored and removed on save. Retro always disables all
+modern effect categories. The legacy `simulation_model` setting is also ignored;
+both modes use the original driving kernel without physics substeps.
+
+F1-F9 preference changes are saved in the same config. F10 does not reset a race.
 F11 stores H.264/AAC MP4s in `revived_config/recordings`; F12 stores quality-98 JPGs
 in `revived_config/screenshots`. See RECORDING.md for encoder setup and limits.
 Loading WAIT.16 music uses `race_music_volume`, independently of menu volume.
-The message beneath the audio sliders is localized as “0% = off” (German:
-“0% = ausgeschaltet”). Capture notifications are localized and top-right.
+The message beneath the audio sliders is localized as "0% = off" (German:
+"0% = ausgeschaltet"). Capture notifications are localized and top-right.

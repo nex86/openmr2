@@ -601,7 +601,6 @@ static int g_realtime_shadows=1,g_modern_explosions=1,g_vehicle_lights=1,g_damag
 static int g_video_upscale,g_video_filter;
 static float g_effect_strength[6]={1,1,1,1,1,1};
 static int g_shadow_pass,g_shadow_active,g_oil_render,g_lamp_pass;
-static int g_retro_effects;
 static int g_tex_nearest;   // nearest-neighbour model textures (Retro Mode)
 static int g_post_done;   // the game mode has already presented the picture (post-processing pipeline)
 struct Renderer {

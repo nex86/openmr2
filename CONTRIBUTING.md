@@ -5,7 +5,7 @@ Edit the canonical implementation under `src/`. Build scripts generate
 
 Preserve original Retro graphics, fonts, timing and palettes. New visual
 enhancements belong in Revived Mode unless a Retro change is explicitly agreed.
-The documented `surprise surprise!` exception enables effect categories only.
+The former effects Easter egg is removed. Retro always bypasses modern effects.
 
 New project-code contributions use GPL-3.0-only. Preserve upstream notices and
 identify third-party code, generated assets and their provenance. Do not submit

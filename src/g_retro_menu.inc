@@ -8,14 +8,14 @@ static void screen_retro_options(const Input *in){
     {333,71,10,0,"Advanced sound"},
     {73,212,3,0,"Nein"},{73,241,3,1,"Ja"},
     {333,212,4,0,"Original (5/5/3)"},{333,241,4,3,"3 Runden"},{333,270,4,5,"5 Runden"},
-    {73,351,7,0,"Retro controller"},{333,351,8,0,"Debugmen\xfc"},{73,397,6,0,"Tasten"},{333,118,11,0,"surprise surprise!"}};
+    {73,351,7,0,"Retro controller"},{333,351,8,0,"Debugmen\xfc"},{73,397,6,0,"Tasten"}};
   cv_text(g_font_h14,17,40,"Grafikmodi",ORANGE,0,1);cv_text(g_font_h14,318,40,"Ger\xe4usche",ORANGE,0,1);
   cv_text(g_font_h14,17,180,"Lance Boyle",ORANGE,0,1);cv_text(g_font_h14,318,180,"Rennen",ORANGE,0,1);
   cv_text(g_font_h14,17,321,"Steuerung",ORANGE,0,1);
   cv_text(g_font_small,630,326,g_pad.connected?"(Controller verbunden)":"(kein Controller gefunden)",g_pad.connected?GREEN:GREY,2,1);
   const int n=sizeof items/sizeof items[0];if(G.sel<0||G.sel>n)G.sel=0;int hover=-1;
   for(int i=0;i<n;i++){
-    const Item &e=items[i];int on=e.group==0?G.gfx_mode==e.val:e.group==3?G.opts_clips==e.val:e.group==4?G.opts_laps==e.val:e.group==11?G.retro_surprise:0;
+    const Item &e=items[i];int on=e.group==0?G.gfx_mode==e.val:e.group==3?G.opts_clips==e.val:e.group==4?G.opts_laps==e.val:0;
     const SprFile &sp=on?G.chk_on:G.chk_off;if(sp.n)cv_spr(spr_at(sp.f[0],e.x-3,e.y-2),G.bg.pal,0,0,1);
     cv_text(g_font_h14,e.x+28,e.y,e.txt,G.sel==i&&G.kbd?WHITE:BEIGE,0,1);
     if(hit(e.x-3,e.y-4,30+cv_text_w(g_font_h14,e.txt,1),e.group==9?48:26))hover=i;
@@ -29,7 +29,6 @@ static void screen_retro_options(const Input *in){
   if(act>=0){
     msfx(S_MENU2,0.7f);if(act==n){setup_save();options_close();return;}
     const Item &e=items[act];
-    if(e.group==11){G.retro_surprise^=1;if(G.retro_surprise)G.effects_muted=0;debug_apply();setup_save();}
     if(e.group==0){graphics_mode_set(e.val);G.sel=e.val;}
     if(e.group==3)G.opts_clips=e.val;if(e.group==4)G.opts_laps=e.val;
     if(e.group==9){retro_menu_open(GS_GFX);return;}

@@ -4,7 +4,7 @@ static void test_engine_retro(){
   const char *fixtures[]={"../../../Megarace 2 English","../../../Megarace 2 French","../../../Megarace 2 German"};
   const char *files[]={"TURBINE","M_2","MOT3","M_2"};
   for(int language=0;language<3;language++){
-    gf_language=language;char path[512];str_cpy(path,fixtures[language],sizeof path);str_cat(path,"/M.EXE",sizeof path);
+    g_engine_suppressed=0;gf_language=language;char path[512];str_cpy(path,fixtures[language],sizeof path);str_cat(path,"/M.EXE",sizeof path);
     check(mexe_load(path),"original edition loads for independent engine-table checks");
     str_cpy(g_gamedir,fixtures[language],sizeof g_gamedir);g_audio_percent[AUDIO_ENGINES]=100;setup_apply();
     for(int car=0;car<14;car++){
@@ -35,7 +35,7 @@ static void test_engine_retro(){
   key={};key.pressed[K_ESC]=1;screen_retro_sound(&key);check(G.state==GS_OPTIONS&&G.sel==3&&g_audio_drag<0,"leaving Advanced sound returns focus to its original-menu entry");
   cv_clear(0);retro_volume_bar(70,100,50,BEIGE);check(g_cv[108*CW+95]==ORANGE&&g_cv[108*CW+89]==rgba(30,27,22,255)&&g_cv[108*CW+555]==rgba(78,72,57,255),"Retro slider uses discrete solid-color cells with visible pixel gaps");
   for(int language=0;language<3;language++){
-    gf_language=language;
+    g_engine_suppressed=0;gf_language=language;
     check(cv_text_w(g_font_h14,"Advanced sound",1)<=279,"large original Advanced sound label fits its Retro column in all editions");
     check(cv_text_w(g_font_h14,"Retro controller",1)<=223,"large original controller label ends before the adjacent Debug button in every language");
     check(cv_text_w(g_font_h14,"Original (5/5/3)",1)<=279,"original-size laps label fits the old menu column");
@@ -45,7 +45,7 @@ static void test_engine_retro(){
   gf_language=2;G.state=GS_DEBUG;G.sel=10;G.click=0;key={};key.pressed[K_ENTER]=1;g_dump_active=0;screen_debug(&key);
   check(!g_dump_active && G.dbg_stretch&&G.dbg_camrot&&G.ai_rescue&&G.sim_model,"Retro Reset is not Dump textures and retains hidden Revived preferences");
   G.sel=11;screen_debug(&key);check(G.state==GS_OPTIONS&&G.sel==10,"Retro debug has 12 visible entries and returns focus to Debug");
-  graphics_mode_set(0);check(g_sim_model&&g_ai_rescue&&g_cam_rot_interp,"switching back restores effective Revived technical preferences");
+  graphics_mode_set(0);check(!g_sim_model&&g_ai_rescue&&g_cam_rot_interp,"switching back restores effective Revived technical preferences");
   G.dbg_stretch=G.dbg_camrot=G.sim_model=0;G.ai_rescue=1;debug_apply();
   for(int b=0;b<AUDIO_COUNT;b++)g_audio_percent[b]=100;setup_apply();
 }

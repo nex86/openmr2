@@ -22,7 +22,7 @@ static void texture_canvas_snapshot(){
   int any=0;for(int i=0;i<CW*CH;i++)if(g_cv[i]>>24){any=1;break;}
   if(any){
     if(g_canvas_slice_used==g_canvas_slices.n){CanvasSlice s={};s.pixels=(uint32_t *)sys_alloc(CW*CH*4);g_canvas_slices.push(s);}
-    CanvasSlice &s=g_canvas_slices.p[g_canvas_slice_used++];mem_cpy(s.pixels,g_cv,CW*CH*4);
+    CanvasSlice &s=g_canvas_slices.p[g_canvas_slice_used++];if(g_smooth_filter)canvas_premultiply(s.pixels,g_cv,CW*CH);else mem_cpy(s.pixels,g_cv,CW*CH*4);
     // Uploaded at canvas_draw, after collecting all layers. Keep a stable pool index.
     TextureLayer l={0,0,0,CW,CH,0,0,1,1,0xffffffffu,g_canvas_slice_used-1};g_texture_layers.push(l);
   }

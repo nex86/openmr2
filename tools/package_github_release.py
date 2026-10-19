@@ -68,7 +68,7 @@ def main():
     documents = ['README.md', 'LICENSE', 'LICENSING.md', 'LICENSE_STATUS.md',
                  'PUBLICATION_AUDIT.md', 'THIRD_PARTY_NOTICES.txt', 'KEYBOARD.md',
                  'RECORDING.md', 'CONFIGURATION.md', 'custom_textures.txt',
-                 'REVIVE_EFFECTS.md', 'RETRO_RENDERER.md', 'VIDEO_UPSCALING.md',
+                 'REVIVE_EFFECTS.md', 'RETRO_RENDERER.md', 'PHYSICS.md', 'VIDEO_UPSCALING.md',
                  'CHANGELOG.md', 'RELEASE_NOTES.md', 'DISTRIBUTION.md', 'BUILDING.md']
     documents += sorted(name for name in files if name.startswith('docs/'))
     # Preserve complete notices and separately rebuildable shader sources.

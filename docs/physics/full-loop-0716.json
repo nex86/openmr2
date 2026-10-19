@@ -1,0 +1,20 @@
+{
+  "samples": 57600,
+  "tracks": 6,
+  "cars": 8,
+  "seconds_per_track": 48.0,
+  "compared_fields": [
+    "node",
+    "x",
+    "angle",
+    "steer",
+    "lateral",
+    "forward",
+    "speed",
+    "along"
+  ],
+  "failures": 0,
+  "first_failures": [],
+  "original_exe_sha256": "3d9c967a00c6dd15814adff51f09d830608c5c5c11cfdfe45a075e6fc64524fa",
+  "scope": "fixed pilot, drive, shared 2D road frames, car contacts, wall response; no tactics, weapons, road objects or retirement"
+}

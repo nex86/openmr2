@@ -266,8 +266,8 @@ extern "C" void WinMainCRTStartup(void) {
 
   {M4 projection=turntable_projection(1.9f);check(projection.m[0]<0 && projection.m[5]>0,"shop camera corrects horizontal handedness without inverting vertical orientation");
     double slow=0,fast=0;for(int i=0;i<25;i++)slow=turntable_advance(slow,1.0/25);for(int i=0;i<60;i++)fast=turntable_advance(fast,1.0/60);
-    check(d_abs(slow-2.1)<1e-9 && d_abs(fast-slow)<1e-9,"turntable rotates 3.5 times faster independent of framerate");
-    check(turntable_advance(6.2,0.1)<0.2,"turntable angle remains bounded through complete revolutions");}
+    check(d_abs(slow-(6.2831853071795864769-2.1))<1e-9 && d_abs(fast-slow)<1e-9,"turntable rotates counterclockwise at the same speed at 25/60 Hz");
+    check(turntable_advance(.1,.1)>6.1 && turntable_advance(.1,.1)<6.2831853071795864769,"counterclockwise turntable wraps through zero");}
   str_cpy(g_gamedir,"../../../Megarace 2 German",sizeof g_gamedir);g_model_reserved_ready=0;
   // Real looping engine WAVs: game over and subsequent race setup.
   Loadout restart_loadout;default_loadout(&restart_loadout);int restart_opponents[]={0,1,3,4,5,6,7};

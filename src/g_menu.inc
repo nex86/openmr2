@@ -81,7 +81,7 @@ static int g_options_return=-1,g_options_pause;
 static void options_close();
 static void extras_open_model();
 static void extras_open_video(const char *path);
-static Font g_font_h14, g_font_h10;   // Handel Gothic fonts of the original menus
+static Font g_font_h14, g_font_h10, g_font_shop;   // Original menu and compact shop fonts
 static const char *RETRO_FILTER_NAMES[6]={"Point","Linear","HQ2x","BRZ","Interlacing","CRT Filter"};
 static const char *RETRO_FILTER_KEYS[6]={"point","linear","hq2x","brz","interlacing","crt"};
 
@@ -247,17 +247,17 @@ static void text_box(int x, int y, const char *s, uint32_t col) { cv_text(g_font
 // framed title like "Wagen waehlen" in the car shop
 static void title_box(int cx, int y, const char *s) {
   int w = cv_text_w(g_font_h14, s, 1) + 20, h = g_font_h14.height + 8, x = cx - w / 2;
-  cv_rect(x, y, w, h, rgba(40, 38, 34, 235));
+  cv_rect(x, y, w, h, G.gfx_mode==1?rgba(0,0,0,200):rgba(40,38,34,235));
   cv_rect(x, y, w, 2, rgba(150, 140, 120, 255)); cv_rect(x, y + h - 2, w, 2, rgba(70, 64, 56, 255));
   cv_rect(x, y, 2, h, rgba(150, 140, 120, 255)); cv_rect(x + w - 2, y, 2, h, rgba(70, 64, 56, 255));
-  cv_text(g_font_h14, cx, y + 4, s, ORANGE, 1, 1);
+  cv_text(g_font_h14, cx, y + 4, s, G.gfx_mode==1?rgba(231,154,0,255):ORANGE, 1, 1);
 }
 static Sprite spr_at(const Sprite &s, int x, int y) { Sprite r = s; r.x = x; r.y = y; return r; }
 
 // DOS shop preview uses the opposite horizontal camera basis to the OpenGL viewer.
 static M4 turntable_projection(float aspect){M4 p=m4_persp(32.0f*PI/180.0f,aspect,0.1f,200);p.m[0]=-p.m[0];return p;}
 static const double TURNTABLE_RADIANS_PER_SECOND=2.1; // 3.5 times the former 0.6 rad/s
-static double turntable_advance(double angle,double dt){double a=angle+dt*TURNTABLE_RADIANS_PER_SECOND;const double tau=6.283185307179586;while(a>=tau)a-=tau;while(a<0)a+=tau;return a;}
+static double turntable_advance(double angle,double dt){double a=angle-dt*TURNTABLE_RADIANS_PER_SECOND;const double tau=6.283185307179586;while(a>=tau)a-=tau;while(a<0)a+=tau;return a;}
 // rotating car (3D on the GPU) in a rectangle of the 640x480 screen
 static void draw_turntable(int W, int H, int car, double angle, float x, float y, float w, float h, const char *set) {
   if (car < 0) return;
@@ -265,7 +265,9 @@ static void draw_turntable(int W, int H, int car, double angle, float x, float y
   Model *m = track_car_model(car);
   if (!m) { static Model *cache[NCARS]; if (!cache[car]) cache[car] = load_model_from(set, CARS[car].model); m = cache[car]; }
   if (!m) return;
-  int vx, vy, vw, vh; vrect_viewport(W, H, x, y, w, h, &vx, &vy, &vw, &vh);
+  // Register the model with the pedestal, rather than the bottom of the old
+  // preview rectangle. Use virtual coordinates in both presentation modes.
+  int vx, vy, vw, vh; vrect_viewport(W, H, x, y-h*.08f, w, h, &vx, &vy, &vw, &vh);
   glViewport(vx, vy, vw, vh);
   glEnable(GL_DEPTH_TEST); glClear(GL_DEPTH_BUFFER_BIT);
   V3 ext = m->bmax - m->bmin; float r = m_sqrt(dot(ext, ext)) * 0.5f;
@@ -273,13 +275,16 @@ static void draw_turntable(int W, int H, int car, double angle, float x, float y
   V3 eye = v3(0, r * 0.9f, r * 2.9f);
   M4 view = m4_look(eye, v3(0, ext.y * 1.1f, 0), v3(0, 1, 0));
   M4 vp = m4_mul(proj, view);
+  V3 c = (m->bmin + m->bmax) * 0.5f;
+  M4 base = m4_mul(m4_roty((float)angle),m4_trans(v3(-c.x,-m->bmin.y,-c.z)));
+  int old_hide=g_hide_model_shadows;g_hide_model_shadows=1;
+  preview_shadow_draw(*m,vp,base,(float)(angle*3));
   model_shader_begin(vp,1);glUniform1i(R.um_lamps,g_vehicle_lights&&(!g_tex_nearest));glUniform1i(R.um_rear_only,A.graphics_test==15);glUniform1f(R.um_brake,A.graphics_test==15&&A.test_damage?1.f:0.f);
   glUniformMatrix4fv(R.um_vp, 1, GL_FALSE, vp.m); glUniform3f(R.um_cam, eye.x, eye.y, eye.z);
   glUniform1i(R.um_tex, 0); glUniform1f(R.um_lit, 1.0f); glUniform1f(R.um_gain, 1.0f); glUniform1f(R.um_gray, 0.0f);
-  V3 c = (m->bmin + m->bmax) * 0.5f;
-  M4 base = m4_mul(m4_mul(m4_roty((float)angle), m4_trans(v3(-c.x, -m->bmin.y, -c.z))), m4_id());
   draw_model_mv(*m, base, (float)(angle * 3), 0);
   preview_lights_draw(*m,vp,base,eye,(float)(angle*3),W,H);
+  g_hide_model_shadows=old_hide;
   glBindVertexArray(0);
 }
 
@@ -840,6 +845,7 @@ static void game_init(void) {
   for (int i = 0; i < 6; i++) { char p[64] = "DATA640/TRACK"; str_int(p, 64, i + 1); str_cat(p, ".SPR", 64); spr_load(&G.track_spr[i], p); }
   font_load(&g_font_big, "TEXTE/FONTE21.HLZ"); font_load(&g_font_small, "TEXTE/CLR6_13.HLZ"); font_load(&g_font_mid, "TEXTE/LATIN11.HLZ");
   font_load(&g_font_h14, "TEXTE/HNDEL14.HLZ"); font_load(&g_font_h10, "TEXTE/HNDEL10.HLZ");
+  font_load(&g_font_shop,"TEXTE/CLR6_10.HLZ");
   pic_load(&g_racemenu, "DATA640/MENU0.HLZ");
   spr_load(&g_pausedrum[0], "DATA640/MENUA.SPR"); spr_load(&g_pausedrum[1], "DATA640/MENUB.SPR"); spr_load(&g_pausedrum[2], "DATA640/MENUC.SPR");
   migrate_old_files(); hiscore_load(); setup_load();
@@ -958,15 +964,17 @@ static void screen_carshop(int W, int H, const Input *in, double dt) {
   title_box(318, 8, "Wagen w\xe4hlen");
   int c = G.shop_car;
   char t[256];
-  cv_text(g_font_h14, 320, 288, CARS[c].name, BEIGE, 1, 1);
-  t[0] = 0; str_int(t, 256, money_shown()); cv_text(g_font_mid, 70, 400, t, WHITE, 2, 1);
+  cv_text(g_font_h14, 320, G.gfx_mode==1?292:288, CARS[c].name, G.gfx_mode==1?rgba(186,170,121,255):BEIGE, 1, 1);
+  t[0] = 0; str_int(t, 256, money_shown()); cv_text(g_font_mid, 70, 400, t, G.gfx_mode==1?rgba(105,105,105,255):WHITE, 2, 1);
   int avail = car_available(c);
   t[0] = 0; str_cat(t, ui_translate("Geschwindigkeit : "), 256); str_int(t, 256, CARS[c].mph); str_cat(t, ui_translate(" Mph\nKraftstoff : "), 256); str_cat(t, ui_translate(CARS[c].fuel), 256);
   str_cat(t, ui_translate("\nMotor      : "), 256); str_cat(t, CARS[c].engine, 256);
-  str_cat(t, ui_translate("\n\nPreis : "), 256); str_int(t, 256, CARS[c].price);
-  if (!avail) str_cat(t, ui_translate("   (noch nicht erh\xe4ltlich)"), 256);
+  const char *price_label=ui_translate("\n\nPreis : ");if(!avail&&price_label[0]=='\n')price_label++;
+  str_cat(t, price_label, 256); str_int(t, 256, CARS[c].price);
+  if (!avail) {str_cat(t,"\n",256);str_cat(t, ui_translate("   (noch nicht erh\xe4ltlich)"), 256);}
   if (PF.car == c) str_cat(t, ui_translate("   (dein Wagen)"), 256);
-  text_box(198, 392, t, avail ? BEIGE : 0xff707070u);
+  if(G.gfx_mode==1)cv_text(g_font_shop,200,390,t,rgba(105,105,105,255),0,1);
+  else text_box(198,392,t,avail?BEIGE:0xff707070u);
   // buttons: 0 left, 1 right, 2 back, 3 buy
   int b = -1; for (int i = 0; i < 4 && i < G.shop_spr.n; i++) if (spr_hit(G.shop_spr.f[i])) b = i;
   if (b >= 0 && in->lmb) cv_spr(G.shop_spr.f[b], G.bg.pal, 0, 0, 1);
@@ -1674,7 +1682,11 @@ static void screen_quitdlg(const Input *in) {
   for (int i = 0; i < 8; i++) if (G.menu_spr[i].n) cv_spr(G.menu_spr[i].f[0], G.bg.pal, 0, 0, 1);
   if (PF.active) { char t[160] = ""; str_cpy(t, ui_translate("Fertigmachen f\xfcrs Rennen: "), 160); str_cat(t, ui_translate(TRACKS[PF.track].name), 160); str_cat(t, ui_translate(" , Runde : "), 160); str_int(t, 160, PF.heat + 1);
     str_cat(t, ui_translate(" , Position : "), 160); str_int(t, 160, PF.heat > 0 ? PF.last_place : 0); cv_text(g_font_small, 320, 458, t, ORANGE, 1, 1); }
-  int count=sys_game_is_gog()?5:4;if(G.sel>=count)G.sel=0;
+  int count=4;
+#ifdef _WIN32
+  if(sys_game_is_gog())count=5;
+#endif
+  if(G.sel>=count)G.sel=0;
   int x0 = 165, y0 = count==5?158:172, w = 310, h = count==5?176:150;
   cv_rect(x0, y0, w, h, rgba(8, 26, 18, 225));
   cv_rect(x0, y0, w, 2, rgba(40, 150, 80, 255)); cv_rect(x0, y0 + h - 2, w, 2, rgba(40, 150, 80, 255));

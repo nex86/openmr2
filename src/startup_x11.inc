@@ -19,13 +19,5 @@ int sys_choose_mode(int current,const char *title,const char *question,const cha
 }
 int sys_game_is_gog(){return gf_status==GOG_COMPLETE&&gf_language>=0&&gf_language<3;}
 int sys_run_dos(const char *directory,char *error,int cap){
-  if(!sys_game_is_gog()){snprintf(error,cap,"DOS launch requires a recognized GOG edition.");return 0;}
-  char base[4096],cwd[4200],path[4200];if(!realpath(directory,base)){snprintf(error,cap,"The GOG installation directory is unavailable.");return 0;}
-  snprintf(cwd,sizeof cwd,"%s/DOSBOX",base);
-  const char *files[]={"dosboxmegarace2.conf","dosboxmegarace2_single.conf"};for(int i=0;i<2;i++){snprintf(path,sizeof path,"%s/%s",base,files[i]);if(!x_exists(path)){snprintf(error,cap,"The original GOG DOSBox configuration files were not found.");return 0;}}
-  int channel[2];if(pipe2(channel,O_CLOEXEC)){snprintf(error,cap,"Cannot create the DOSBox launch channel.");return 0;}
-  pid_t child=fork();if(child==0){close(channel[0]);if(chdir(cwd)==0){const char *args[]={"dosbox","-conf","../dosboxmegarace2.conf","-conf","../dosboxmegarace2_single.conf","-noconsole","-c","exit",0};execvp(args[0],(char *const *)args);}int e=errno;ssize_t sent;do{sent=write(channel[1],&e,sizeof e);}while(sent<0&&errno==EINTR);_exit(127);}
-  close(channel[1]);if(child<0){close(channel[0]);snprintf(error,cap,"Cannot create the DOSBox process.");return 0;}
-  int e=0;ssize_t bytes;do{bytes=read(channel[0],&e,sizeof e);}while(bytes<0&&errno==EINTR);close(channel[0]);
-  if(bytes!=0){waitpid(child,0,0);snprintf(error,cap,"DOSBox could not be started. Install the native dosbox executable and keep the original GOG configuration files.");return 0;}return 1;
+  (void)directory;snprintf(error,cap,"Launching the DOS version is available in the Windows port only.");return 0;
 }

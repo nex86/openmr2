@@ -1,3 +1,5 @@
+#include "original_drive.h"
+#include "original_body.h"
 // ===================================================================================================
 // The race: car physics in road coordinates (the original steers by rotating the car, which then
 // drives in the direction it is facing), camera that follows the car through the pre-rendered video,
@@ -34,6 +36,7 @@ struct Loadout { int front[2], fammo[2], rear[2], rammo[2]; int fsel, rsel; int 
 struct RCar {
   int car, player,braking; char name[24];
   PPos pp; double x, psi, v, vmax, acc, hwm;   // psi: physical heading relative to the road; v: drive speed; hwm: half width of the model
+  OriginalDrive fixed;int fixed_ready;int fixed_commit;
   double vlat, vlong;                 // actual motion (road frame, world units/s): follows the heading with grip / slip
   double prog, lastM;                 // unwrapped position along the main loop (points), for laps and ranking
   double W[3], F[3], Rt[3], U[3];     // world position and road frame (updated every step); U = the road's up axis
@@ -136,13 +139,6 @@ static const double V_PLAYER = 1036 * V_RAW, V_AI = 1140 * V_RAW, V_BOOST = 1290
 static const double MPH_TO_UNITS = V_PLAYER / 120.0;   // only for the speed shown in the debug console
 static const double SIM_STEP = 0.04;              // original simulation step: 2048 / 51200 s = 40 ms (25 steps per second)
 static const double ACCEL = V_PLAYER / 5.0;       // gas (command 400): measured in the original, ~5 s to the limit
-static const double COAST = ACCEL * 200 / 400, BRAKE = ACCEL * 500 / 400;   // command ratios from M.EXE: 400 / -200 / -500
-// The steering formula from the specification turns the car much faster than measured in the original
-// (~35 degrees after 0.4 s at speed, ~100 degrees per second at most). Until the exact integer path of the
-// steering state is known, the build-up and the yaw rate are scaled to that measurement.
-static const double STEER_BUILD = 0.375;           // steering state reaches AnglMax in ~0.2 s
-static const double STEER_YAW = 0.68;              // max. yaw at full speed ~100 degrees per second
-static const double ROAD_ASSIST = 0.55;           // share of the road curvature the car follows by itself (approximation)
 static const double CAR_SCALE = 1.0;              // models are drawn at their original size (the projection is now the original one)
 static const double GRID_S = 17.0;                // (old fixed grid, only for tests with --frame)
 static double g_grid_v;
@@ -155,7 +151,7 @@ static RCar &player(void) { return RC.car[0]; }
 static void sfx_at(int id, const double W[3], float vol) { sfx_at_pts(id, dist_pts(W, player().W), vol); }
 static int g_impact_last=-1;
 static void impact_sound(const double *W,float volume){
-  if(!audio_enabled(AUDIO_SOUNDS))return;
+  if(!audio_enabled(AUDIO_SOUNDS)||dist_pts(W,player().W)>40)return;
   static const int sounds[]={S_CHOC1,S_CHOC3,S_CHOC5};
   int index=irnd_fx(g_impact_last<0?3:2);
   if(g_impact_last>=0&&index>=g_impact_last)index++;
@@ -171,7 +167,16 @@ static void scrape_update(){
   if(!voice){RC.scrape_voice=snd_play(sfx_sample(S_FROTTE,AUDIO_SOUNDS),0,1,1,0,AUDIO_SOUNDS);voice=snd_voice(RC.scrape_voice);}
   if(voice){voice->vol=MX.sfx_vol*(float)d_clamp(d_abs(c.vlong)/V_PLAYER,0.1,1)*0.75f;voice->pan=c.x>=0?0.45f:-0.45f;}
 }
-static double car_hw(const RCar &c) { double h = pp_halfw(c.pp), m = c.hwm > 0 ? c.hwm : 6000; return h - m > h * 0.3 ? h - m : h * 0.3; }
+#include "original_wall.h"
+#include "original_road.h"
+#include "original_contact.h"
+static int contact_raw(double v){return (int)(v<0?v-.5:v+.5);}
+static double car_hw(const RCar &c) {
+  int angle=contact_raw(-c.psi*1024/6.2831853071795864769)&1023;
+  double half=pp_halfw(c.pp),hull=ORIGINAL_HULL_EXTENT[angle];
+  return half-hull>half*.3?half-hull:half*.3;
+}
+static int hard_wall_impact(double normal){return normal>0&&normal*normal>=0xe600*V_RAW*V_RAW;}
 
 static void car_update_world(RCar &c) {
   double p[3]; pp_frame(c.pp, p, c.Rt, c.U, c.F, 0);
@@ -248,6 +253,7 @@ static PPos cam_from_back(double back, int *hidx) {
   q.i = cur; q.nx = RP(cur).nx[0]; q.t = 0; *hidx = k; return q;
 }
 
+static void original_motion_reset();
 // ------------------------------------------------------------------ setup
 // Starting grid (M.EXE, _POSITIONNE_CAR_START): start slot r goes 52 + 5*r road links back from point 0
 // (link at PST +0x6C), even slots +10000 (right), odd slots -10000 (left), lane target +-128, speed 518,
@@ -262,6 +268,7 @@ static void race_end_sounds(void);
 static void effects_reset();
 static void lamp_history_reset();
 static void race_setup(int car_for_player, const Loadout &lo, double dmg, int opp_cars[7], int nopp, int start_rank, int laps) {
+  original_motion_reset();
   effects_reset();lamp_history_reset();
   race_end_sounds(); // release old handles before resetting RC, including repeated test starts
   g_impact_last=-1;
@@ -377,84 +384,14 @@ static void drop_rear(RCar &c, int idx) {
 // returns with VitRet; yaw rate = state * (1 - q*100/256) * speed / 1140 / 16 (1024 units per turn);
 // the motion follows the heading with grip (half mix per 40 ms step) and slips under hard braking or oil.
 static void contact_sparks(const double *W,const double *up,const double *velocity,float intensity,int grinding=0);
-static void car_physics(RCar &c, int drive, double steer, double dt, double vlimit) {
+#include "g_original_motion.inc"
+static void car_physics(RCar &c,int drive,double steer,double dt,double vlimit){
+  if(c.stun>0)vlimit*=.6;
+  if(c.v>vlimit&&drive>0)drive=-1;
   c.braking=drive<0&&c.v>0&&!c.out;
-  if (c.out) { c.v *= (1 - 2 * dt); c.vlong *= (1 - 2 * dt); c.vlat *= (1 - 2 * dt); if (d_abs(c.v) < 100) c.v = 0; }
-  else {
-    const DriveProfile &pf = PROFILES[c.profile >= 1 && c.profile <= 3 ? c.profile : 1];
-    double steps = dt / SIM_STEP;
-    // drive speed
-    if (drive > 0) { if (c.v < 0) c.v += BRAKE * dt; else c.v += ACCEL * dt; }
-    else if (drive < 0) { if (c.v > 0) c.v -= BRAKE * dt; else c.v -= ACCEL * 0.75 * dt; }
-    else { double cst = COAST * (d_abs(c.v) < 0.1 * V_PLAYER ? 0.25 : 1.0) * dt; if (c.v > 0) { c.v -= cst; if (c.v < 0) c.v = 0; } else if (c.v < 0) { c.v += cst; if (c.v > 0) c.v = 0; } }
-    if (c.stun > 0) vlimit *= 0.6;
-    // hard upper limit of the car (player 1036, computer 1140, booster 1290 raw); a lower limit (stun, part
-    // throttle) is reached by braking
-    double vmax_abs = c.player ? V_PLAYER : (c.tactic_active == T_BOOSTER ? V_BOOST : V_AI);
-    if (c.v > vmax_abs) c.v = vmax_abs;
-    if (c.v > vlimit) { c.v -= BRAKE * dt; if (c.v < vlimit) c.v = vlimit; }
-    if (c.v < V_REVERSE) c.v = V_REVERSE;
-    // steering state
-    double vraw = c.v / V_RAW;
-    if (c.oil_t > 0) { steer = c.steer_st >= 0 ? 1 : -1; c.oil_t -= cnt_dt(dt); }
-    if (steer > 0.01 || steer < -0.01) {
-      c.steer_st += steer * pf.vitturn * STEER_BUILD * steps * (1.0 + (d_abs(vraw) < 200 ? 1.0 : 0.0));   // more response at very low speed
-      double lim = pf.anglmax * d_abs(steer); if (c.steer_st > lim) c.steer_st = lim; if (c.steer_st < -lim) c.steer_st = -lim;
-    } else c.steer_st *= d_pow(1.0 + pf.vitret / 1024.0, steps);
-    if (c.steer_st > 32768) c.steer_st = 32768; if (c.steer_st < -32768) c.steer_st = -32768;
-    double q = d_abs(vraw) / 1140.0;
-    double eff = c.steer_st * (1 - q * 100.0 / 256.0);
-    double yaw_units = eff * vraw / 1140.0 / 16.0;            // 1024 units per turn, per 51200 time units (= 1 s)
-    c.yaw = yaw_units * 6.2831853 / 1024.0 * STEER_YAW;
-    c.psi += c.yaw * dt;
-    // grip: the motion follows the heading (half mix per step); hard braking at speed and oil make it slip
-    double dl = c.v * d_cos(c.psi), dx = c.v * d_sin(c.psi);
-    int slipping = c.oil_t > 0 || (drive < 0 && c.v > 0.6 * V_PLAYER && d_abs(c.steer_st) > pf.anglmax * 0.5);
-    double mixs = slipping ? 0.15 : 0.5;
-    double k = 1 - d_pow(1 - mixs, steps);
-    c.vlong += (dl - c.vlong) * k; c.vlat += (dx - c.vlat) * k;
-    if (slipping && c.player && !c.out && irnd_fx(40) == 0) sfx(S_DERAP, 0.4f);
-  }
-  double dsw = c.vlong * dt;
-  c.x += c.vlat * dt;
-  c.psi -= pp_kappa(c.pp) * dsw * (1 - ROAD_ASSIST);   // the road turns underneath the car (partly followed automatically)
-  while (c.psi > 3.14159265) c.psi -= 6.2831853; while (c.psi < -3.14159265) c.psi += 6.2831853;
-  pp_move(c.pp, c.x, dsw, c.player ? on_player_enter : 0);
-  if (c.player) { hist_sync(); RC.ply_D += dsw; }
-  double M = pp_M(c.pp); c.prog += wrapM(M - c.lastM); c.lastM = M;
-  c.wheel -= c.vlong * dt * 0.00012;
-  c.wall_scraping=!c.out && d_abs(c.vlong)>0.03*V_PLAYER && d_abs(c.x)>=car_hw(c)-50;
-  // side boundary (PST +0x48): bounce depends on the angle of impact
-  double hw = car_hw(c);
-  if (d_abs(c.x) > hw) {
-    double side = c.x > 0 ? 1 : -1;
-    c.x = side * hw;
-    double impact = side * c.vlat;   // speed into the wall
-    double base = d_cos(c.psi) >= 0 ? 0 : 3.14159265, rel = c.psi - base; while (rel > 3.14159265) rel -= 6.2831853; while (rel < -3.14159265) rel += 6.2831853;
-    if (impact > 0.18 * V_PLAYER && c.wall_cd <= 0) {   // hard contact: bounce, turn away, damage
-      c.wall_scraping=0;
-      c.vlat = -c.vlat * 0.35; c.vlong *= 0.85; c.v *= 0.85;
-      int ai_turning = (!c.player || A.demo_time > 0) && d_cos(c.psi) < -0.7;   // a computer car that is clearly turned round keeps turning
-      if (!ai_turning) c.psi = base - rel * 0.45;
-      c.wall_cd = 0.4;
-      damage_car(c, impact / V_PLAYER * 3, -1);
-      car_update_world(c); impact_sound(c.W,0.9f);
-      if(g_damage_effects&&(!g_tex_nearest)){double w[3],velocity[3];for(int k=0;k<3;k++){w[k]=c.W[k]+c.Rt[k]*side*c.hwm+c.U[k]*600;velocity[k]=-c.F[k]*c.vlong*.18-c.Rt[k]*side*impact*.18;}contact_sparks(w,c.U,velocity,(float)d_clamp(impact/V_PLAYER,.15,1));c.spark_cd=.07;}
-    } else if (impact > 0) {   // scraping along: the car turns parallel to the wall (forwards or backwards, whichever is nearer)
-      c.vlat = 0; c.v *= (1 - 1.2 * dt); c.vlong *= (1 - 1.2 * dt);
-      if (side * d_sin(c.psi) * (base == 0 ? 1 : -1) > 0 && !((!c.player || A.demo_time > 0) && d_cos(c.psi) < -0.7)) c.psi = base + rel * (1 - 4 * dt);
-    }
-  }
-  car_update_world(c);
-  if(c.spark_cd>0)c.spark_cd-=dt;
-  if(c.wall_scraping&&g_damage_effects&&(!g_tex_nearest)&&c.spark_cd<=0){double w[3],velocity[3];for(int k=0;k<3;k++){w[k]=c.W[k]+c.Rt[k]*(c.x>=0?c.hwm:-c.hwm)+c.U[k]*600;velocity[k]=-c.F[k]*c.vlong*.32-c.Rt[k]*(c.x>=0?1:-1)*3500;}contact_sparks(w,c.U,velocity,(float)d_clamp(d_abs(c.vlong)/V_PLAYER,.1,1),1);c.spark_cd=.035;}
-  if (c.wall_cd > 0) c.wall_cd -= dt;
-  if (c.stun > 0) c.stun -= dt;
-  if (c.flash > 0) c.flash -= dt;
-  if (c.hit_cd > 0) c.hit_cd -= dt;
-  if (c.front_cd > 0) c.front_cd -= cnt_dt(dt);
-  if (c.boomer_cd > 0) c.boomer_cd -= cnt_dt(dt);
-  if (c.rear_cd > 0) c.rear_cd -= cnt_dt(dt);
+  if(c.out){mem_zero(&c.fixed,sizeof c.fixed);c.fixed.oil=-1;c.fixed.angle=contact_raw(-c.psi*1024/6.2831853071795864769)&1023;c.fixed_ready=1;g_original_old_angle[&c-RC.car]=c.fixed.angle;}
+  else original_car_drive(c,drive,steer,dt);
+  original_car_move(c,dt);
 }
 
 // ------------------------------------------------------------------ computer driver
@@ -478,32 +415,20 @@ static int next_link(RCar &c, int i) {   // the link the driver takes at point i
 // lane/256 of the way from the centre to the boundary, error in the car frame, then
 // e = (errX * -600) >> 16, response = (w * errZ) >> 16, gain player -60 / computer (-120 - extra) >> 1,
 // command = clamp(e + (response * gain) >> 8, -128, 128); a negative command turns right.
-static double pilot_steer(RCar &c) {
-  int L = c.look; if (L > 11) L = 11; if (L < -11) L = -11;
-  int i = c.pp.i;
-  if (L >= 0) { i = c.pp.nx; for (int k = 1; k < L; k++) i = next_link(c, i); }
-  else for (int k = 0; k < -L; k++) i = RP(i).pv[0];
-  double half = RP(i).w;
-  double lat = c.lane / 256.0 * half;
-  PPos q = pp_make(i, 0); double aim[3]; pp_world(q, lat, 0, aim);
-  double d[3] = {aim[0] - c.W[0], aim[1] - c.W[1], aim[2] - c.W[2]};
-  double cs = d_cos(c.psi), sn = d_sin(c.psi);
-  double fwd[3], rgt[3]; for (int k = 0; k < 3; k++) { fwd[k] = c.F[k] * cs + c.Rt[k] * sn; rgt[k] = c.Rt[k] * cs - c.F[k] * sn; }
-  long ex = (long)(d[0] * rgt[0] + d[1] * rgt[1] + d[2] * rgt[2]);   // + = right
-  long ez = (long)(d[0] * fwd[0] + d[1] * fwd[1] + d[2] * fwd[2]);
-  long errX = ex;    // lateral error, + = right; the command comes out negative for a right turn
-  long e = (long)(((long long)errX * -600) >> 16);
-  long w = (long)(-c.steer_st / 32.0); if (w > 512) w = 512; if (w < -512) w = -512;   // steering state in 1024-unit angle form (command sign)
-  long resp = (long)(((long long)w * ez) >> 16);
-  long rem = 3072 - (e < 0 ? -e : e); if (rem < 0) rem = 0;
-  long gain = c.player ? -60 : ((-120 - (rem >> 4)) >> 1);
-  long cmd = e + (long)(((long long)resp * gain) >> 8);
-  if (cmd > 128) cmd = 128; if (cmd < -128) cmd = -128;
-  // aim point behind the car (turned round after a crash): full lock towards it, otherwise the lateral error
-  // stays near zero and the car could drive the wrong way for a long time (approximation)
-  if (ez < 0) cmd = ex >= 0 ? -128 : 128;
-  return -cmd / 128.0;   // to our convention (+ = right)
+static double pilot_steer(RCar &c){
+  drive_trig_load();int look=c.look;if(c.desired_v<0)look=-look;bool backward=look<0;if(look<0)look=-look;if(look>11)look=11;if(look<1)look=1;
+  int car=(int)(&c-RC.car);if(g_road_plane_car[car]<0||g_road_plane_frames[g_road_plane_car[car]].node!=c.pp.i)road_plane_frames_build();
+  int frame_index=g_road_plane_car[car],node=c.pp.i;OriginalPlane own=g_road_plane_frames[frame_index].pose,frame=own;
+  for(int i=0;i<look;i++){const PhysicsRoadFrame &f=g_road_plane_frames[frame_index];int branch=(f.flags&7)==(backward?6:5)&&c.lane>=0?1:0;int next=backward?f.prev[branch]:f.next[branch];if(next<0)break;frame_index=next;frame=g_road_plane_frames[frame_index].pose;node=g_road_plane_frames[frame_index].node;}
+  int width=contact_raw(RP(node).w),cosine=g_drive_trig[frame.heading],sine=g_drive_trig[frame.heading+256];
+  int edge_x=frame.x+(int)(((int64_t)width*cosine)>>15),edge_z=frame.z+(int)(((int64_t)width*sine)>>15);
+  int aim_x=frame.x+(op_product(edge_x-frame.x,contact_raw(c.lane))>>8),aim_z=frame.z+(op_product(edge_z-frame.z,contact_raw(c.lane))>>8);
+  int ex,ez;original_plane_local(own,aim_x,aim_z,ex,ez,g_drive_trig,g_drive_trig+256);ex-=contact_raw(c.x);ez-=contact_raw(c.pp.t*physics_length(c.pp.i,c.pp.nx));
+  int heading=contact_raw(-c.psi*1024/6.2831853071795864769)&1023;
+  int command=original_pilot_command(ex,ez,heading,-contact_raw(c.steer_st),c.player,g_drive_trig,g_drive_trig+256);
+  return -command/128.0;
 }
+
 // target speed and lane of a computer driver (Gere_Posx, Gere_Vitesse, Gere_Seq - reconstructed rules)
 static int g_ai_rescue = 1;   // option: KI-Notfallhilfe (modern)
 // put a stuck computer car straight onto its lane target (the same lane contract the controller uses:
@@ -524,7 +449,7 @@ static void ai_rescue(RCar &c, int idx) {
   c.x = x; c.psi = 0; c.steer_st = 0; c.yaw = 0;
   c.v = c.vlong = 0.3 * V_PLAYER; c.vlat = 0;
   c.recover_t = 0; c.bad_t = 0; c.wall_cd = 0; c.avoid_t = 0; c.lane = c.base_lane;
-  c.stuck_t = 0; c.stuck_prog = c.prog; c.pose_gen++;   // pose_gen: the presentation must not interpolate across this jump
+  c.fixed_ready=0;c.stuck_t = 0; c.stuck_prog = c.prog; c.pose_gen++;   // pose_gen: the presentation must not interpolate across this jump
   car_update_world(c);
   if (sys_debug_enabled() && A.demo_time > 0) { char m[64] = ""; str_cpy(m, ui_debug_text("KI-Notfallhilfe: Wagen "), 64); str_int(m, 64, idx); sys_log(m); }
 }
@@ -602,48 +527,6 @@ static void ai_decide(RCar &c, int idx, double dt) {
 }
 // drive command of the controller: gas below the target speed, brake above (no coasting)
 static int pilot_drive(const RCar &c) { return c.v >= c.desired_v ? -1 : 1; }
-
-// Car to car contact (M.EXE): five circles per car - centre radius 6000 and four corners at
-// (+-2500, +-5800) with radius 4000 -> pair limits 12000 / 10000 / 8000.
-static void collide_cars(void) {
-  static const double CX[5] = {0, 2500, -2500, 2500, -2500}, CZ[5] = {0, 5800, 5800, -5800, -5800}, CR[5] = {6000, 4000, 4000, 4000, 4000};
-  for (int i = 0; i < RC.ncar; i++)
-    for (int j = i + 1; j < RC.ncar; j++) {
-      RCar &a = RC.car[i], &b = RC.car[j];
-      if (a.out || b.out) continue;
-      double along, lat; rel_to(a, b.W, &along, &lat);   // b in a's road frame
-      if (d_abs(along) > 20600 || d_abs(lat) > 20600 || !same_road_at(a, b.W, b.pp.i, NEAR_CONTACT)) continue;
-      double ca = d_cos(a.psi), sa = d_sin(a.psi), cb = d_cos(b.psi), sb = d_sin(b.psi);
-      double best = 0, nx = 0, nz = 0,contact_x=0,contact_z=0;
-      for (int p = 0; p < 5; p++) {
-        double ax = CX[p] * ca + CZ[p] * sa, az = -CX[p] * sa + CZ[p] * ca;
-        for (int q = 0; q < 5; q++) {
-          double bx = lat + CX[q] * cb + CZ[q] * sb, bz = along - CX[q] * sb + CZ[q] * cb;
-          double dx = bx - ax, dz = bz - az, d = d_sqrt(dx * dx + dz * dz), pen = CR[p] + CR[q] - d;
-          if (pen > best) { best = pen; if (d > 1) { nx = dx / d; nz = dz / d; } else { nx = lat > 0 ? 1 : -1; nz = 0; }contact_x=(ax+bx+nx*(CR[p]-CR[q]))*.5;contact_z=(az+bz+nz*(CR[p]-CR[q]))*.5; }
-        }
-      }
-      if (best <= 0) continue;
-      // push apart, exchange the motion along the contact normal, small turn
-      a.x -= nx * best * 0.5; b.x += nx * best * 0.5;
-      pp_move(a.pp, a.x, -nz * best * 0.5); pp_move(b.pp, b.x, nz * best * 0.5);
-      double rvx = b.vlat - a.vlat, rvz = b.vlong - a.vlong, vn = rvx * nx + rvz * nz;
-      double relative_speed=d_sqrt(rvx*rvx+rvz*rvz);
-      if(g_damage_effects&&(!g_tex_nearest)&&relative_speed>100&&(a.spark_cd<=0||b.spark_cd<=0)){double w[3],velocity[3];for(int k=0;k<3;k++){w[k]=a.W[k]+a.Rt[k]*contact_x+a.F[k]*contact_z+a.U[k]*1000;velocity[k]=(a.Rt[k]*rvx+a.F[k]*rvz)*.18;}contact_sparks(w,a.U,velocity,(float)d_clamp(relative_speed/V_PLAYER,.12,1));a.spark_cd=b.spark_cd=.065;}
-      if (vn < 0) {
-        double imp = -vn * 0.8;
-        a.vlat -= imp * nx * 0.5; a.vlong -= imp * nz * 0.5; b.vlat += imp * nx * 0.5; b.vlong += imp * nz * 0.5;
-        a.v = a.vlong / (d_abs(d_cos(a.psi)) > 0.2 ? d_cos(a.psi) : 1); b.v = b.vlong / (d_abs(d_cos(b.psi)) > 0.2 ? d_cos(b.psi) : 1);
-        double tw = (nx * nz) * 0.4; a.psi -= tw; b.psi += tw;
-        double hard = -vn / V_PLAYER;
-        if (hard > 0.12 && (a.hit_cd <= 0 || b.hit_cd <= 0)) {
-          damage_car(a, hard * 2.0, -1); damage_car(b, hard * 2.0, -1); a.hit_cd = b.hit_cd = 0.5;
-          if (a.player || b.player) impact_sound(a.W,0.9f);
-        } else if ((a.player || b.player) && (a.hit_cd <= 0 && b.hit_cd <= 0)) { impact_sound(a.W,0.5f); a.hit_cd = b.hit_cd = 0.4; }
-      }
-      car_update_world(a); car_update_world(b);
-    }
-}
 
 // ------------------------------------------------------------------ camera and video frame
 // Driving the wrong way: the frames after the last road point are a flight over the track that looks
@@ -1045,6 +928,7 @@ static void obj_move(TrackObj &o, double dt) {
 
 #include "g_projectiles.inc"
 static void race_update(const Input *in, double dt) {
+  road_plane_frames_build();g_original_defer=1;
   RC.t += dt; RC.phase_t += dt;
   if (RC.msg_t > 0) RC.msg_t -= dt;
   RCar &P = player();
@@ -1080,18 +964,20 @@ static void race_update(const Input *in, double dt) {
     else if (c.player && g_test_wrongway == 2) { drive = 1; st = 0; c.psi = 0; c.x = car_hw(c); }   // test: at the right road edge
     else if (!c.player || A.demo_time > 0) {
       ai_decide(c, i, dt); st = pilot_steer(c); drive = pilot_drive(c); if (c.player) lim = V_PLAYER;
-      if (c.recover_t > 0) st = -st;   // reversing: steer the other way so the nose turns towards the road
     }
     else { st = steer; drive = thr > 0.05 ? 1 : brk > 0.05 ? -1 : 0; if (thr > 0.05 && thr < 0.95) lim = V_PLAYER * thr; }
     if (A.objtest == 2 && c.player) { drive = 1; st = 0; c.autopilot = 0; }   // --objtest-drive: straight ahead into the objects
     if (c.out) { drive = 0; st = 0; }
     car_physics(c, drive, st, dt, lim);
+
+  }
+  g_original_defer=0;original_contacts(dt);
+  for(int i=0;i<RC.ncar;i++){RCar &c=RC.car[i];
     if (!c.finished && !c.out && RC.phase != PH_GRID && c.prog >= RC.laps * (double)TK.L) {
       c.finished = 1; c.finish_t = RC.t;
       if (c.player) { char m[64] = ""; str_cpy(m, ui_translate("Ende des Rennens\nPos : "), 64); int pl = 1; for (int j = 0; j < RC.ncar; j++) if (j != i && RC.car[j].finished) pl++; str_int(m, 64, pl); msg_show(m, 3, rgba(255, 255, 255, 255)); RC.phase = PH_DONE; RC.done_t = 0; }
     }
   }
-  collide_cars();
   {  // lap messages, wrong way
     int lap = (int)(P.prog / TK.L) + 1;
     if (RC.t < 0.05) RC.last_lap = lap;
@@ -1167,10 +1053,20 @@ static void race_update(const Input *in, double dt) {
         fx_add(OM_EXP_BIG, o.pp, o.x, 2500, 1.4); sfx_at(S_EXPLO1, w, 1.0f);
       } else if (o.type == 1) { // heavy barrel / crate: rammed away
         const ObjPhys &P = OBJ_PHYS;
-        o.vlon = clon * P.barrel_lon + frnd(-P.barrel_lon_rnd, P.barrel_lon_rnd); o.vlat = clat * 0.5 + side * f * frnd(P.barrel_side_min, P.barrel_side_max);
-        o.yawr = frnd(-P.barrel_spin, P.barrel_spin) * f; o.moving = 1; o.touched = 1; o.hit_cd = P.barrel_cd;
-        c.vlong *= P.barrel_brake; c.v *= P.barrel_brake; damage_car(c, P.barrel_damage * f, -1);
-        sfx_at(S_BIDON, w, (float)(0.5 + 0.5 * f));
+        // M.EXE's normal exchange/velocity-dependent retention: transfer the
+        // impact along its actual direction, preserve tangential motion and
+        // remove the old random sideways launch.
+        int ax=contact_raw(clat/V_RAW),az=contact_raw(clon/V_RAW),bx=contact_raw(o.vlat/V_RAW),bz=contact_raw(o.vlon/V_RAW);
+        int old_ax=ax,old_az=az,old_bx=bx,old_bz=bz;
+        int retain=original_contact_retention(ax,az,bx,bz,0);
+        int dx=contact_raw((dir[0]*q.rt[0]+dir[1]*q.rt[1]+dir[2]*q.rt[2])*10000),dz=contact_raw((dir[0]*q.fw[0]+dir[1]*q.fw[1]+dir[2]*q.fw[2])*10000);
+        original_contact_exchange(dx,dz,ax,az,bx,bz);
+        double new_lat=(ax*retain+old_ax*(256-retain))/256.0*V_RAW,new_lon=(az*retain+old_az*(256-retain))/256.0*V_RAW;
+        o.vlat=(bx*retain+old_bx*(256-retain))/256.0*V_RAW;o.vlon=(bz*retain+old_bz*(256-retain))/256.0*V_RAW;
+        c.vlat=c.vlong=0;for(int m=0;m<3;m++){double velocity=q.rt[m]*new_lat+q.fw[m]*new_lon;c.vlat+=velocity*c.Rt[m];c.vlong+=velocity*c.F[m];}
+        o.yawr=d_clamp((l*c.vlong-a*c.vlat)/180000000.0,-P.barrel_spin,P.barrel_spin);o.moving=1;o.touched=1;o.hit_cd=P.barrel_cd;
+        damage_car(c,P.barrel_damage*f,-1);
+        if(hard_wall_impact(closing))sfx_at(S_BIDON,w,(float)(.5+.5*f));
       } else {                  // cone: up into the air, turning, lands elsewhere
         const ObjPhys &P = OBJ_PHYS;
         o.vlon = clon * frnd(P.cone_lon_min, P.cone_lon_max); o.vlat = clat * 0.5 + side * f * frnd(P.cone_side_min, P.cone_side_max); o.vz = f * frnd(P.cone_up_min, P.cone_up_max);

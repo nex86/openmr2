@@ -9,7 +9,7 @@ Settings, controls, technical notes, development history and licensing.
 - [Screenshots and recordings](#recording)
 - [Revived Effects - 0.7.11](#revive-effects)
 - [GPU video upscaling (Revived only)](#video-upscaling)
-- [Driving and AI status - 0.7.15-dev](#physics)
+- [Driving and AI - 0.7.16-dev](#physics)
 - [Retro renderer: implementation and remaining differences](#retro-renderer)
 - [Building from source](#building)
 - [Contributing](#contributing)
@@ -194,7 +194,7 @@ dialog cancels startup. Later in-game mode changes do not alter the remembered
 startup choice. Set `remember_startup_mode = 0` to display the chooser again.
 Automated screenshot/export/demo/validation entry points skip the chooser.
 
-For recognized GOG editions, the black-flag menu also offers **Run DOS Version**
+On Windows with recognized GOG editions, the black-flag menu also offers **Run DOS Version**
 (**DOS Version starten**, **Lancer la version DOS**). Unknown editions never
 show this entry. Windows starts `DOSBOX/DOSBox.exe` from the selected game's
 `DOSBOX` directory with the original shortcut arguments:
@@ -204,9 +204,8 @@ show this entry. Windows starts `DOSBOX/DOSBox.exe` from the selected game's
 ```
 
 OpenMR2 closes only after process creation succeeds. Missing executable/config
-files or launch failure leave OpenMR2 running with an error message. Linux uses
-an installed native `dosbox` executable with the same GOG configurations and
-working directory; the Windows executable is not run through a shell or Wine.
+files or launch failure leave OpenMR2 running with an error message. Linux does
+not show this menu entry or launch DOSBox.
 Successful process creation cannot guarantee that DOSBox subsequently starts
 the game successfully; its own configuration/errors still apply.
 
@@ -732,77 +731,101 @@ frame/audio timing and track-camera mapping; it is not part of this filter optio
 
 <a id="physics"></a>
 
-## Driving and AI status - 0.7.15-dev
+## Driving and AI - 0.7.16-dev
 
-<a id="physics--driving-and-ai-status---0715-dev"></a>
+<a id="physics--driving-and-ai---0716-dev"></a>
 
 
 <a id="physics--active-implementation"></a>
 
 ### Active implementation
 
-0.7.15 restores the driving, steering/grip integration, road assistance,
-heading-dependent movement, wall reaction, car contacts and heavy-object
-response used in 0.7.13. This rollback applies to both presentation modes.
-The rejected 0.7.14 fixed-point integration is no longer included by the game.
-The removed subdivided-physics checkbox stays removed.
+Both modes now use the same reconstructed fixed-point driving and contact
+chain. The earlier empirical steering gains and automatic road-curvature
+assistance are removed. Revived rendering does not select different physics.
 
-The isolated original-executable routines in original_drive.h,
-original_wall.h and original_contact.h remain research/test material only.
-They must not be described as the active driving implementation.
+The original uses integer two-dimensional road frames for gameplay, separate
+from the three-dimensional road used to place models over the track video.
+The port reads the stored PST chord directions, lengths and frame rotations,
+unfolds nearby actors into shared frames, and preserves the original traversal
+order at forks and merges. Recomputing these values from the visual road, or
+merging duplicate unfolded nodes, changes rounding and the steering feedback.
 
-<a id="physics--regression-and-evidence"></a>
+Each step stages all vehicle movements before resolving contacts. The original
+five-circle hull, quantized distance lookup, contact-time search, contact order,
+velocity retention, angular response and separation are then applied, followed
+by road reprojection and the heading-dependent wall response. There are at most
+sixteen contact resolutions per group, as in the executable. Defensive bounds
+prevent pathological zero-separation cases from hanging the port.
 
-### Regression and evidence
+The simulation retains its 40 ms step; 60 FPS interpolates presentation.
+The removed subdivided-physics checkbox and Retro effects Easter egg remain
+removed. Impact one-shots require a substantial collision and vary among the
+original CHOC1/CHOC3/CHOC5 samples without immediate repeats. Light wall grinding
+uses the separate FROTTE2 loop. Revived sparks do not affect the physics RNG.
 
-The original-routine comparisons in 0.7.14 passed, but did not validate the
-complete feedback loop formed by the existing AI controller, road-frame
-adapter and new integration. Full rolling-start tests now reproduce the user's
-reported regression: the rejected integration increased RMS heading variation
-by roughly eight to ten times across the six tracks. It also caused incidental
-starting-grid contact damage on Tibet and Bayou in the fixed test sequence.
+<a id="physics--validation-against-the-executable"></a>
 
-The 0.7.15 real rolling-start probe uses all eight cars on all six original
-tracks for 75 updates (three seconds) each, producing 3,600 vehicle samples.
-Autopilot state, road node, lateral position, heading, steering state, lateral
-velocity, speed and damage agree with the accepted 0.7.13 reference at every
-sample. There is no starting-grid damage in this test. Results are stored in
-`docs/physics/rolling-start-0715.json`.
+### Validation against the executable
 
-Impact sounds now select among the three original CHOC1/CHOC3/CHOC5 samples,
-exclude immediate repeats and use only the separate audio random generator.
-Driving/AI randomness is unaffected. Existing contact cooldowns from 0.7.13
-are restored; continuous wall grinding retains its separate FROTTE2 loop.
+The reference harness executes the locally owned German GOG M.EXE in Unicorn.
+It exercises the original group builder, pilot, all-car drive update, movement,
+car-contact solver, reprojection, wall response and road-list commit. It compares
+these with the active runtime implementation, rather than testing formulas alone.
+Ghidra decompilation and disassembly were used to understand the routines;
+no original executable, disassembly or runtime snapshot is distributed.
 
-<a id="physics--reproducing-the-rolling-start-comparison"></a>
+- Six real tracks, eight cars, 1,200 updates per track: **57,600 vehicle states**.
+- Eight integer fields agree at every sample: road node, lateral position,
+  heading, steering, lateral/forward velocity, drive speed and along-road position.
+- The first 75 updates include the rolling start on every track.
+- Separate randomized contact comparison: **6,000 cases**, including 4,390
+  contacts; no differences in contact selection/time or resulting body state.
+- Earlier standalone drive and wall tests cover additional profiles, commands,
+  slip/oil states and update durations; their evidence remains in docs/physics.
 
-### Reproducing the rolling-start comparison
+Reports: [full loop](docs/physics/full-loop-0716.json) and
+[car contacts](docs/physics/car-contacts-0716.json).
+The complete-loop test fixes pilot targets and excludes weapons, road objects,
+retirement and higher-level opponent tactics. Its result is not a claim that
+all gameplay or every possible trajectory matches the original.
 
-Compile tests/rolling_start_probe.cpp with C++17 alongside src/media.cpp on
-Linux. Run it from the normal native regression build directory, with the same
-privately owned German GOG fixture arrangement as tests/run_linux.sh. Redirect
-stdout to a CSV. The probe uses the real race_update, original grid positions,
-all six real track files, eight cars and fixed seeds, without rendering.
+<a id="physics--reproduce-the-complete-loop-comparison"></a>
 
-Run tests/rolling_start_compare.py with --reference pointing at a stable 0.7.13
-probe CSV, --candidate at the new CSV and --output at a JSON report. It checks
-all 3,600 rows and eight driving state fields with a 0.000001 tolerance.
-Original game files and private recordings are not included in the repository.
+### Reproduce the complete-loop comparison
 
-<a id="physics--original-parity-remains-incomplete"></a>
+Install Python's Unicorn package. Compile tests/original_race_probe.cpp with
+C++17 alongside src/media.cpp on Linux, then run:
 
-### Original parity remains incomplete
+```sh
+g++ -std=c++17 -O1 -fno-math-errno -Wno-unused-result tests/original_race_probe.cpp src/media.cpp -o build/original_race_probe
+python tests/original_race_reference.py --game /path/to/owned/german/game --cli build/original_race_probe --output build/full-loop.json
+```
 
-The restored implementation is an accepted gameplay approximation, not proof
-of exact DOS physics. Its steering response, road interpolation, collision
-impulses, opponent decisions and object behavior still contain reconstructed
-rules. The isolated research kernels remain useful references, but replacing
-the active model again requires controller/adapter integration and complete
-trajectory testing, including rolling starts. Passing an isolated routine test
-is insufficient evidence for a replacement driving model.
+The supplied installation must contain the original M.EXE, MEGARACE2.gog and
+extracted game directories. Temporary PST fixtures are deleted after the test.
+Use --wsl when invoking a Linux probe from Windows with Ubuntu-24.04.
 
-No claim of 100% original physics or renderer equivalence is made. Renderer
-limits and strict Retro separation are documented in RETRO_RENDERER.md.
+The separate contact test uses tests/original_body_cli.cpp and
+tests/original_body_reference.py with the same --game, --cli, --output and
+optional --wsl arguments. It compares the original detector and response to
+original_body.h with deterministic randomized inputs.
+
+<a id="physics--remaining-differences"></a>
+
+### Remaining differences
+
+Higher-level opponent tactics, hazard decisions and recovery behavior still
+contain reconstructed rules. Road-object contact and motion remain partly
+approximate; the original normal velocity exchange and retention are used for
+heavy objects, but the complete mixed vehicle/object solver is not yet covered
+by the original-loop comparison. Damage accounting, weapons and arbitrary
+reverse/fork sequences need broader original-state validation.
+
+The former 0.7.14 failure showed why isolated kernel tests are insufficient.
+Future changes to the drive/controller/road/contact chain must preserve the
+full-loop comparison and be checked in the actual game. No claim of 100% DOS
+physics or renderer equivalence is made. See RETRO_RENDERER.md for graphics.
 
 
 ---
@@ -881,9 +904,9 @@ moves down with the original 80-row menu, including video, models and HUD.
 Original canvas pixels retain straight-alpha nearest sampling; premultiplied
 filtering for Revived never alters Retro's CPU framebuffer.
 
-See PHYSICS.md for the restored 0.7.13 driving/AI behavior, rolling-start
-validation and remaining approximations. The rejected 0.7.14 integration is
-research only. Full visual and simulation parity is not claimed.
+See PHYSICS.md for the reconstructed drive/controller/shared-road/contact chain,
+complete original-loop validation and remaining approximations. Full visual and
+simulation parity is not claimed.
 
 
 ---
@@ -1012,10 +1035,10 @@ settings and reproduction steps. Redact personal paths and account details.
 The Git repository contains development source and documentation. Downloadable
 assets are kept under GitHub Releases, separate from tracked source files:
 
-- `OpenMR2-0.7.15-dev-source.tar.gz`: complete source snapshot, upstream source
+- `OpenMR2-0.7.16-dev-source.tar.gz`: complete source snapshot, upstream source
   and license texts, tools, build scripts, documentation and graphics provenance.
-- `OpenMR2-0.7.15-dev-Windows-x64.zip`: Windows executable and runtime documents.
-- `OpenMR2-0.7.15-dev-Linux-x86_64.zip`: native Linux executable and runtime
+- `OpenMR2-0.7.16-dev-Windows-x64.zip`: Windows executable and runtime documents.
+- `OpenMR2-0.7.16-dev-Linux-x86_64.zip`: native Linux executable and runtime
   documents; uses host libraries, without bundled AppImage dependencies.
 - `SHA256SUMS.txt`: SHA-256 hashes of the three downloadable archives.
 
@@ -1229,6 +1252,8 @@ Primary references:
 
 ## Changelog
 
+0.7.16-dev (2026-10-19): reconstructed the complete fixed-point pilot/drive/shared-road/car-contact chain from the DOS executable. All 57,600 controlled vehicle states match on six tracks; 6,000 separate contact cases also pass. Removed empirical steering/curvature gains and fixed excessive contact bounce. Strong impacts use varied original sounds; light touches stay quiet. Counterclockwise vehicle previews sit on the pedestal; Retro uses original shop font/colors and no model shadow, while Revived uses optional realtime shadows. Removed the DOS launcher from Linux. See PHYSICS.md for test scope and remaining approximations.
+
 0.7.15-dev (2026-10-19): rolled back the rejected 0.7.14 driving/contact integration to the accepted 0.7.13 behavior in both modes. Six-track/eight-car rolling-start traces match the stable reference in all 3,600 samples. Restored contact cooldowns; collisions vary among three original samples without consecutive repeats. The static Game Over screen is now silent at the mixer state boundary and no longer starts SCREAM.WAV. Strict Retro and independent graphics/audio teardown fixes remain.
 
 0.7.14-dev (2026-10-19): original fixed-point driving and wall-response kernels, verified against the DOS executable; shared update cadence in both modes; removal of invented contact kicks and random heavy-barrel impulses. Removed the Retro effects Easter egg and legacy physics toggle. Premultiplied filtered canvas eliminates dark transparent-edge fringes in Revived. Retro pause displaces the entire scene. Engine-bus teardown blocks stale Game Over loops. Remaining parity limits are documented in PHYSICS.md and RETRO_RENDERER.md.
@@ -1385,6 +1410,8 @@ Based on the supplied OpenMR2 0.6.4 ZIP. Local development candidate; not approv
 
 ## Release notes
 
+0.7.16-dev (2026-10-19): reconstructed the complete fixed-point pilot/drive/shared-road/car-contact chain from the DOS executable. All 57,600 controlled vehicle states match on six tracks; 6,000 separate contact cases also pass. Removed empirical steering/curvature gains and fixed excessive contact bounce. Strong impacts use varied original sounds; light touches stay quiet. Counterclockwise vehicle previews sit on the pedestal; Retro uses original shop font/colors and no model shadow, while Revived uses optional realtime shadows. Removed the DOS launcher from Linux. See PHYSICS.md for test scope and remaining approximations.
+
 0.7.15-dev (2026-10-19): rolled back the rejected 0.7.14 driving/contact integration to the accepted 0.7.13 behavior in both modes. Six-track/eight-car rolling-start traces match the stable reference in all 3,600 samples. Restored contact cooldowns; collisions vary among three original samples without consecutive repeats. The static Game Over screen is now silent at the mixer state boundary and no longer starts SCREAM.WAV. Strict Retro and independent graphics/audio teardown fixes remain.
 
 0.7.14-dev (2026-10-19): original fixed-point driving and wall-response kernels, verified against the DOS executable; shared update cadence in both modes; removal of invented contact kicks and random heavy-barrel impulses. Removed the Retro effects Easter egg and legacy physics toggle. Premultiplied filtered canvas eliminates dark transparent-edge fringes in Revived. Retro pause displaces the entire scene. Engine-bus teardown blocks stale Game Over loops. Remaining parity limits are documented in PHYSICS.md and RETRO_RENDERER.md.
@@ -1465,7 +1492,7 @@ dialog cancels startup. Later in-game mode changes do not alter the remembered
 startup choice. Set `remember_startup_mode = 0` to display the chooser again.
 Automated screenshot/export/demo/validation entry points skip the chooser.
 
-For recognized GOG editions, the black-flag menu also offers **Run DOS Version**
+On Windows with recognized GOG editions, the black-flag menu also offers **Run DOS Version**
 (**DOS Version starten**, **Lancer la version DOS**). Unknown editions never
 show this entry. Windows starts `DOSBOX/DOSBox.exe` from the selected game's
 `DOSBOX` directory with the original shortcut arguments:
@@ -1475,9 +1502,8 @@ show this entry. Windows starts `DOSBOX/DOSBox.exe` from the selected game's
 ```
 
 OpenMR2 closes only after process creation succeeds. Missing executable/config
-files or launch failure leave OpenMR2 running with an error message. Linux uses
-an installed native `dosbox` executable with the same GOG configurations and
-working directory; the Windows executable is not run through a shell or Wine.
+files or launch failure leave OpenMR2 running with an error message. Linux does
+not show this menu entry or launch DOSBox.
 Successful process creation cannot guarantee that DOSBox subsequently starts
 the game successfully; its own configuration/errors still apply.
 

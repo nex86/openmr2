@@ -428,6 +428,7 @@ static void game_init(void) {
   for (int i = 0; i < 6; i++) { char p[64] = "DATA640/TRACK"; str_int(p, 64, i + 1); str_cat(p, ".SPR", 64); spr_load(&G.track_spr[i], p); }
   font_load(&g_font_big, "TEXTE/FONTE21.HLZ"); font_load(&g_font_small, "TEXTE/CLR6_13.HLZ"); font_load(&g_font_mid, "TEXTE/LATIN11.HLZ");
   font_load(&g_font_h14, "TEXTE/HNDEL14.HLZ"); font_load(&g_font_h10, "TEXTE/HNDEL10.HLZ");
+  font_load(&g_font_shop,"TEXTE/CLR6_10.HLZ");
   pic_load(&g_racemenu, "DATA640/MENU0.HLZ");
   spr_load(&g_pausedrum[0], "DATA640/MENUA.SPR"); spr_load(&g_pausedrum[1], "DATA640/MENUB.SPR"); spr_load(&g_pausedrum[2], "DATA640/MENUC.SPR");
   migrate_old_files(); hiscore_load(); setup_load();
@@ -546,15 +547,17 @@ static void screen_carshop(int W, int H, const Input *in, double dt) {
   title_box(318, 8, "Wagen w\xe4hlen");
   int c = G.shop_car;
   char t[256];
-  cv_text(g_font_h14, 320, 288, CARS[c].name, BEIGE, 1, 1);
-  t[0] = 0; str_int(t, 256, money_shown()); cv_text(g_font_mid, 70, 400, t, WHITE, 2, 1);
+  cv_text(g_font_h14, 320, G.gfx_mode==1?292:288, CARS[c].name, G.gfx_mode==1?rgba(186,170,121,255):BEIGE, 1, 1);
+  t[0] = 0; str_int(t, 256, money_shown()); cv_text(g_font_mid, 70, 400, t, G.gfx_mode==1?rgba(105,105,105,255):WHITE, 2, 1);
   int avail = car_available(c);
   t[0] = 0; str_cat(t, ui_translate("Geschwindigkeit : "), 256); str_int(t, 256, CARS[c].mph); str_cat(t, ui_translate(" Mph\nKraftstoff : "), 256); str_cat(t, ui_translate(CARS[c].fuel), 256);
   str_cat(t, ui_translate("\nMotor      : "), 256); str_cat(t, CARS[c].engine, 256);
-  str_cat(t, ui_translate("\n\nPreis : "), 256); str_int(t, 256, CARS[c].price);
-  if (!avail) str_cat(t, ui_translate("   (noch nicht erh\xe4ltlich)"), 256);
+  const char *price_label=ui_translate("\n\nPreis : ");if(!avail&&price_label[0]=='\n')price_label++;
+  str_cat(t, price_label, 256); str_int(t, 256, CARS[c].price);
+  if (!avail) {str_cat(t,"\n",256);str_cat(t, ui_translate("   (noch nicht erh\xe4ltlich)"), 256);}
   if (PF.car == c) str_cat(t, ui_translate("   (dein Wagen)"), 256);
-  text_box(198, 392, t, avail ? BEIGE : 0xff707070u);
+  if(G.gfx_mode==1)cv_text(g_font_shop,200,390,t,rgba(105,105,105,255),0,1);
+  else text_box(198,392,t,avail?BEIGE:0xff707070u);
   // buttons: 0 left, 1 right, 2 back, 3 buy
   int b = -1; for (int i = 0; i < 4 && i < G.shop_spr.n; i++) if (spr_hit(G.shop_spr.f[i])) b = i;
   if (b >= 0 && in->lmb) cv_spr(G.shop_spr.f[b], G.bg.pal, 0, 0, 1);
@@ -1262,7 +1265,11 @@ static void screen_quitdlg(const Input *in) {
   for (int i = 0; i < 8; i++) if (G.menu_spr[i].n) cv_spr(G.menu_spr[i].f[0], G.bg.pal, 0, 0, 1);
   if (PF.active) { char t[160] = ""; str_cpy(t, ui_translate("Fertigmachen f\xfcrs Rennen: "), 160); str_cat(t, ui_translate(TRACKS[PF.track].name), 160); str_cat(t, ui_translate(" , Runde : "), 160); str_int(t, 160, PF.heat + 1);
     str_cat(t, ui_translate(" , Position : "), 160); str_int(t, 160, PF.heat > 0 ? PF.last_place : 0); cv_text(g_font_small, 320, 458, t, ORANGE, 1, 1); }
-  int count=sys_game_is_gog()?5:4;if(G.sel>=count)G.sel=0;
+  int count=4;
+#ifdef _WIN32
+  if(sys_game_is_gog())count=5;
+#endif
+  if(G.sel>=count)G.sel=0;
   int x0 = 165, y0 = count==5?158:172, w = 310, h = count==5?176:150;
   cv_rect(x0, y0, w, h, rgba(8, 26, 18, 225));
   cv_rect(x0, y0, w, 2, rgba(40, 150, 80, 255)); cv_rect(x0, y0 + h - 2, w, 2, rgba(40, 150, 80, 255));

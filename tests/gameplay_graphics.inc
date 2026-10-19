@@ -1,9 +1,9 @@
 static RoadPt feature_road[40];static Model feature_barrel,feature_mine;
 static void feature_world(){
-  mem_zero(&TK,sizeof TK);mem_zero(&RC,sizeof RC);mem_zero(feature_road,sizeof feature_road);
+  mem_zero(&TK,sizeof TK);mem_zero(&RC,sizeof RC);mem_zero(feature_road,sizeof feature_road);original_motion_reset();
   TK.road=feature_road;TK.nroad=TK.L=40;TK.obj_models[OM_BARREL]=&feature_barrel;TK.obj_models[OM_MINE]=&feature_mine;
   feature_barrel.bmin=v3(-3,0,-3);feature_barrel.bmax=v3(3,6.4f,3);feature_mine.bmin=v3(-2,0,-2);feature_mine.bmax=v3(2,.476f,2);
-  for(int i=0;i<40;i++){RoadPt &r=feature_road[i];r.p[2]=i*PT;r.rt[0]=r.up[1]=r.fw[2]=1;r.w=40000;r.nx[0]=r.nx[1]=(i+1)%40;r.pv[0]=r.pv[1]=(i+39)%40;r.len[0]=r.len[1]=PT;r.M=i;}
+  for(int i=0;i<40;i++){RoadPt &r=feature_road[i];r.p[2]=i*PT;r.rt[0]=r.up[1]=r.fw[2]=1;r.w=40000;r.nx[0]=r.nx[1]=(i+1)%40;r.pv[0]=r.pv[1]=(i+39)%40;r.len[0]=r.len[1]=PT;r.physics_length[0]=r.physics_length[1]=(int)PT;r.M=i;}
   RC.ncar=1;RC.active=1;RC.phase=PH_RACE;RCar &c=player();c.pp=pp_make(0,0);c.x=30000;c.player=1;c.hwm=6000;c.profile=1;car_update_world(c);
 }
 static void feature_barrel_at(int index,int node){TrackObj &o=TK.obj[index];mem_zero(&o,sizeof o);o.alive=1;o.type=2;o.node=node;o.pp=pp_make(node,0);pp_world(o.pp,0,0,o.W);if(index>=TK.nobj)TK.nobj=index+1;}
@@ -74,7 +74,7 @@ static void test_gameplay_graphics(){
   feature_world();effects_reset();g_damage_effects=1;g_tex_nearest=0;player().x=car_hw(player());player().v=player().vlong=.6*V_PLAYER;car_physics(player(),0,0,.04,V_PLAYER);check(g_contact_next==1,"actual tangential wall scraping emits damage sparks at the boundary");
   int emitted=g_contact_next;player().x=0;player().spark_cd=0;car_physics(player(),0,0,.04,V_PLAYER);check(g_contact_next==emitted,"driving away from the wall does not emit boundary sparks");
   feature_world();effects_reset();player().x=car_hw(player())+100;player().v=.8*V_PLAYER;player().vlong=.4*V_PLAYER;player().vlat=.6*V_PLAYER;player().psi=1;car_physics(player(),0,0,.04,V_PLAYER);check(g_contact_next==1&&!g_contacts[0].grinding&&!player().wall_scraping,"hard wall impact emits a brief burst without enabling continuous scraping");
-  feature_world();effects_reset();RC.ncar=3;RC.car[0].out=1;RC.car[1]=player();RC.car[1].out=0;RC.car[1].player=0;RC.car[1].x=0;RC.car[1].pp=pp_make(2,0);RC.car[1].vlong=.4*V_PLAYER;car_update_world(RC.car[1]);RC.car[2]=RC.car[1];RC.car[2].x=10000;RC.car[2].vlong=0;car_update_world(RC.car[2]);collide_cars();check(g_contact_next>0,"opponent-to-opponent sliding contact emits sparks without requiring the player");
+  feature_world();effects_reset();RC.ncar=3;RC.car[0].out=1;RC.car[1]=player();RC.car[1].out=0;RC.car[1].player=0;RC.car[1].x=0;RC.car[1].pp=pp_make(2,0);RC.car[1].vlong=.4*V_PLAYER;car_update_world(RC.car[1]);RC.car[2]=RC.car[1];RC.car[2].x=10000;RC.car[2].vlong=0;car_update_world(RC.car[2]);road_plane_frames_build();g_original_defer=1;for(int i=0;i<RC.ncar;i++)car_physics(RC.car[i],0,0,.04,V_PLAYER);g_original_defer=0;original_contacts(.04);check(g_contact_next>0,"opponent-to-opponent sliding contact emits sparks without requiring the player");
   effects_build(cam,2);check(g_effect_vertex_count>0,"contact sparks produce rendered streak geometry");RC.t=1;effects_build(cam,2);check(!g_effect_vertex_count,"contact spark streaks expire within one second");
   g_damage_effects=0;emitted=g_contact_next;double zero[3]={0,0,0},up[3]={0,1,0};contact_sparks(zero,up,zero,1);check(g_contact_next==emitted,"disabling damage effects suppresses spark emission");
   feature_world();effects_reset();g_tex_nearest=0;g_missile_effects=1;g_damage_effects=g_modern_explosions=0;

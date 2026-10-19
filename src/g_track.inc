@@ -57,7 +57,8 @@ enum { NCARS = 14 };
 // The main loop is 0..P (P = prev of point 0); lane points beyond P belong to the alternative lanes.
 // The track video contains footage for every lane: each video frame's camera is near one road point.
 // ---------------------------------------------------------------------------------------------------
-struct RoadPt { double p[3], rt[3], up[3], fw[3], w; int nx[2], pv[2]; double len[2]; int zone; double M; int fr0, nfr;
+struct RoadPt {
+  int physics_turn[2],physics_length[2],physics_rotation[2]; double p[3], rt[3], up[3], fw[3], w; int nx[2], pv[2]; double len[2]; int zone; double M; int fr0, nfr;
                 int kind, mobflag, anc_f, anc_r; };   // PST +0x00 (type & 0x7FFF, bit 15 of the low word), +0x08 / +0x0A camera anchors
 struct PPos { int i, nx; double t; };                  // position on the road graph: segment i -> nx, fraction t
 // road objects of the race (.1/.2/.3): type 1 OBJET1, 2 OBJET2, 8 PLOT; canonical original values node / longitudinal / lateral / height
@@ -314,6 +315,7 @@ static int track_load(int ti, int heat) {
         q.p[k] = (s32)rd32(r + 12 + k * 4); q.rt[k] = (s32)rd32(r + 36 + k * 4) / 32768.0;
         q.up[k] = (s32)rd32(r + 48 + k * 4) / 32768.0; q.fw[k] = (s32)rd32(r + 60 + k * 4) / 32768.0;
       }
+      for(int branch=0;branch<2;branch++){q.physics_turn[branch]=(s32)rd32(r+76+branch*20);q.physics_length[branch]=(s32)rd32(r+80+branch*20);q.physics_rotation[branch]=(s32)rd32(r+84+branch*20);}
       q.w = (s32)rd32(r + 72); if (q.w <= 0 || q.w > 200000) q.w = 25000;
       q.pv[0] = (s32)rd32(r + 88); q.nx[0] = (s32)rd32(r + 92); q.pv[1] = (s32)rd32(r + 108); q.nx[1] = (s32)rd32(r + 112);
       q.zone = (int)(rd32(r + 116) >> 24);

@@ -81,7 +81,7 @@ static int g_options_return=-1,g_options_pause;
 static void options_close();
 static void extras_open_model();
 static void extras_open_video(const char *path);
-static Font g_font_h14, g_font_h10;   // Handel Gothic fonts of the original menus
+static Font g_font_h14, g_font_h10, g_font_shop;   // Original menu and compact shop fonts
 static const char *RETRO_FILTER_NAMES[6]={"Point","Linear","HQ2x","BRZ","Interlacing","CRT Filter"};
 static const char *RETRO_FILTER_KEYS[6]={"point","linear","hq2x","brz","interlacing","crt"};
 

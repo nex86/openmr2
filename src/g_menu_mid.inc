@@ -118,17 +118,17 @@ static void text_box(int x, int y, const char *s, uint32_t col) { cv_text(g_font
 // framed title like "Wagen waehlen" in the car shop
 static void title_box(int cx, int y, const char *s) {
   int w = cv_text_w(g_font_h14, s, 1) + 20, h = g_font_h14.height + 8, x = cx - w / 2;
-  cv_rect(x, y, w, h, rgba(40, 38, 34, 235));
+  cv_rect(x, y, w, h, G.gfx_mode==1?rgba(0,0,0,200):rgba(40,38,34,235));
   cv_rect(x, y, w, 2, rgba(150, 140, 120, 255)); cv_rect(x, y + h - 2, w, 2, rgba(70, 64, 56, 255));
   cv_rect(x, y, 2, h, rgba(150, 140, 120, 255)); cv_rect(x + w - 2, y, 2, h, rgba(70, 64, 56, 255));
-  cv_text(g_font_h14, cx, y + 4, s, ORANGE, 1, 1);
+  cv_text(g_font_h14, cx, y + 4, s, G.gfx_mode==1?rgba(231,154,0,255):ORANGE, 1, 1);
 }
 static Sprite spr_at(const Sprite &s, int x, int y) { Sprite r = s; r.x = x; r.y = y; return r; }
 
 // DOS shop preview uses the opposite horizontal camera basis to the OpenGL viewer.
 static M4 turntable_projection(float aspect){M4 p=m4_persp(32.0f*PI/180.0f,aspect,0.1f,200);p.m[0]=-p.m[0];return p;}
 static const double TURNTABLE_RADIANS_PER_SECOND=2.1; // 3.5 times the former 0.6 rad/s
-static double turntable_advance(double angle,double dt){double a=angle+dt*TURNTABLE_RADIANS_PER_SECOND;const double tau=6.283185307179586;while(a>=tau)a-=tau;while(a<0)a+=tau;return a;}
+static double turntable_advance(double angle,double dt){double a=angle-dt*TURNTABLE_RADIANS_PER_SECOND;const double tau=6.283185307179586;while(a>=tau)a-=tau;while(a<0)a+=tau;return a;}
 // rotating car (3D on the GPU) in a rectangle of the 640x480 screen
 static void draw_turntable(int W, int H, int car, double angle, float x, float y, float w, float h, const char *set) {
   if (car < 0) return;
@@ -136,7 +136,9 @@ static void draw_turntable(int W, int H, int car, double angle, float x, float y
   Model *m = track_car_model(car);
   if (!m) { static Model *cache[NCARS]; if (!cache[car]) cache[car] = load_model_from(set, CARS[car].model); m = cache[car]; }
   if (!m) return;
-  int vx, vy, vw, vh; vrect_viewport(W, H, x, y, w, h, &vx, &vy, &vw, &vh);
+  // Register the model with the pedestal, rather than the bottom of the old
+  // preview rectangle. Use virtual coordinates in both presentation modes.
+  int vx, vy, vw, vh; vrect_viewport(W, H, x, y-h*.08f, w, h, &vx, &vy, &vw, &vh);
   glViewport(vx, vy, vw, vh);
   glEnable(GL_DEPTH_TEST); glClear(GL_DEPTH_BUFFER_BIT);
   V3 ext = m->bmax - m->bmin; float r = m_sqrt(dot(ext, ext)) * 0.5f;
@@ -144,13 +146,16 @@ static void draw_turntable(int W, int H, int car, double angle, float x, float y
   V3 eye = v3(0, r * 0.9f, r * 2.9f);
   M4 view = m4_look(eye, v3(0, ext.y * 1.1f, 0), v3(0, 1, 0));
   M4 vp = m4_mul(proj, view);
+  V3 c = (m->bmin + m->bmax) * 0.5f;
+  M4 base = m4_mul(m4_roty((float)angle),m4_trans(v3(-c.x,-m->bmin.y,-c.z)));
+  int old_hide=g_hide_model_shadows;g_hide_model_shadows=1;
+  preview_shadow_draw(*m,vp,base,(float)(angle*3));
   model_shader_begin(vp,1);glUniform1i(R.um_lamps,g_vehicle_lights&&(!g_tex_nearest));glUniform1i(R.um_rear_only,A.graphics_test==15);glUniform1f(R.um_brake,A.graphics_test==15&&A.test_damage?1.f:0.f);
   glUniformMatrix4fv(R.um_vp, 1, GL_FALSE, vp.m); glUniform3f(R.um_cam, eye.x, eye.y, eye.z);
   glUniform1i(R.um_tex, 0); glUniform1f(R.um_lit, 1.0f); glUniform1f(R.um_gain, 1.0f); glUniform1f(R.um_gray, 0.0f);
-  V3 c = (m->bmin + m->bmax) * 0.5f;
-  M4 base = m4_mul(m4_mul(m4_roty((float)angle), m4_trans(v3(-c.x, -m->bmin.y, -c.z))), m4_id());
   draw_model_mv(*m, base, (float)(angle * 3), 0);
   preview_lights_draw(*m,vp,base,eye,(float)(angle*3),W,H);
+  g_hide_model_shadows=old_hide;
   glBindVertexArray(0);
 }
 

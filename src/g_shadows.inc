@@ -34,6 +34,27 @@ static int shadow_resources(){
   sys_log("[event] Real-time shadow map created (2048x2048; filtered vehicle/object shadows).");return 1;
 }
 static V3 shadow_eye(const double *cam,const double p[3],int shifted=1){double d[3];for(int k=0;k<3;k++)d[k]=p[k]+(shifted?g_shift[k]:0)-cam[k];return v3((float)((d[0]*cam[3]+d[1]*cam[4]+d[2]*cam[5])*MODEL_SCALE),(float)((d[0]*cam[6]+d[1]*cam[7]+d[2]*cam[8])*MODEL_SCALE),(float)(-(d[0]*cam[9]+d[1]*cam[10]+d[2]*cam[11])*MODEL_SCALE));}
+// The shop contains no DOS drop shadow. Revived uses the same depth-map
+// projection and intensity as the race, with the preview pose as its caster.
+static void preview_shadow_draw(const Model &model,const M4 &vp,const M4 &pose,float wheel){
+  if(g_tex_nearest||!g_realtime_shadows||!shadow_resources())return;
+  GLint previous=0,viewport[4];glGetIntegerv(0x8CA6,&previous);glGetIntegerv(0x0BA2,viewport);
+  float radius=m_sqrt(dot(model.bmax-model.bmin,model.bmax-model.bmin))*.6f;
+  V3 light=norm(v3(.45f,.85f,.35f));M4 view=m4_look(light*radius*4,v3(0,0,0),v3(0,1,0));
+  V3 lo=v3(-radius,-radius,-radius*6),hi=v3(radius,radius,0);
+  M4 light_vp=m4_mul(shadow_ortho(lo,hi),view);
+  glActiveTexture(GL_TEXTURE0+4);glBindTexture(GL_TEXTURE_2D,0);glActiveTexture(GL_TEXTURE0);
+  glBindFramebuffer(GL_FRAMEBUFFER,SH.fbo);glViewport(0,0,2048,2048);glDepthMask(GL_TRUE);glColorMask(0,0,0,0);glClear(GL_DEPTH_BUFFER_BIT);
+  glEnable(GL_DEPTH_TEST);glDisable(GL_BLEND);glEnable(GL_POLYGON_OFFSET_FILL);glPolygonOffset(1.5f,2);
+  model_shader_begin(light_vp,1);glUniform1i(R.um_shadow_pass,1);g_shadow_pass=1;draw_model_mv(model,pose,wheel,0);g_shadow_pass=0;
+  glDisable(GL_POLYGON_OFFSET_FILL);glColorMask(1,1,1,1);glBindFramebuffer(GL_FRAMEBUFFER,(GLuint)previous);glViewport(viewport[0],viewport[1],viewport[2],viewport[3]);
+  glActiveTexture(GL_TEXTURE0+4);glBindTexture(GL_TEXTURE_2D,SH.depth);glActiveTexture(GL_TEXTURE0);
+  glUseProgram(SH.road_program);glUniformMatrix4fv(glGetUniformLocation(SH.road_program,"uVP"),1,0,vp.m);glUniformMatrix4fv(glGetUniformLocation(SH.road_program,"uShadowVP"),1,0,light_vp.m);
+  glUniform1i(glGetUniformLocation(SH.road_program,"uShadowMap"),4);glUniform1i(glGetUniformLocation(SH.road_program,"uShadowEnabled"),1);glUniform1f(glGetUniformLocation(SH.road_program,"uShadowStrength"),g_effect_strength[0]);
+  V3 floor[6]={v3(-radius,0,-radius),v3(radius,0,-radius),v3(-radius,0,radius),v3(radius,0,-radius),v3(radius,0,radius),v3(-radius,0,radius)};
+  glEnable(GL_BLEND);glBlendFunc(GL_SRC_ALPHA,GL_ONE_MINUS_SRC_ALPHA);glDepthMask(GL_FALSE);glBindVertexArray(SH.vao);glBindBuffer(GL_ARRAY_BUFFER,SH.vbo);glBufferData(GL_ARRAY_BUFFER,sizeof floor,floor,GL_DYNAMIC_DRAW);glDrawArrays(GL_TRIANGLES,0,6);
+  glDisable(GL_BLEND);glDepthMask(GL_TRUE);glActiveTexture(GL_TEXTURE0);
+}
 static V3 shadow_axis(const double *cam,const double p[3]){return v3((float)(p[0]*cam[3]+p[1]*cam[4]+p[2]*cam[5]),(float)(p[0]*cam[6]+p[1]*cam[7]+p[2]*cam[8]),(float)(-p[0]*cam[9]-p[1]*cam[10]-p[2]*cam[11]));}
 static V3 shadow_road[256*2*4*6];static int shadow_road_count;
 static void shadow_road_build(const double *cam){

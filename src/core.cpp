@@ -600,7 +600,7 @@ static const char *FS_GROUND =
 static int g_realtime_shadows=1,g_modern_explosions=1,g_vehicle_lights=1,g_damage_effects=1,g_enhanced_oil=1,g_missile_effects=1;
 static int g_video_upscale,g_video_filter;
 static float g_effect_strength[6]={1,1,1,1,1,1};
-static int g_shadow_pass,g_shadow_active,g_oil_render,g_lamp_pass;
+static int g_shadow_pass,g_shadow_active,g_oil_render,g_lamp_pass,g_hide_model_shadows;
 static int g_tex_nearest;   // nearest-neighbour model textures (Retro Mode)
 static int g_post_done;   // the game mode has already presented the picture (post-processing pipeline)
 struct Renderer {
@@ -835,6 +835,7 @@ static void draw_mesh(const Model &m, const Mesh &me, const M4 &model_mtx, int p
   glBindVertexArray(me.vao);
   for (int b = 0; b < me.nb; b++) {
     const Mat &mt = m.mats[me.b[b].mat];
+    if(g_hide_model_shadows&&mt.type==MT_SHADOW)continue;
     if(g_lamp_pass&&mt.type!=MT_TEX)continue;
     if(g_shadow_pass&&(mt.type==MT_SHADOW||mt.type==MT_TRANS||mt.type==MT_ADD))continue;
     if(g_shadow_active&&mt.type==MT_SHADOW&&!g_oil_render)continue;

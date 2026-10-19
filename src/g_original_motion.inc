@@ -99,6 +99,10 @@ static void original_car_drive(RCar &c,int drive,double steer,double dt){
   const int32_t profile[17]={p.vitturn,-p.vitturn,p.anglmax,p.vitret,p.derplat,p.derpfrn,p.slip1,p.slip2,p.corr1,p.corr2,p.rotlim,p.rotderp,400,-200,-500,128,-128};
   g_original_old_angle[&c-RC.car]=s.angle;
   original_drive_step(s,profile,-contact_raw(d_clamp(steer,-1,1)*128),drive>0?400:drive<0?-500:-200,contact_raw(dt*51200),c.player,c.tactic_active==T_BOOSTER,g_drive_trig,g_drive_trig+256);
+  // The original phase uses 1024 units per turn. Keep its signed, unwrapped
+  // increment for rendering: a single update can exceed half a wheel rotation,
+  // so recovering it from the wrapped phase would reverse/slow the animation.
+  c.wheel+=od_wheel_increment(s.motor,contact_raw(dt*51200))*6.2831853071795864769/1024;
 }
 static void original_car_move(RCar &c,double dt){
   drive_trig_load();OriginalDrive &s=c.fixed;

@@ -64,7 +64,7 @@ def classification(name):
     if name.startswith('assets/revived_ui/') or name == 'src/remastered_ui_data.h':
         return 'P02: AI-edited original artwork; rights unresolved'
     if name.startswith('src/third_party/') or name in (
-        'src/output_filter_data.h', 'src/video_filter_data.h', 'src/video_fsr_data.h'):
+        'src/output_filter_data.h', 'src/video_filter_data.h', 'src/video_fsr_data.h', 'src/video_cnn_data.h'):
         return 'third-party component; upstream terms retained'
     if name.startswith('assets/fonts/') or name == 'src/revived_font_data.h':
         return 'SIL OFL font and derived atlas'
@@ -81,7 +81,7 @@ def selected():
         for path in sorted((ROOT / folder).rglob('*')):
             if not path.is_file() or '__pycache__' in path.parts:
                 continue
-            if path.suffix.lower() not in extensions:
+            if path.suffix.lower() not in extensions and path.name not in {'COPYING.GPL-3', 'COPYING.LGPL-3'}:
                 continue
             if folder == 'tools' and path.name in EXCLUDED_TOOLS:
                 continue
@@ -227,7 +227,7 @@ def export(destination):
     manifest = {
         'date': '2026-10-19',
         'target': 'https://github.com/nex86/openmr2',
-        'version': '0.7.16-dev',
+        'version': '0.7.17-dev',
         'classification': 'complete local development source snapshot, not legal clearance',
         'original_game_data_included': False,
         'bundled_executables_included': False,

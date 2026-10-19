@@ -642,7 +642,7 @@ static int cfg_items(CfgItem *it) {
   static const char *PADK[9] = {"pad_gas", "pad_bremse", "pad_links", "pad_rechts", "pad_frontwaffe", "pad_heckwaffe", "pad_frontwaffe_wechseln", "pad_heckwaffe_wechseln", "pad_pause"};
   for (int a = 0; a < PA_COUNT && a < 9; a++) add(PADK[a], &G.pad_map[a], 0, 25, a == 0 ? "Controller binding indices 0-25" : "");
   add("custom_textures",&G.custom_textures,0,1,"");
-  add("video_upscaling",&G.video_upscale,0,1,"");add("video_filter",&G.video_filter,0,3,"");
+  add("video_upscaling",&G.video_upscale,0,1,"");add("video_filter",&G.video_filter,0,VIDEO_FILTER_COUNT-1,"");
   add("debug_console", &G.dbg_console, 0, 1, "");
   add("debug_fps", &G.dbg_fps, 0, 1, "Debug options (0/1)");
   add("debug_renninfos", &G.dbg_info, 0, 1, "");
@@ -1444,7 +1444,7 @@ static void screen_gfx(const Input *in) {
   char ms[40] = ""; str_cpy(ms, ui_translate("MSAA Kantengl\xe4ttung: "), 40); if (msi) { str_int(ms, 40, MS[msi]); str_cat(ms, "x", 40); } else str_cat(ms, ui_translate("Aus"), 40);
   static const char *FPSM[2] = {"Original", "60fps"};
   char fo[64] = ""; str_cpy(fo, ui_translate("Bildausgabe im Rennen: "), sizeof fo); str_cat(fo, ui_translate(FPSM[G.dbg_fpsmode % 2]), sizeof fo);
-  char vf[96]="";str_cpy(vf,ui_translate("Video filter: "),sizeof vf);str_cat(vf,VIDEO_FILTER_NAMES[G.video_filter%4],sizeof vf);
+  char vf[96]="";str_cpy(vf,ui_translate("Video filter: "),sizeof vf);str_cat(vf,VIDEO_FILTER_NAMES[G.video_filter%VIDEO_FILTER_COUNT],sizeof vf);
   struct Row { const char *txt; int kind; int *val; } rows[] = {
     {"Revived (hochaufl\xf6send)", 1, 0}, {"Retro Mode", 2, 0},
     {"Texturen gefiltert (nur Revived)", 4, 0}, {ms, 5, 0}, {"FXAA Kantengl\xe4ttung", 6, &G.gfx_fxaa}, {"Vollbild", 7, &G.gfx_full}, {fo, 10, 0}, {"Enable custom textures",11,&G.custom_textures}, {"Video upscaling",13,&G.video_upscale}, {vf,14,0}, {"Revived Effects",12,0}, {"\xdc" "bernehmen", 8, 0}};
@@ -1482,7 +1482,7 @@ static void screen_gfx(const Input *in) {
       case 12: setup_save();G.state=GS_REVIVE_EFFECTS;G.sel=0;return;
       case 11: G.custom_textures^=1;texture_options_apply();break;
       case 13: G.video_upscale^=1;texture_options_apply();break;
-      case 14: G.video_filter=(G.video_filter+4+dir)%4;texture_options_apply();break;
+      case 14: G.video_filter=(G.video_filter+VIDEO_FILTER_COUNT+dir)%VIDEO_FILTER_COUNT;texture_options_apply();break;
       case 10: G.dbg_fpsmode = (G.dbg_fpsmode + 2 + dir) % 2; debug_apply(); break;
       case 8: setup_save(); go(GS_OPTIONS); G.sel = 2; return;
     }

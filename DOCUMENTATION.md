@@ -9,7 +9,7 @@ Settings, controls, technical notes, development history and licensing.
 - [Screenshots and recordings](#recording)
 - [Revived Effects - 0.7.11](#revive-effects)
 - [GPU video upscaling (Revived only)](#video-upscaling)
-- [Driving and AI - 0.7.16-dev](#physics)
+- [Driving and AI - 0.7.17-dev](#physics)
 - [Retro renderer: implementation and remaining differences](#retro-renderer)
 - [Building from source](#building)
 - [Contributing](#contributing)
@@ -251,14 +251,30 @@ Scaling now honors the selected maximum factor even with `integer_scale = 0`; on
 that effect while retaining its checkbox preference. Reset restores enabled
 switches and 100% values. Retro preserves these settings without rendering the
 effects. See REVIVE_EFFECTS.md for mapping and lamp restrictions.
-<a id="configuration--experimental-gpu-video-upscaling-0712"></a>
 
-## Experimental GPU video upscaling (0.7.12)
+<a id="configuration--experimental-gpu-video-upscaling"></a>
+
+## Experimental GPU video upscaling
 
 `video_upscaling = 1` enables runtime filtering of cinematic and track videos in
-Revived. `video_filter = 0/1/2/3` selects FSR, HQ4x, 4xBR or Lanczos3. Default:
-disabled, with FSR selected. Retro suppresses the feature and retains both
-preferences. See VIDEO_UPSCALING.md for processing, caching and limits.
+Revived. `video_filter` accepts the following values:
+
+| Value | Filter |
+| --- | --- |
+| 0 | FSR |
+| 1 | HQ4x |
+| 2 | 4xBR |
+| 3 | Lanczos3 |
+| 4 | FSRCNNX AI (8 channels) |
+| 5 | FSRCNNX AI HQ (16 channels) |
+
+Fresh configurations default to disabled, with FSR selected. The existing
+values 0-3 keep their previous meaning. The AI choices run embedded learned
+2x models on the OpenGL GPU; HQ uses a larger network and costs more GPU time.
+Results are cached per decoded frame. Disabling upscaling or entering Retro
+bypasses inference and filtering while retaining the Revived preferences.
+FSRCNNX failures fall back to Lanczos3, then original sampling if necessary.
+See VIDEO_UPSCALING.md for processing, image limits and remaining artifacts.
 
 
 <a id="configuration--0713-controls-and-capture"></a>
@@ -301,7 +317,7 @@ The message beneath the audio sliders is localized as "0% = off" (German:
 | F5 | Cycle Retro output filters: Point, Linear, HQ2x, BRZ, Interlacing, CRT |
 | F6 | Cycle Retro scaling: 1x, 2x, 3x, 4x |
 | F7 | Toggle experimental video upscaling in Revived |
-| F8 | Cycle experimental video filters: FSR, HQ4x, 4xBR, Lanczos3 |
+| F8 | Cycle experimental video filters: FSR, HQ4x, 4xBR, Lanczos3, FSRCNNX AI, FSRCNNX AI HQ |
 | F9 | Mute/restore all six Revived effect groups, preserving their preferences |
 | F10 | Open the current mode's full options; Apply/Esc returns to the paused scene |
 | F11 | Start/stop H.264/AAC MP4 recording; external FFmpeg required |
@@ -468,7 +484,7 @@ FFmpeg reference: [command line documentation](https://ffmpeg.org/ffmpeg.html),
 | F5 | Cycle the Retro output filter |
 | F6 | Cycle Retro scaling 1x–4x |
 | F7 | Toggle experimental video upscaling in Revived |
-| F8 | Cycle FSR / HQ4x / 4xBR / Lanczos3 in Revived |
+| F8 | Cycle FSR / HQ4x / 4xBR / Lanczos3 / FSRCNNX AI / FSRCNNX AI HQ in Revived |
 | F9 | Mute or restore all six Revived effect groups together |
 | F10 | Open the full mode-specific options; Apply/Esc returns to the same scene |
 | F11 | Start/stop MP4 recording |
@@ -672,13 +688,22 @@ states, opponent effects, trails, Retro isolation and expiration.
 
 
 Advanced graphics provides a Video upscaling (experimental) checkbox and a separate filter
-selector: FSR, HQ4x, 4xBR and Lanczos3. These process only decoded cinematic and
-track-video textures before camera reprojection/composition. They do not filter
-the HUD, fonts, static menu backgrounds or vehicle textures. The setting is
-unavailable and hidden in Retro; the selected Revived preference is retained.
+selector. It processes decoded cinematics and track-background videos before
+camera reprojection/composition. HUD graphics, fonts, static menu backgrounds
+and vehicle textures use their own rendering paths. The setting is unavailable
+and hidden in Retro; the selected Revived preference is retained.
 
-`video_upscaling = 0/1` enables the feature. `video_filter = 0/1/2/3` selects
-FSR/HQ4x/4xBR/Lanczos3. The feature defaults off; the initial filter is FSR.
+`video_upscaling = 0/1` enables the feature. Fresh configurations default to off
+with FSR selected. Existing filter indices and saved choices remain valid:
+
+| `video_filter` | Menu name | Processing |
+| --- | --- | --- |
+| 0 | FSR | FSR1 EASU reconstruction and RCAS sharpening |
+| 1 | HQ4x | HQx pattern smoothing at 4x |
+| 2 | 4xBR | xBR-lv2 edge smoothing at 4x |
+| 3 | Lanczos3 | Separable windowed-sinc reconstruction |
+| 4 | FSRCNNX AI | Learned 2x reconstruction, 8 channels and 14 neural passes |
+| 5 | FSRCNNX AI HQ | Learned 2x reconstruction, 16 channels and 26 neural passes |
 
 - FSR uses AMD's original MIT-licensed FSR1 EASU spatial reconstruction followed
   by RCAS sharpening. At large scale ratios, two 2x EASU stages precede RCAS.
@@ -688,22 +713,38 @@ FSR/HQ4x/4xBR/Lanczos3. The feature defaults off; the initial filter is FSR.
 - 4xBR uses Hyllian's MIT-licensed xBR-lv2 shader at a 4x scale. It is a pixel-art
   edge smoother, not a neural restoration model.
 - Lanczos3 uses two separable six-tap windowed-sinc passes. This offers a more
-  conventional reconstruction of photographic footage; existing compression
-  noise or source aliasing cannot be recovered into true new detail.
+  conventional reconstruction of photographic footage.
+- FSRCNNX AI uses igv's normal-footage model from release 1.1. It reconstructs
+  luminance with a compact convolutional neural network trained with slight
+  compression distortions. The HQ option uses a larger network at greater GPU
+  cost. Neither option uses the LineArt model, which can give natural footage
+  an unwanted painted appearance.
 
-All processing runs on the existing OpenGL GPU. There is no inference runtime,
-neural-model download, frame generation, temporal detail invention or change to
-the source frame rate. Identical source frames yield identical filtered pixels.
-This avoids a new temporal model's unstable invented detail; it cannot promise
-that compression noise or aliasing in the original footage will never shimmer.
+The neural pipeline uses OpenGL 3.3 fragment passes, with signed RGBA16F feature
+and residual textures. It reconstructs gamma-coded BT.601 luma and combines it
+with the original scaled chroma. Mild, bounded detail sharpening and local
+anti-ringing limits restrain halos. The CNN runs once at the source resolution
+to produce a 2x image; larger working images use separable Lanczos enlargement
+of that luma rather than another CNN stage. The final working image is capped
+at 2048 pixels per dimension and checked against the device texture limit.
 
-Four bounded per-texture caches retain independently decoded/interpolated video
-sources, so a repeated source frame does not need another upscale. Reopening a
-video changes its generation identifier and invalidates the old cached output.
-FSR and Lanczos use 2x/4x working images with a 2048-pixel soft limit; device
-texture limits are checked. Failed shader compilation/allocation falls back to
-the original sampling path. Disabling the feature or entering Retro bypasses
-preprocessing; no background inference or CPU upscaling continues.
+All filters run on the existing OpenGL GPU. Neural weights are embedded; no
+CUDA, TensorFlow installation, separate inference runtime or model download is
+required. None of the filters generates frames or changes the source frame
+rate. Repeated identical frames produce deterministic results on the same
+rendering path. These are spatial filters without temporal reconstruction:
+compression noise, palette dithering and source aliasing may still shimmer.
+
+Four bounded per-texture caches retain independently decoded video sources.
+An unchanged source frame reuses its filtered result instead of running the
+pipeline on every display refresh. Reopening a video invalidates its previous
+cached output. Neural scratch textures are shared; each source retains its
+own final RGB image. Disabling upscaling or entering Retro bypasses all these
+passes, including neural inference.
+
+FSR and Lanczos use 2x/4x working images with a 2048-pixel soft limit. Failed
+shader compilation or allocation falls back to original sampling. FSRCNNX first
+falls back to Lanczos3, then original sampling if that also fails.
 
 FSR's GL3.3 shader adapter requests ARB_shading_language_packing and
 ARB_gpu_shader5. If these extensions are unavailable, FSR falls back to the
@@ -711,17 +752,34 @@ original video sampling; the other filter choices remain independent.
 
 There is no universally best filter for all of this game's video material.
 FSR emphasizes reconstructed edges, Lanczos3 is a useful alternative for natural
-footage, and HQ4x/xBR intentionally smooth pixel patterns. Performance depends
-on GPU, source dimensions and selected filter. Synchronous timing is restricted
-to the explicit developer `--graphics-test 16` capture path, not normal gameplay.
+footage, and HQ4x/xBR intentionally smooth pixel patterns. FSRCNNX adds learned
+detail reconstruction, with the 8-channel option offering a lower GPU cost than
+HQ. It cannot recover an exact high-resolution original from the compressed
+source. Compare moving footage when choosing a filter; extra apparent sharpness
+can also emphasize artifacts. Performance depends on the GPU and source size.
+Synchronous timing is restricted to the explicit developer `--graphics-test 16`
+capture path, not normal gameplay.
 
 Upstream references and complete source/license texts:
 [AMD FSR1](https://gpuopen.com/fidelityfx-superresolution/),
 [HQx preset](https://github.com/libretro/glsl-shaders/blob/master/hqx/hq4x.glslp),
-[xBR-lv2](https://github.com/libretro/glsl-shaders/blob/master/xbr/shaders/xbr-lv2.glsl).
-The source folders `src/third_party/fsr1` and `src/third_party/video_filters`
-contain provenance hashes. Rebuild adapters with `tools/build_video_fsr.py` and
-`tools/build_video_filters.py`; no network access is needed for rebuilding.
+[xBR-lv2](https://github.com/libretro/glsl-shaders/blob/master/xbr/shaders/xbr-lv2.glsl),
+[FSRCNNX release 1.1](https://github.com/igv/FSRCNN-TensorFlow/releases/tag/1.1),
+and the [FSRCNN research paper](https://arxiv.org/abs/1608.00367).
+
+FSRCNNX is Copyright (C) 2017-2021 igv, LGPL-3.0-or-later. The unmodified model
+sources, full LGPL/GPL license texts and provenance hashes are included under
+`src/third_party/fsrcnnx/`. The other filter sources are under
+`src/third_party/fsr1/` and `src/third_party/video_filters/`. Release ZIPs carry
+the third-party sources/notices; the matching source archive includes the
+complete integration and offline adapter generators.
+
+Rebuild adapters with `tools/build_video_fsr.py`, `tools/build_video_filters.py`
+and `tools/build_video_cnn.py`; no network access is needed. Verify the neural
+adapter with `python tools/build_video_cnn.py --check --self-test`.
+`tests/video_cnn_gpu.py` checks real GL3.3 compilation, subpixel ordering, source
+sampling and signed feature retention. These checks validate integration;
+they do not establish subjective picture quality or a frame-rate guarantee.
 
 Offline video export/replacement import is deferred in TODO.md. It needs exact
 frame/audio timing and track-camera mapping; it is not part of this filter option.
@@ -731,9 +789,9 @@ frame/audio timing and track-camera mapping; it is not part of this filter optio
 
 <a id="physics"></a>
 
-## Driving and AI - 0.7.16-dev
+## Driving and AI - 0.7.17-dev
 
-<a id="physics--driving-and-ai---0716-dev"></a>
+<a id="physics--driving-and-ai---0717-dev"></a>
 
 
 <a id="physics--active-implementation"></a>
@@ -763,6 +821,38 @@ The removed subdivided-physics checkbox and Retro effects Easter egg remain
 removed. Impact one-shots require a substantial collision and vary among the
 original CHOC1/CHOC3/CHOC5 samples without immediate repeats. Light wall grinding
 uses the separate FROTTE2 loop. Revived sparks do not affect the physics RNG.
+
+<a id="physics--wheel-animation-0717"></a>
+
+### Wheel animation (0.7.17)
+
+The 0.7.16 physics integration advanced the original wheel state but did not
+pass it to the renderer, leaving race wheels stationary. Both modes now use
+the original signed increment, `(motor * 21 * dt) >> 16`, in 1,024 units per
+turn, converted to radians for the wheel's X-axis rotation. Forward speed
+increases rotation rate, reverse changes its direction, and stopped or retired
+cars keep their last phase. This does not change driving or contact behavior.
+
+The render phase remains unwrapped: a fast wheel can advance more than half a
+turn per update. The 60 FPS path interpolates that full rotation alongside the
+car pose, avoiding a shortest-arc interpolation that would reverse or slow it.
+Retro retains the original update cadence; replays store and restore the same
+render phase. The original INTRUDER and HUNTER models have their wheel artwork
+baked into a single body node, so they retain that limitation. The other twelve
+vehicle models have separate rotating axle nodes.
+
+Run the focused test from the source directory on Linux:
+
+```sh
+g++ -std=c++17 -O1 -fno-math-errno -Wno-unused-result tests/wheel_rotation.cpp src/media.cpp -o build/wheel_rotation
+(cd build && ./wheel_rotation /path/to/owned/german/game)
+```
+
+All **954 checks** pass. They cover all fourteen models on all six tracks,
+wheel-only transforms and fixed axle centres, player/opponent phases in both
+modes, forward/reverse/stopped motion, high-speed interpolation, recovery,
+retirement and a replay round trip. The existing 4,000-case original-executable
+drive comparison also passes all nineteen state fields without differences.
 
 <a id="physics--validation-against-the-executable"></a>
 
@@ -1035,10 +1125,10 @@ settings and reproduction steps. Redact personal paths and account details.
 The Git repository contains development source and documentation. Downloadable
 assets are kept under GitHub Releases, separate from tracked source files:
 
-- `OpenMR2-0.7.16-dev-source.tar.gz`: complete source snapshot, upstream source
+- `OpenMR2-0.7.17-dev-source.tar.gz`: complete source snapshot, upstream source
   and license texts, tools, build scripts, documentation and graphics provenance.
-- `OpenMR2-0.7.16-dev-Windows-x64.zip`: Windows executable and runtime documents.
-- `OpenMR2-0.7.16-dev-Linux-x86_64.zip`: native Linux executable and runtime
+- `OpenMR2-0.7.17-dev-Windows-x64.zip`: Windows executable and runtime documents.
+- `OpenMR2-0.7.17-dev-Linux-x86_64.zip`: native Linux executable and runtime
   documents; uses host libraries, without bundled AppImage dependencies.
 - `SHA256SUMS.txt`: SHA-256 hashes of the three downloadable archives.
 
@@ -1252,6 +1342,8 @@ Primary references:
 
 ## Changelog
 
+0.7.17-dev (2026-10-19): restored speed-dependent race wheel rotation, reverse direction and smooth 60 FPS wheel interpolation without changing physics. Experimental Revived video upscaling now offers six GPU filters: FSR, HQ4x, 4xBR, Lanczos3, FSRCNNX AI (8 channels) and FSRCNNX AI HQ (16 channels). The two learned filters reconstruct luma at 2x before Lanczos scaling to the output size. Retro keeps its original video path. See PHYSICS.md and VIDEO_UPSCALING.md.
+
 0.7.16-dev (2026-10-19): reconstructed the complete fixed-point pilot/drive/shared-road/car-contact chain from the DOS executable. All 57,600 controlled vehicle states match on six tracks; 6,000 separate contact cases also pass. Removed empirical steering/curvature gains and fixed excessive contact bounce. Strong impacts use varied original sounds; light touches stay quiet. Counterclockwise vehicle previews sit on the pedestal; Retro uses original shop font/colors and no model shadow, while Revived uses optional realtime shadows. Removed the DOS launcher from Linux. See PHYSICS.md for test scope and remaining approximations.
 
 0.7.15-dev (2026-10-19): rolled back the rejected 0.7.14 driving/contact integration to the accepted 0.7.13 behavior in both modes. Six-track/eight-car rolling-start traces match the stable reference in all 3,600 samples. Restored contact cooldowns; collisions vary among three original samples without consecutive repeats. The static Game Over screen is now silent at the mixer state boundary and no longer starts SCREAM.WAV. Strict Retro and independent graphics/audio teardown fixes remain.
@@ -1409,6 +1501,8 @@ Based on the supplied OpenMR2 0.6.4 ZIP. Local development candidate; not approv
 <a id="release-notes"></a>
 
 ## Release notes
+
+0.7.17-dev (2026-10-19): restored speed-dependent race wheel rotation, reverse direction and smooth 60 FPS wheel interpolation without changing physics. Experimental Revived video upscaling now offers six GPU filters: FSR, HQ4x, 4xBR, Lanczos3, FSRCNNX AI (8 channels) and FSRCNNX AI HQ (16 channels). The two learned filters reconstruct luma at 2x before Lanczos scaling to the output size. Retro keeps its original video path. See PHYSICS.md and VIDEO_UPSCALING.md.
 
 0.7.16-dev (2026-10-19): reconstructed the complete fixed-point pilot/drive/shared-road/car-contact chain from the DOS executable. All 57,600 controlled vehicle states match on six tracks; 6,000 separate contact cases also pass. Removed empirical steering/curvature gains and fixed excessive contact bounce. Strong impacts use varied original sounds; light touches stay quiet. Counterclockwise vehicle previews sit on the pedestal; Retro uses original shop font/colors and no model shadow, while Revived uses optional realtime shadows. Removed the DOS launcher from Linux. See PHYSICS.md for test scope and remaining approximations.
 

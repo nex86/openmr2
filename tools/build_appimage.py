@@ -34,11 +34,13 @@ for file in ('src/output_filters.inc','src/output_filter_data.h','tools/build_ou
     shutil.copy2(root/file,filter_sources/pathlib.Path(file).name)
 shutil.copytree(root/'assets/effects',licenses.parent/'effect-assets',dirs_exist_ok=True)
 shutil.copytree(root/'assets/revived_ui',licenses.parent/'revived-ui-assets',dirs_exist_ok=True)
-for name in ('fsr1','video_filters'):
+for name in ('fsr1','video_filters','fsrcnnx'):
     shutil.copytree(root/'src/third_party'/name,licenses.parent/('video-source-'+name),dirs_exist_ok=True)
-for name in ('build_video_fsr.py','build_video_filters.py'):
+for name in ('build_video_fsr.py','build_video_filters.py','build_video_cnn.py'):
     shutil.copy2(root/'tools'/name,licenses.parent/name)
 shutil.copy2(root/'src/video_upscale.inc',licenses.parent/'video_upscale.inc')
+for name in ('video_cnn.inc','video_cnn_data.h'):
+    shutil.copy2(root/'src'/name,licenses.parent/name)
 shutil.copy2(build/'openmr2_linux',app/'usr/bin/openmr2')
 (app/'openmr2.desktop').write_text('[Desktop Entry]\nType=Application\nName=OpenMR2\nExec=openmr2\nIcon=openmr2\nCategories=Game;\nTerminal=false\n')
 (app/'openmr2.svg').write_text('<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256"><rect width="256" height="256" rx="32" fill="#121820"/><path d="M32 176L80 72h96l48 104" fill="none" stroke="#d63030" stroke-width="16"/><text x="128" y="150" text-anchor="middle" fill="white" font-family="sans-serif" font-size="32">OpenMR2</text></svg>')
@@ -92,8 +94,9 @@ for p in common.iterdir():
 runtime=build/'tools/runtime-x86_64'
 tool=build/'tools/appimagetool-x86_64.AppImage'
 tool.chmod(0o755)
-env=dict(os.environ,ARCH='x86_64',APPIMAGE_EXTRACT_AND_RUN='1',VERSION='0.7.13-dev')
-output=build/'OpenMR2-0.7.13-dev-x86_64.AppImage'
+version=re.search(r'#define OPENMR2_VERSION "([^"]+)"',(root/'src/sys.h').read_text()).group(1)
+env=dict(os.environ,ARCH='x86_64',APPIMAGE_EXTRACT_AND_RUN='1',VERSION=version)
+output=build/f'OpenMR2-{version}-x86_64.AppImage'
 subprocess.run([str(tool),'--runtime-file',str(runtime),str(app),str(output)],env=env,check=True)
 output.chmod(0o755)
 print(output.name,hashlib.sha256(output.read_bytes()).hexdigest())

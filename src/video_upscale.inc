@@ -8,8 +8,9 @@ void main(){vec2 p=gl_FragCoord.xy*vec2(textureSize(uSource,0))/uOutput-0.5,b=fl
 struct VideoUpscaleFrame { GLuint source,tex[3];int w[3],h[3],input_w,input_h,dirty,factor,filter,frame;unsigned generation;const void *owner; };
 static VideoUpscaleFrame g_video_frames[4];
 static GLuint g_video_programs[5],g_video_filter_fbo,g_video_hq_lut;
-static int g_video_filter_failed[4],g_video_next,g_video_maximum;
-static const char *VIDEO_FILTER_NAMES[4]={"FSR","HQ4x","4xBR","Lanczos3"};
+enum {VIDEO_FILTER_COUNT=6};
+static int g_video_filter_failed[VIDEO_FILTER_COUNT],g_video_next,g_video_maximum;
+static const char *VIDEO_FILTER_NAMES[VIDEO_FILTER_COUNT]={"FSR","HQ4x","4xBR","Lanczos3","FSRCNNX AI","FSRCNNX AI HQ"};
 // Synchronous timing is restricted to the explicit developer capture mode.
 static double g_video_profile_ms,g_video_profile_last;static int g_video_profile_runs,g_video_profile_cached;
 static void video_profile_save(){char report[512]="GPU video filter profiling (explicit test mode)\nprocessed_frames=";str_int(report,sizeof report,g_video_profile_runs);str_cat(report,"\ncache_hits=",sizeof report);str_int(report,sizeof report,g_video_profile_cached);str_cat(report,"\nmean_processing_microseconds=",sizeof report);str_int(report,sizeof report,g_video_profile_runs?(long)(g_video_profile_ms*1000/g_video_profile_runs):0);str_cat(report,"\nlast_processing_microseconds=",sizeof report);str_int(report,sizeof report,(long)(g_video_profile_last*1000));str_cat(report,"\nrenderer=",sizeof report);str_cat(report,(const char *)glGetString(GL_RENDERER),sizeof report);str_cat(report,"\n",sizeof report);sys_write_file("video-upscale-profile.txt",report,str_len(report));}
@@ -21,20 +22,32 @@ static void video_fsr_uploaded(GLuint texture,const Video &video){
   slot->generation=video.generation;
   slot->owner=video.data;slot->frame=video.decoded_frame;slot->input_w=video.w;slot->input_h=video.h;
 }
+static GLuint video_program_build(const char *vs,const char *fs){
+  GLuint program=glCreateProgram();const char *stages[2]={vs,fs};const GLenum types[2]={GL_VERTEX_SHADER,GL_FRAGMENT_SHADER};
+  for(int stage=0;stage<2;stage++){GLuint shader=glCreateShader(types[stage]);glShaderSource(shader,1,&stages[stage],0);glCompileShader(shader);GLint ok=0;glGetShaderiv(shader,GL_COMPILE_STATUS,&ok);if(!ok){char log[4096];GLsizei length=0;glGetShaderInfoLog(shader,sizeof log-1,&length,log);log[length]=0;sys_log(log);if(A.graphics_test==16)sys_write_file("video-filter-error.txt",log,length);glDeleteShader(shader);glDeleteProgram(program);return 0;}glAttachShader(program,shader);glDeleteShader(shader);}
+  glLinkProgram(program);GLint linked=0;glGetProgramiv(program,GL_LINK_STATUS,&linked);
+  if(!linked){char log[4096];GLsizei length=0;glGetProgramInfoLog(program,sizeof log-1,&length,log);log[length]=0;sys_log(log);if(A.graphics_test==16)sys_write_file("video-filter-error.txt",log,length);glDeleteProgram(program);return 0;}return program;
+}
 static GLuint video_filter_program(int index){
   if(g_video_programs[index])return g_video_programs[index];
   const char *vs=index==1||index==2?VS_VIDEO_HQ:index==3?VS_VIDEO_XBR:VS_FULL;
   const char *fs=index==0?FS_VIDEO_FSR:index==1?FS_VIDEO_HQ_PATTERN:index==2?FS_VIDEO_HQ_BLEND:index==3?FS_VIDEO_XBR:FS_VIDEO_LANCZOS;
-  GLuint program=glCreateProgram();const char *stages[2]={vs,fs};const GLenum types[2]={GL_VERTEX_SHADER,GL_FRAGMENT_SHADER};
-  for(int stage=0;stage<2;stage++){GLuint shader=glCreateShader(types[stage]);glShaderSource(shader,1,&stages[stage],0);glCompileShader(shader);GLint ok=0;glGetShaderiv(shader,GL_COMPILE_STATUS,&ok);if(!ok){char log[4096];GLsizei length=0;glGetShaderInfoLog(shader,sizeof log-1,&length,log);log[length]=0;sys_log(log);if(A.graphics_test==16)sys_write_file("video-filter-error.txt",log,length);glDeleteShader(shader);glDeleteProgram(program);return 0;}glAttachShader(program,shader);glDeleteShader(shader);}
-  glLinkProgram(program);GLint linked=0;glGetProgramiv(program,GL_LINK_STATUS,&linked);
-  if(!linked){glDeleteProgram(program);return 0;}g_video_programs[index]=program;return program;
+  return g_video_programs[index]=video_program_build(vs,fs);
 }
+#include "video_cnn.inc"
 static GLuint video_fsr_texture(GLuint source,int output_w,int output_h){
-  int filter=g_video_filter;if(filter<0||filter>3)filter=0;
-  if(!g_video_upscale||g_tex_nearest||g_video_filter_failed[filter])return source;
+  int filter=g_video_filter;if(filter<0||filter>=VIDEO_FILTER_COUNT)filter=0;
+  if(!g_video_upscale||g_tex_nearest)return source;
   VideoUpscaleFrame *slot=video_frame_find(source);if(!slot)return source;VideoUpscaleFrame &v=*slot;
   if(v.input_w<=0||v.input_h<=0||(output_w<=v.input_w&&output_h<=v.input_h))return source;
+  if(filter>=4){
+    if(!g_video_filter_failed[filter]){
+      GLuint result=video_cnn_texture(v,source,filter,output_w,output_h);if(result)return result;
+      g_video_filter_failed[filter]=1;sys_log("[warning] FSRCNNX GPU video processing failed; using Lanczos3 for this selection.");
+    }
+    filter=3;
+  }
+  if(g_video_filter_failed[filter])return source;
   int factor=filter==1||filter==2?4:output_w>v.input_w*2||output_h>v.input_h*2?4:2;
   if(!g_video_maximum)glGetIntegerv(0x0D33,&g_video_maximum);
   if(filter==0||filter==3)if(v.input_w*factor>2048||v.input_h*factor>2048)factor=2;

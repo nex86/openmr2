@@ -11,6 +11,7 @@ static int32_t od_mul(int32_t a,int32_t b,int bits){return (int32_t)(((int64_t)a
 static int32_t od_div(int64_t a,int32_t b){return b?(int32_t)(a/b):0;}
 static int32_t od_abs(int32_t a){return a<0?-a:a;}
 static int32_t od_clamp(int32_t a,int32_t lo,int32_t hi){return a<lo?lo:a>hi?hi:a;}
+static int32_t od_wheel_increment(int32_t motor,int32_t dt){return od_mul((int32_t)(motor*21),dt,16);}
 static int32_t od_half(int32_t a){
   // Retain the original carry-dependent signed quantization rather than
   // replacing it with a floating point acceleration increment.
@@ -82,6 +83,6 @@ static void original_drive_step(OriginalDrive &s,const int32_t *p,int32_t turn,
   s.vx=s.old_x+s.ax;
   int32_t forward=s.old_z+s.az;
   s.vz=forward-((int32_t)(forward*s.slip)>>11);
-  s.wheel=(s.wheel+od_mul((int32_t)(s.motor*21),dt,16))&1023;
+  s.wheel=(s.wheel+od_wheel_increment(s.motor,dt))&1023;
   s.old_yaw=s.yaw;
 }

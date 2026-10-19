@@ -177,6 +177,35 @@ for GL3.3 FSR constants; HQ scale 4; xBR scale 4, explicit opaque alpha and the
 matching TEX0..TEX7 vertex interface. Full upstream source files remain intact.
 The LGPL shader stages remain separately identifiable and rebuildable.
 
+FSRCNNX neural video filters (0.7.17)
+Copyright (C) 2017-2021 igv; GNU Lesser General Public License version 3.0
+or, at your option, any later version (LGPL-3.0-or-later).
+Upstream: https://github.com/igv/FSRCNN-TensorFlow/releases/tag/1.1
+Original research: Chao Dong, Chen Change Loy and Xiaoou Tang,
+"Accelerating the Super-Resolution Convolutional Neural Network", ECCV 2016.
+https://arxiv.org/abs/1608.00367
+
+The unmodified released model shaders and learned coefficients are included:
+  src/third_party/fsrcnnx/FSRCNNX_x2_8-0-4-1.glsl
+  src/third_party/fsrcnnx/FSRCNNX_x2_16-0-4-1.glsl
+Full license texts:
+  src/third_party/fsrcnnx/COPYING.LGPL-3
+  src/third_party/fsrcnnx/COPYING.GPL-3
+Release URLs, file sizes and SHA-256 hashes:
+  src/third_party/fsrcnnx/provenance.json
+
+OpenMR2's tools/build_video_cnn.py adapts the mpv sampler/pass interface to
+OpenGL 3.3; src/video_cnn_data.h contains the generated adapters. The learned
+coefficients, matrix ordering, activations and subpixel ordering are retained.
+src/video_cnn.inc supplies the separate FP16 inference, BT.601 luma/chroma
+composition, Lanczos enlargement and bounded sharpening integration.
+The LGPL model stages remain separately identifiable and rebuildable offline.
+The LGPL-3.0-or-later model code is included alongside the GPL-3.0 port code
+under its own retained license. This component's license does not resolve the
+separate original-game decoder or artwork rights described in the manual.
+The matching release source archive includes the complete model and adapter
+sources; port ZIPs include the model sources, provenance and license texts.
+
 
 
 Optional recording encoder (0.7.13): FFmpeg/libx264, executed as a separate child.

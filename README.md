@@ -1,7 +1,7 @@
 # OpenMR2 - MegaRace 2 Revived
 
 A recreation of MegaRace 2 for modern Windows and Linux systems, using the
-original game data without DOSBox. Current development version: **0.7.16-dev**.
+original game data without DOSBox. Current development version: **0.7.17-dev**.
 
 **Requires your own English, French or German GOG installation of MegaRace 2.**
 Original game files are not included. Original CD editions are not yet supported.
@@ -13,7 +13,7 @@ Original game files are not included. Original CD editions are not yet supported
 - Sharper fonts, HUD graphics and icons.
 - Real-time shadows, vehicle lights, enhanced explosions and damage effects.
 - Custom texture packs and PNG texture dumping.
-- Experimental video upscaling filters.
+- Experimental GPU video upscaling, including FSRCNNX AI and AI HQ.
 - Controller support and remappable controls.
 - Separate volume controls for engines, effects and music.
 - Video recording and screenshots.
@@ -55,7 +55,7 @@ prereleases; availability depends on the current release publication status.
 
 ### Windows x64
 
-1. Extract `OpenMR2-0.7.16-dev-Windows-x64.zip` to a writable folder.
+1. Extract `OpenMR2-0.7.17-dev-Windows-x64.zip` to a writable folder.
 2. Run `OpenMR2.exe` from the extracted directory. Windows 10/11 x64 and an
    OpenGL 3.3-capable graphics driver are the intended target; no Visual C++
    runtime installation is required.
@@ -77,8 +77,8 @@ with glibc 2.39+, X11/Xwayland and OpenGL 3.3 is the tested baseline. On Ubuntu:
 
 ```sh
 sudo apt install unzip libx11-6 libgl1 libgl1-mesa-dri libpulse0 libstdc++6
-unzip OpenMR2-0.7.16-dev-Linux-x86_64.zip
-cd OpenMR2-0.7.16-dev-Linux-x86_64
+unzip OpenMR2-0.7.17-dev-Linux-x86_64.zip
+cd OpenMR2-0.7.17-dev-Linux-x86_64
 chmod +x openmr2_linux
 ./openmr2_linux --game "/path/to/MegaRace 2"
 ```
@@ -100,7 +100,7 @@ Optionally install `ffmpeg` for F11 recording; screenshots need no encoder.
 | F5 | Cycle Retro output filters |
 | F6 | Cycle Retro scaling 1x-4x |
 | F7 | Toggle experimental video upscaling in Revived |
-| F8 | Cycle FSR / HQ4x / 4xBR / Lanczos3 |
+| F8 | Cycle FSR / HQ4x / 4xBR / Lanczos3 / FSRCNNX AI / FSRCNNX AI HQ |
 | F9 | Mute/restore all six Revived effect groups |
 | F10 | Full mode-specific options; Apply/Esc returns to the same scene |
 | F11 | Start/stop H.264/AAC MP4 recording |

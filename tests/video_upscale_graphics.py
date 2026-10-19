@@ -21,18 +21,23 @@ def launch(name,filter=0,enabled=1,mode=0,clip=False,screen=None):
  kwargs={};env=dict(os.environ)
  if os.name=='nt':startup=subprocess.STARTUPINFO();startup.dwFlags|=subprocess.STARTF_USESHOWWINDOW;startup.wShowWindow=0;kwargs['startupinfo']=startup
  else:cmd=['xvfb-run','-a']+cmd;env['LIBGL_ALWAYS_SOFTWARE']='1'
- result=subprocess.run(cmd,cwd=run,env=env,timeout=180,**kwargs);assert result.returncode==0 and shot.exists(),name
+ result=subprocess.run(cmd,cwd=run,env=env,timeout=240,**kwargs);assert result.returncode==0 and shot.exists(),name
  image=Image.open(shot).convert('RGB');image.save(run/(name+'.png'));captures+=1
  if profile.exists():profiles[name]=profile.read_text()
  return image
 def diff(a,b):return sum(max(p)>2 for p in ImageChops.difference(a,b).getdata())
 original=launch('track-original',enabled=0);cinematic=launch('cinematic-original',enabled=0,clip=True)
-for filter,name in enumerate(('FSR','HQ4x','4xBR','Lanczos3')):
+for filter,name in enumerate(('FSR','HQ4x','4xBR','Lanczos3','FSRCNNX-AI','FSRCNNX-AI-HQ')):
  a=launch('track-'+name,filter);changed=diff(a,original);assert changed>500,(name,changed)
  assert len(a.crop((40,200,400,700)).getcolors(1000000))>100,(name,'video detail lost')
  assert 'track-'+name in profiles,(name,'filter silently fell back or did not run')
  b=launch('cinematic-'+name,filter,clip=True);changed_clip=diff(b,cinematic);assert changed_clip>500,(name,changed_clip)
  checks.append({'check':name+' GPU filter changes both track footage and cinematic output','track_pixels':changed,'cinematic_pixels':changed_clip})
+ if filter==3:lanczos_track,lanczos_cinematic=a,b
+ if filter>=4:
+  learned_track,learned_cinematic=diff(a,lanczos_track),diff(b,lanczos_cinematic)
+  assert learned_track>500 and learned_cinematic>500,(name,'neural model silently fell back to Lanczos3')
+  checks.append({'check':name+' runs learned reconstruction rather than its Lanczos3 fallback','track_pixels':learned_track,'cinematic_pixels':learned_cinematic})
  repeated=launch('track-'+name+'-repeat',filter);assert a.tobytes()==repeated.tobytes(),name
  checks.append({'check':name+' produces deterministic output for identical source frames (no random detail/history)','pass':True})
  a=launch('retro-'+name,filter,mode=1);b=launch('retro-'+name+'-disabled',filter,enabled=0,mode=1);assert a.tobytes()==b.tobytes(),name

@@ -56,7 +56,7 @@ struct RCar {
   double ai_fire_t;
   double stuck_t, stuck_prog;          // KI-Notfallhilfe: time without new best progress, best progress so far
   int pose_gen;                        // changes when the car is set to a new place (no interpolation across it)
-  double wheel;
+  double wheel;                       // unwrapped wheel rotation in radians, shared by rendering and replays
   Loadout lo; int hits, kills, earned;
 };
 struct Proj { int kind, owner, target, alive; PPos pp; double x, psi, v, life, vlat, vlong; int gen; };   // gen: new for every shot (slot reuse)
@@ -721,7 +721,7 @@ static void cam_frame_phase(void) { if (RC.cam_mob) cam_mob_frame(); else cam_fi
 static void cam_step(void) { cam_time_phase(); cam_frame_phase(); }
 // ---- poses of two consecutive packages (for the debug output modes 60 FPS: the 3D picture is
 // interpolated between the previous and the latest update; the Original mode shows the packages as they are)
-struct PoseSnap { int valid, frame; double cam[12]; double pos[8][3], R[8][3], U[8][3], F[8][3]; int cgen[8];
+struct PoseSnap { int valid, frame; double cam[12]; double pos[8][3], R[8][3], U[8][3], F[8][3], wheel[8]; int cgen[8];
                  double ppos[32][3], pR[32][3], pU[32][3], pF[32][3]; int palive[32], pgen[32];
                  double opos[MAXOBJ][3], oR[MAXOBJ][3], oU[MAXOBJ][3], oF[MAXOBJ][3]; int oalive[MAXOBJ]; };
 static PoseSnap g_snap[2];   // 0 previous, 1 latest
@@ -745,7 +745,7 @@ static void snap_take(void) {
   g_snap[0] = g_snap[1];
   PoseSnap &n = g_snap[1];
   n.valid = 1; n.frame = RC.frame; for (int k = 0; k < 12; k++) n.cam[k] = RC.vcam[k];
-  for (int i = 0; i < RC.ncar && i < 8; i++) { const RCar &c = RC.car[i]; pose_of(c.pp, c.x, 0, c.psi, n.pos[i], n.R[i], n.U[i], n.F[i]); n.cgen[i] = c.pose_gen; }
+  for (int i = 0; i < RC.ncar && i < 8; i++) { const RCar &c = RC.car[i]; pose_of(c.pp, c.x, 0, c.psi, n.pos[i], n.R[i], n.U[i], n.F[i]); n.cgen[i] = c.pose_gen; n.wheel[i] = c.wheel; }
   for (int i = 0; i < 32; i++) { const Proj &q = RC.proj[i]; n.palive[i] = q.alive; n.pgen[i] = q.gen; if (q.alive) pose_of(q.pp, q.x, 0, q.psi, n.ppos[i], n.pR[i], n.pU[i], n.pF[i]); }
   for (int i = 0; i < TK.nobj && i < MAXOBJ; i++) { const TrackObj &o = TK.obj[i]; n.oalive[i] = o.alive; if (o.alive) obj_pose(o, n.opos[i], n.oR[i], n.oU[i], n.oF[i]); }
   if (!g_snap[0].valid) g_snap[0] = n;
@@ -753,6 +753,10 @@ static void snap_take(void) {
 static void lerp3(const double a[3], const double b[3], double t, double o[3], int norm) {
   for (int k = 0; k < 3; k++) o[k] = a[k] + (b[k] - a[k]) * t;
   if (norm) { double l = d_sqrt(o[0] * o[0] + o[1] * o[1] + o[2] * o[2]); if (l > 1e-9) for (int k = 0; k < 3; k++) o[k] /= l; }
+}
+static double car_render_wheel(int index,double alpha){
+  if(alpha<0||!g_snap[0].valid||!g_snap[1].valid||g_snap[0].cgen[index]!=g_snap[1].cgen[index])return RC.car[index].wheel;
+  return g_snap[0].wheel[index]+(g_snap[1].wheel[index]-g_snap[0].wheel[index])*alpha;
 }
 static void choose_frame(void);
 // publish the presentation package of this update: frame, its own camera, visibility, lighting
@@ -1372,13 +1376,14 @@ static void race_draw(int W, int H) {
     Model *m = track_car_model(c.car); if (!m) continue;
     g_roll = 0;   // no visual roll of the body
     int ci = (int)(&c - RC.car);
+    float wheel=(float)car_render_wheel(ci,ia);
     if (ia >= 0 && ci < 8 && g_snap[0].cgen[ci] == g_snap[1].cgen[ci]) {   // interpolated pose (in-between pictures)
       double pos[3], R[3], U[3], F[3];
       lerp3(g_snap[0].pos[ci], g_snap[1].pos[ci], ia, pos, 0); lerp3(g_snap[0].R[ci], g_snap[1].R[ci], ia, R, 1);
       lerp3(g_snap[0].U[ci], g_snap[1].U[ci], ia, U, 1); lerp3(g_snap[0].F[ci], g_snap[1].F[ci], ia, F, 1);
-      scene_add(*m, world_mv(cam, pos, R, U, F, CAR_SCALE), (float)c.wheel, ci+1);
+      scene_add(*m, world_mv(cam, pos, R, U, F, CAR_SCALE), wheel, ci+1);
     } else
-    scene_add(*m, road_mv(cam, c.pp, c.x, 0, c.psi, CAR_SCALE, 0), (float)c.wheel, ci+1);
+    scene_add(*m, road_mv(cam, c.pp, c.x, 0, c.psi, CAR_SCALE, 0), wheel, ci+1);
     g_roll = 0;
   }
   scene_render(cam,W,H);

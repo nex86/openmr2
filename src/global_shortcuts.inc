@@ -34,7 +34,7 @@ static void global_shortcuts(int W,int H,const Input *in){
   if(in->pressed[K_F5]){if(G.gfx_mode){G.gfx_output_filter=(G.gfx_output_filter+1)%6;shortcut_notice(RETRO_FILTER_NAMES[G.gfx_output_filter]);}else shortcut_notice("Output filters are available in Retro Mode.");}
   if(in->pressed[K_F6]){if(G.gfx_mode){G.gfx_scale=G.gfx_scale%4+1;char label[64]="Retro scaling: ";str_int(label,sizeof label,G.gfx_scale);str_cat(label,"x",sizeof label);shortcut_notice(label);}else shortcut_notice("Retro scaling is available in Retro Mode.");}
   if(in->pressed[K_F7]){if(!G.gfx_mode){G.video_upscale^=1;texture_options_apply();shortcut_notice(G.video_upscale?"Experimental video upscaling on":"Video upscaling off");}else shortcut_notice("Video upscaling is unavailable in Retro Mode.");}
-  if(in->pressed[K_F8]){if(!G.gfx_mode){G.video_filter=(G.video_filter+1)%4;texture_options_apply();shortcut_notice(VIDEO_FILTER_NAMES[G.video_filter]);}else shortcut_notice("Video filters are unavailable in Retro Mode.");}
+  if(in->pressed[K_F8]){if(!G.gfx_mode){G.video_filter=(G.video_filter+1)%VIDEO_FILTER_COUNT;texture_options_apply();shortcut_notice(VIDEO_FILTER_NAMES[G.video_filter]);}else shortcut_notice("Video filters are unavailable in Retro Mode.");}
   if(in->pressed[K_F9]&&G.gfx_mode==0){G.effects_muted^=1;debug_apply();shortcut_notice(G.effects_muted?"All Revived effects off":"Revived effects restored");}
   if(in->pressed[K_F10])options_open();
   if(in->pressed[K_F11])capture_toggle(W,H);

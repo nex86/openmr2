@@ -1,7 +1,7 @@
 {
-  "date": "2026-10-19",
+  "date": "2026-10-20",
   "target": "https://github.com/nex86/openmr2",
-  "version": "0.7.17-dev",
+  "version": "0.7.18-dev",
   "classification": "complete local development source snapshot, not legal clearance",
   "original_game_data_included": false,
   "bundled_executables_included": false,
@@ -59,8 +59,8 @@
     },
     {
       "path": "DOCUMENTATION.md",
-      "bytes": 129822,
-      "sha256": "26d285e8c71d03860a929d67ebcc92cc712823a4123feeea26859204dedc669c",
+      "bytes": 142029,
+      "sha256": "10bc0986e37abdbdf3473734b92d8f4426c0100263102a99d397d549a4ee8d09",
       "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
@@ -71,8 +71,8 @@
     },
     {
       "path": "README.md",
-      "bytes": 7154,
-      "sha256": "97bdae82157a33747f4d8eb0f10255a931e82edffe3d3b17bff5c71e8dd86245",
+      "bytes": 7172,
+      "sha256": "a826407df54bf56d9925d3ed9b858a1a0a1f491d3f2ccd8fdd2fb05e97a54c14",
       "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
@@ -473,14 +473,14 @@
     },
     {
       "path": "custom_textures.txt",
-      "bytes": 15438,
-      "sha256": "2330d7efed04b98e14374a5c035f1743e11d8106fd0d41dfd5858747f6a11f7b",
+      "bytes": 15435,
+      "sha256": "1e5110536cd5dfacd9824d1cc23650e348d1fbe1d4e6402fe91c44fb46366fe4",
       "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "docs/VALIDATION.json",
-      "bytes": 1567,
-      "sha256": "789d182e50a540ccbc5802777e69ad363ebb91a84a14533ce9d25af413deee78",
+      "bytes": 39391,
+      "sha256": "f7b7a7a61e3e7bdbd1cc445d3c4821e65c28824a3d441f781ae6ea6379bbc9a3",
       "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
@@ -581,8 +581,8 @@
     },
     {
       "path": "localization.tsv",
-      "bytes": 27442,
-      "sha256": "5cfa987ecf9a8a749018757e5acc2be03a8d74819ab4236ae1a3de719830f2d9",
+      "bytes": 28858,
+      "sha256": "1d5999e6e5736d9e504ade79ea83d8ec684a38cba090a6fdcfe96d2b045b7e4d",
       "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
@@ -599,8 +599,8 @@
     },
     {
       "path": "src/core.cpp",
-      "bytes": 63401,
-      "sha256": "6a2081f0d77db54b4328b68d635210d38e3af83f7345ab0b7473a0e44ca3a0ce",
+      "bytes": 68621,
+      "sha256": "cf95708b29497e69fab0243102be30565762ec6c5f74fa4b8598d732505c1eac",
       "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
@@ -641,8 +641,8 @@
     },
     {
       "path": "src/g_effects.inc",
-      "bytes": 17500,
-      "sha256": "7090592a082a5b7d96faf30f6489c24e47c65ae573a9610dda3731991c68bc72",
+      "bytes": 25836,
+      "sha256": "d7bf2f0699b212e41672daf9ee907bd542fa71f85787422023bcd33349f8cf0c",
       "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
@@ -653,44 +653,50 @@
     },
     {
       "path": "src/g_lights.inc",
-      "bytes": 8112,
-      "sha256": "f1cd2cd22c6ce89f1029db7484a46ade6cd1ea89b771bb9f19b58023cf2cda2d",
+      "bytes": 15760,
+      "sha256": "fcb1807e016320e80f2bbaff634579c1a4ba2704dded8e24b40e93e59a95171e",
       "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/g_menu.inc",
-      "bytes": 127230,
-      "sha256": "c210c0e7fe848497a1b4c860447025f1a1938cf05509e106420c7e8d7515afae",
+      "bytes": 128934,
+      "sha256": "77fbafa89c4c554d63f2b06e1de402588d7d7628797e24d97a1f89175a075b4e",
       "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/g_menu_head.inc",
-      "bytes": 8400,
-      "sha256": "84263b228b06c41512d20f12f93677c45c56f721a08f0d313c72aa6096c60cd2",
+      "bytes": 8866,
+      "sha256": "7e2fc937f552a7fcfc3e7869261559bd58c7c875d60c50fcae00fc70a27a2c8f",
       "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/g_menu_mid.inc",
-      "bytes": 17118,
-      "sha256": "af36fbe7f0fa51258d1c54bb505e41cef5ef905351621e5f8bb26a53ca796bd2",
+      "bytes": 17297,
+      "sha256": "40f869a1008e9d945b2f6cb6b85c897c3a87b296a770ed6c4b75a955f3fdd69e",
       "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/g_menu_tail.inc",
-      "bytes": 101712,
-      "sha256": "9f5f9c97a74629e6081c81b4747ae83dd907abefef21a6c37d315a4db8b321cc",
+      "bytes": 102771,
+      "sha256": "a370a90c66ac5c71f80e08bb658fb3d2d4f9f0de86038bdf15b2fc328bd84220",
       "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/g_missile_effects.inc",
-      "bytes": 4834,
-      "sha256": "bcf7a74f318c2c843d48999f9a3da0669161b4fe4d0268332b247354ac84e7dd",
+      "bytes": 6399,
+      "sha256": "dd999515cb37e88999a6e68f846d93ef3e99beffb80298b58822428a19c0f317",
       "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/g_original_motion.inc",
       "bytes": 14936,
       "sha256": "4ccaf084a6608c831b9bbf706cbf00e366f7837dad9d0bea2c36c3e5f3522ffc",
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
+    },
+    {
+      "path": "src/g_preload.inc",
+      "bytes": 6947,
+      "sha256": "2facebafad8b317a2dc73afa201a40f199ee79c848f2db78e4ca94685ca70af3",
       "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
@@ -701,8 +707,14 @@
     },
     {
       "path": "src/g_race.inc",
-      "bytes": 96225,
-      "sha256": "92b091fe17a1fc420ee0e8016f9a9d18beec333521fe2df4851a5882a0a814db",
+      "bytes": 97686,
+      "sha256": "228522f8df89d41beff96f11131663c1ad02629a06649bee6b2e14c1578c05bb",
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
+    },
+    {
+      "path": "src/g_reflections.inc",
+      "bytes": 10987,
+      "sha256": "5144e573563a82a061684167af38f3fa02bbadc15f6d3b38269c6fc943f70b5f",
       "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
@@ -714,19 +726,19 @@
     {
       "path": "src/g_retro_menu.inc",
       "bytes": 9043,
-      "sha256": "8a7ef0f763119b7d5c32f337425d34cafc4e84b1fdf08d9486e5e83cc1923e21",
+      "sha256": "fba737b97d71c465063046b2a75b195110f43934c10ea4e184a3f99de8251c73",
       "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/g_shadows.inc",
-      "bytes": 11355,
-      "sha256": "46776308388cde857ed5dafd2d7b93a279d0d096df56a5b14aa4f90318da40da",
+      "bytes": 12239,
+      "sha256": "545db424018cdb0e6c43ec6d030cc6c1984c1c3ae4a31762e2bf98ef0b193386",
       "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/g_track.inc",
-      "bytes": 33028,
-      "sha256": "60ef5a12319a3e572d031c69c69e87812f330fcd7eb20f159665c9fd285153b7",
+      "bytes": 32803,
+      "sha256": "ea6975269fcb8921e2b56a9b6e39b0aca4c2b28de481e2ff1b4b1a39402211d9",
       "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
@@ -779,26 +791,26 @@
     },
     {
       "path": "src/i18n.h",
-      "bytes": 109862,
-      "sha256": "749d0cd0e09b04e13b809a59bee967ee9959ea2c3e3c561820656157538ad679",
+      "bytes": 115518,
+      "sha256": "926877cee852251b94cd59df13111bfd4f1516971efdab9411e76cebc82caec0",
       "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/media.cpp",
-      "bytes": 17615,
-      "sha256": "4f4d4d2cfba99714dd8d59819a03ddf3a514d361bf2e01b0402f7ec3444c4e8c",
+      "bytes": 18487,
+      "sha256": "c0f228fc499f221c4e3e4d221b83bdf5553fab92ca8ccaea508c7971e5f32c73",
       "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/media.h",
-      "bytes": 2165,
-      "sha256": "92bb5cbd852af5dbba7e7adf5a85900c680972227df0de7c4709aa9e6f6536b3",
+      "bytes": 2411,
+      "sha256": "74e91ca9aef519f75755323737787de5519e4e99ea75f555033e2c059b0ff935",
       "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/modes.inc",
-      "bytes": 26403,
-      "sha256": "e2a1493b6e651d5454001ce5566c1180f261b1a77d7052f58a7ca42e46fe4d8a",
+      "bytes": 26399,
+      "sha256": "2b538ca10021bf0050d1e3e21f6b5b8a214f11f77941764fce9c1e75a09b306a",
       "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
@@ -906,13 +918,13 @@
     {
       "path": "src/sys.h",
       "bytes": 4508,
-      "sha256": "5bcd5262865e3062f3f9eeeda213ed342b946255a898a4abc0ffeb1c63d25d69",
+      "sha256": "3740043000f7c3756d19342ce4b0612c9061745506cde57f615a3c57d9081a04",
       "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
       "path": "src/texture_canvas.inc",
-      "bytes": 5299,
-      "sha256": "35904e1abb0fe111cfca5c53ea8c7fc0f6d6dc4b4ba578da5a533a359f8715ef",
+      "bytes": 5459,
+      "sha256": "b7a36ef57c241433ca883c3983bc2e6d52933b1100a5f8ad8a043948c8a68818",
       "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
@@ -1157,8 +1169,14 @@
     },
     {
       "path": "tests/audio_fonts.inc",
-      "bytes": 6953,
-      "sha256": "1bb42a55535a8543cc91c19383b4939602baa5d303090334d4aec87ed56c816f",
+      "bytes": 7001,
+      "sha256": "22cfeff662d6c70bf7d4d51df3cd991c8efb556ae2afec802232caabd282210c",
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
+    },
+    {
+      "path": "tests/audio_menu.inc",
+      "bytes": 5416,
+      "sha256": "6b3db1978c29b03cc78bbcaefe97c7530752a76a1a5e7cf03385b1bb1355d29f",
       "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
@@ -1192,6 +1210,12 @@
       "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
+      "path": "tests/effect_quality.cpp",
+      "bytes": 8303,
+      "sha256": "d8f4e6fed3de35f1770b52aec79e7cf7b06bd2119c55c0cc0520b1a51c43510e",
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
+    },
+    {
       "path": "tests/engine_retro.inc",
       "bytes": 5515,
       "sha256": "7cb32a1a5bcb73d9c066ece44661099f6adfbfcb65fd05c46513f57bf2b874b0",
@@ -1205,8 +1229,8 @@
     },
     {
       "path": "tests/gameplay_graphics.inc",
-      "bytes": 20602,
-      "sha256": "ef32b9357cccfb9d088fd5eecf113d156e72dc8014c0bd63ac84a8555724bd6b",
+      "bytes": 20631,
+      "sha256": "6b859461300309c7229d0b860ab575a59f02ad81c0e7f9c5b1709e0946e31358",
       "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
@@ -1324,6 +1348,12 @@
       "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
+      "path": "tests/preload.inc",
+      "bytes": 6371,
+      "sha256": "6652587627ab1fc3e6fb44a94b57ce849d85ba2b1ffa9861553f2b6b94af6b2b",
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
+    },
+    {
       "path": "tests/publication_export.py",
       "bytes": 4936,
       "sha256": "811f5eaa527a962ab55e0c37311e8e1f428f27d48110c04e6e9baa57828a98cb",
@@ -1336,9 +1366,15 @@
       "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
+      "path": "tests/race_loading_graphics.py",
+      "bytes": 7891,
+      "sha256": "71325a0d3b6028e509047dcb4bd73e7e4b314142c6b78e884153781129bf7739",
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
+    },
+    {
       "path": "tests/regression.cpp",
-      "bytes": 27770,
-      "sha256": "d2fbcca70c0f9b9dbd65f1f4114fdeb43aebac0fe84dd649458fe8452b26bff6",
+      "bytes": 29916,
+      "sha256": "1d85cae018e7df2dcefb98568f5251130cca90593264cdcfca6777afba806251",
       "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
@@ -1393,6 +1429,12 @@
       "path": "tests/revision_0715.inc",
       "bytes": 2016,
       "sha256": "27638e6a1447da68f597dfb2cb6f92b04d48ecbedb241bdf7fe07774b1421868",
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
+    },
+    {
+      "path": "tests/revision_0718_graphics.py",
+      "bytes": 19586,
+      "sha256": "b12e57c3be1a6ab4abec634f04349c6327f3b5a36a5d1cdc2ea98d77f2ca4b75",
       "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
@@ -1477,6 +1519,12 @@
       "path": "tests/video_cnn_gpu.py",
       "bytes": 13459,
       "sha256": "e217a80e8627b1555f8c3a2af6c79b16e323b9eabb12d270aa5972b5495534e1",
+      "classification": "project development material; scope in DOCUMENTATION.md#licensing"
+    },
+    {
+      "path": "tests/video_streaming.cpp",
+      "bytes": 9541,
+      "sha256": "a33f7cd25998985b13aaff57693f4abed3653d88f7607e2c1ee15661a2d6095c",
       "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {
@@ -1614,7 +1662,7 @@
     {
       "path": "tools/prepare_github.py",
       "bytes": 13745,
-      "sha256": "5f2fa005f7f9ae81c741734ea06527d00522d180c94ecc5e4d70ee5f8f15741e",
+      "sha256": "a3f898137485fad93fc4613c31ac50ba5b67cf21673673e03e6dbf19f4eb9e0e",
       "classification": "project development material; scope in DOCUMENTATION.md#licensing"
     },
     {

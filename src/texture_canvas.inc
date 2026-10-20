@@ -35,10 +35,14 @@ static int texture_canvas_image(const char *key,int x,int y,int w,int h,float u,
   TextureLayer l={texture,(float)x,(float)y,(float)w,(float)h,u,v,uw,vh,tint,-1,0};g_texture_layers.push(l);return 1;
 }
 static Arr<TextureImage> g_original_pictures={};
-static int texture_canvas_original_picture(const Pic &p,int x,int y,int w,int h){
-  if(!g_smooth_filter||!p.px||!p.texture_key[0])return 0;
+static TextureImage *texture_original_picture(const Pic &p){
+  if(!p.px||!p.texture_key[0])return 0;
   TextureImage *image=0;for(int i=0;i<g_original_pictures.n;i++)if(!str_icmp(g_original_pictures.p[i].key,p.texture_key)){image=&g_original_pictures.p[i];break;}
   if(!image){TextureImage t={};str_cpy(t.key,p.texture_key,sizeof t.key);t.w=p.w;t.h=p.h;t.pixels=(u8 *)sys_alloc((size_t)t.w*t.h*4);for(int i=0;i<t.w*t.h;i++){int index=p.px[i];for(int k=0;k<3;k++)t.pixels[i*4+k]=p.pal[index*3+k];t.pixels[i*4+3]=255;}g_original_pictures.push(t);image=&g_original_pictures.p[g_original_pictures.n-1];}
+  return image;
+}
+static int texture_canvas_original_picture(const Pic &p,int x,int y,int w,int h){
+  if(!g_smooth_filter)return 0;TextureImage *image=texture_original_picture(p);if(!image)return 0;
   GLuint texture=texture_gpu(image,0,1);glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MIN_FILTER,GL_LINEAR);glTexParameteri(GL_TEXTURE_2D,GL_TEXTURE_MAG_FILTER,GL_LINEAR);texture_canvas_snapshot();
   TextureLayer l={texture,(float)x,(float)y,(float)w,(float)h,0,0,1,1,0xffffffffu,-1,0};g_texture_layers.push(l);return 1;
 }

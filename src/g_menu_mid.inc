@@ -6,8 +6,7 @@ static int clip_start_next(void) {
     for (int i = 1; i < G.clip_nq; i++) str_cpy(G.clip_queue[i - 1], G.clip_queue[i], 40);
     G.clip_nq--;
     if (G.clip.data) video_close(&G.clip);
-    size_t n; uint8_t *d = iso_load(p, &n);
-    if (d && video_open(&G.clip, d, n, 400,audio_enabled(AUDIO_SOUNDS))) {
+    if (video_open_iso(&G.clip,p,400,audio_enabled(AUDIO_SOUNDS))) {
       if(sys_debug_enabled()){char event[100]="[event] Playing video: ";str_cat(event,p,sizeof event);sys_log(event);}
       G.clip_ok = 1; G.clip_t = 0;
       if (G.clip.pcm) { g_fmv_snd.pcm = G.clip.pcm; g_fmv_snd.frames = G.clip.pcm_frames; g_fmv_snd.ch = 2; voice_play(&g_fmv_snd, 0.9f); }
@@ -149,11 +148,14 @@ static void draw_turntable(int W, int H, int car, double angle, float x, float y
   V3 c = (m->bmin + m->bmax) * 0.5f;
   M4 base = m4_mul(m4_roty((float)angle),m4_trans(v3(-c.x,-m->bmin.y,-c.z)));
   int old_hide=g_hide_model_shadows;g_hide_model_shadows=1;
+  reflections_preview_picture(G.bg.px,G.bg.pal,G.bg.w,G.bg.h,G.bg.texture_key,(!g_tex_nearest&&g_vehicle_reflections)?texture_custom(G.bg.texture_key):0,x,y-h*.08f,w,h,vp,eye);
   preview_shadow_draw(*m,vp,base,(float)(angle*3));
   model_shader_begin(vp,1);glUniform1i(R.um_lamps,g_vehicle_lights&&(!g_tex_nearest));glUniform1i(R.um_rear_only,A.graphics_test==15);glUniform1f(R.um_brake,A.graphics_test==15&&A.test_damage?1.f:0.f);
   glUniformMatrix4fv(R.um_vp, 1, GL_FALSE, vp.m); glUniform3f(R.um_cam, eye.x, eye.y, eye.z);
   glUniform1i(R.um_tex, 0); glUniform1f(R.um_lit, 1.0f); glUniform1f(R.um_gain, 1.0f); glUniform1f(R.um_gray, 0.0f);
+  reflections_vehicle(1);
   draw_model_mv(*m, base, (float)(angle * 3), 0);
+  reflections_vehicle(0);
   preview_lights_draw(*m,vp,base,eye,(float)(angle*3),W,H);
   g_hide_model_shadows=old_hide;
   glBindVertexArray(0);

@@ -228,94 +228,88 @@ int mexe_engine_frequency(int speed){
 static const u32 BUF_A = 0x1000000, BUF_B = 0x1400000, BUF_IN = 0x1800000;
 static Video *g_dec_owner;
 
-int video_open(Video *v, uint8_t *data, size_t size, int track_height,int decode_audio) {
-  mset(v, 0, sizeof *v);
-  static unsigned generation;v->generation=++generation;
-  v->data = data; v->size = size; v->decoded_frame = -1; v->fps = 25;
-  size_t o = 0;
-  if (size > 64 && data[0] == 'U' && data[1] == 'B' && data[2] == 'B' && data[3] == '2') {
-    v->w = rd16(data + 8); v->h = rd16(data + 10); o = 64;
-  } else { v->w = 320; v->h = track_height; }
-  if (v->w <= 0 || v->w > 320 || v->h <= 0 || v->h > 480) return 0;
-  // index superchunks
-  int cap = 1024; int n = 0;
-  v->frame_ofs = (u32 *)sys_alloc(4 * cap); v->keyframe = (u8 *)sys_alloc(cap); v->pal_id = (u16 *)sys_alloc(2 * cap);
-  int pcap = 16; v->pals = (u8(*)[768])sys_alloc(768 * pcap); v->npals = 1;
-  u8 curpal[768]; mset(curpal, 0, 768);
-  // audio
-  s16 tab[256]; int have_tab = 0; int scap = 0; s32 al = 0, ar = 0;
-  for (size_t q = o; q + 8 < size;) {   // find DD (delta table) first
-    u32 ssz = rd32(data + q) & 0xffffff; if (ssz < 4) break;
-    for (size_t p = q + 4; p + 8 <= q + ssz && p + 8 <= size;) {
-      u32 csz = rd32(data + p); if (csz < 8) break;
-      if (data[p + 4] == 'D' && data[p + 5] == 'D' && csz >= 8 + 512) { for (int i = 0; i < 256; i++) tab[i] = (s16)rd16(data + p + 8 + i * 2); have_tab = 1; }
-      p += (csz + 3) & ~3u;
+// A streamed source reads headers/palettes for its index, and only the requested
+// compressed superchunk during playback. It never allocates the whole UBB file.
+static const u8 *video_bytes(Video *v,size_t offset,size_t count){
+  if(offset>v->size||count>v->size-offset)return 0;
+  if(!v->streaming)return v->data+offset;
+  if(count>v->stream_capacity){v->stream_capacity=count+64;v->stream_buffer=(u8 *)sys_realloc(v->stream_buffer,v->stream_capacity);}
+  if(!v->stream_buffer||!sys_fread_at(g_iso,v->stream_offset+offset,v->stream_buffer,count))return 0;
+  v->stream_bytes_read+=count;return v->stream_buffer;
+}
+static int video_open_source(Video *v,uint8_t *data,size_t size,int height,int decode_audio,int streaming,uint64_t base){
+  mset(v,0,sizeof *v);static unsigned generation;v->generation=++generation;
+  v->data=data;v->size=size;v->streaming=streaming;v->stream_offset=base;v->decoded_frame=-1;v->fps=25;
+  size_t o=0;const u8 *header=video_bytes(v,0,size>=4?4:size);
+  if(!header)return 0;
+  if(size>64&&header[0]=='U'&&header[1]=='B'&&header[2]=='B'&&header[3]=='2'){header=video_bytes(v,0,12);if(!header)return 0;v->w=rd16(header+8);v->h=rd16(header+10);o=64;}
+  else{v->w=320;v->h=height;}
+  if(v->w<=0||v->w>320||v->h<=0||v->h>480)return 0;
+  int cap=1024,n=0,pcap=16;
+  v->frame_ofs=(u32 *)sys_alloc(4*cap);v->keyframe=(u8 *)sys_alloc(cap);v->pal_id=(u16 *)sys_alloc(2*cap);
+  v->pals=(u8(*)[768])sys_alloc(768*pcap);v->npals=1;mset(v->pals[0],0,768);
+  u8 curpal[768];mset(curpal,0,768);s16 tab[256];int have_tab=0,scap=0;s32 al=0,ar=0;
+  for(size_t q=o;q+8<size;){
+    const u8 *h=video_bytes(v,q,4);if(!h)return 0;u32 ssz=rd32(h)&0xffffff;
+    if(ssz<4||ssz>size-q)break;
+    for(size_t pos=q+4;pos+8<=q+ssz;){
+      h=video_bytes(v,pos,8);if(!h)return 0;u32 csz=rd32(h);if(csz<8||csz>q+ssz-pos)break;
+      if(h[4]=='D'&&h[5]=='D'&&csz>=520){const u8 *d=video_bytes(v,pos+8,512);if(!d)return 0;for(int i=0;i<256;i++)tab[i]=(s16)rd16(d+i*2);have_tab=1;}
+      pos+=(csz+3)&~3u;
     }
-    if (have_tab) break;
-    q += ssz;
-    if (q - o > 200000) break;
+    if(have_tab)break;q+=ssz;if(q-o>200000)break;
   }
   int audio_frames=0;
-  while (o + 8 <= size) {
-    u32 sh = rd32(data + o), ssz = sh & 0xffffff;
-    if (ssz < 4 || o + ssz > size) break;
-    if (n == cap) {
-      cap *= 2;
-      v->frame_ofs = (u32 *)sys_realloc(v->frame_ofs, 4 * cap); v->keyframe = (u8 *)sys_realloc(v->keyframe, cap); v->pal_id = (u16 *)sys_realloc(v->pal_id, 2 * cap);
-    }
-    v->frame_ofs[n] = (u32)o; v->keyframe[n] = (sh >> 31) & 1;
-    for (size_t p = o + 4; p + 8 <= o + ssz;) {
-      u32 csz = rd32(data + p); if (csz < 8 || p + csz > size) break;
-      const u8 *c = data + p + 8; u32 cl = csz - 8;
-      if (c[-4] == 'P' && c[-3] == 'L' && cl >= 2) {
-        int s = c[0], cnt = c[1] ? c[1] : 256;
-        for (int i = 0; i < cnt * 3 && s * 3 + i < 768 && 2 + i < (int)cl; i++) curpal[s * 3 + i] = c[2 + i];
-        if (v->npals == pcap) { pcap *= 2; v->pals = (u8(*)[768])sys_realloc(v->pals, 768 * pcap); }
-        mcpy(v->pals[v->npals++], curpal, 768);
+  while(o+8<=size){
+    const u8 *h=video_bytes(v,o,4);if(!h)return 0;u32 sh=rd32(h),ssz=sh&0xffffff;
+    if(ssz<4||ssz>size-o)break;
+    if(n==cap){cap*=2;v->frame_ofs=(u32 *)sys_realloc(v->frame_ofs,4*cap);v->keyframe=(u8 *)sys_realloc(v->keyframe,cap);v->pal_id=(u16 *)sys_realloc(v->pal_id,2*cap);}
+    v->frame_ofs[n]=(u32)o;v->keyframe[n]=(sh>>31)&1;
+    for(size_t pos=o+4;pos+8<=o+ssz;){
+      h=video_bytes(v,pos,8);if(!h)return 0;u32 csz=rd32(h);if(csz<8||csz>o+ssz-pos)break;
+      u32 cl=csz-8;int tag0=h[4],tag1=h[5],flags=h[6];
+      if(tag0=='P'&&tag1=='L'&&cl>=2){
+        const u8 *c=video_bytes(v,pos+8,cl);if(!c)return 0;int first=c[0],count=c[1]?c[1]:256;
+        for(int i=0;i<count*3&&first*3+i<768&&2+i<(int)cl;i++)curpal[first*3+i]=c[2+i];
+        if(v->npals==pcap){pcap*=2;v->pals=(u8(*)[768])sys_realloc(v->pals,768*pcap);}
+        mcpy(v->pals[v->npals++],curpal,768);
       }
-      if (c[-4] == 'S' && c[-3] == 'D' && have_tab) {
-        // like the decoder in M.EXE (0x40db0 / 0x40dd6): bit 7 of the chunk flags = stereo (two accumulators,
-        // bytes interleaved L,R), otherwise mono (one accumulator). 22050 Hz either way.
-        int stereo = (c[-2] & 0x80) != 0;
-        int nfr = stereo ? (int)cl / 2 : (int)cl;
-        audio_frames+=nfr;
+      if(tag0=='S'&&tag1=='D'&&have_tab){
+        int stereo=(flags&0x80)!=0,nfr=stereo?(int)cl/2:(int)cl;audio_frames+=nfr;
         if(decode_audio){
-        if (v->pcm_frames + nfr > scap) { scap = (v->pcm_frames + nfr) * 2 + 4096; v->pcm = (s16 *)sys_realloc(v->pcm, 4 * scap); }
-        for (int i = 0; i < nfr; i++) {
-          if (stereo) { al = (s16)(al + tab[c[i * 2]]); ar = (s16)(ar + tab[c[i * 2 + 1]]); }
-          else { al = (s16)(al + tab[c[i]]); ar = al; }
-          v->pcm[(v->pcm_frames + i) * 2] = (s16)al; v->pcm[(v->pcm_frames + i) * 2 + 1] = (s16)ar;
-        }
-        v->pcm_frames += nfr;
+          const u8 *c=video_bytes(v,pos+8,cl);if(!c)return 0;
+          if(v->pcm_frames+nfr>scap){scap=(v->pcm_frames+nfr)*2+4096;v->pcm=(s16 *)sys_realloc(v->pcm,4*scap);}
+          for(int i=0;i<nfr;i++){if(stereo){al=(s16)(al+tab[c[i*2]]);ar=(s16)(ar+tab[c[i*2+1]]);}else{al=(s16)(al+tab[c[i]]);ar=al;}
+            v->pcm[(v->pcm_frames+i)*2]=(s16)al;v->pcm[(v->pcm_frames+i)*2+1]=(s16)ar;}
+          v->pcm_frames+=nfr;
         }
       }
-      p += (csz + 3) & ~3u;
+      pos+=(csz+3)&~3u;
     }
-    v->pal_id[n] = (u16)(v->npals - 1);
-    n++; o += ssz;
+    v->pal_id[n]=(u16)(v->npals-1);n++;o+=ssz;
   }
-  v->nframes = n;
-  if (audio_frames > 22050 && n > 0) {   // frame rate from the length of the sound track (12.5 or 25 fps)
-    double fps = (double)n * 22050.0 / audio_frames;
-    v->fps = fps < 18 ? 12 : 25; v->fps_exact = fps;
-  } else v->fps_exact = v->fps;
-  if (n) v->keyframe[0] = 1;
-  v->rgba = (u8 *)sys_alloc((size_t)v->w * v->h * 4);
-  return n > 0;
+  v->nframes=n;
+  if(audio_frames>22050&&n>0){double fps=(double)n*22050.0/audio_frames;v->fps=fps<18?12:25;v->fps_exact=fps;}else v->fps_exact=v->fps;
+  if(n)v->keyframe[0]=1;v->rgba=(u8 *)sys_alloc((size_t)v->w*v->h*4);return n>0;
 }
-
-static void decode_one(Video *v, int i) {
-  u8 *M = g_M; const u8 *d = v->data; size_t o = v->frame_ofs[i];
-  u32 ssz = rd32(d + o) & 0xffffff;
-  for (size_t p = o + 4; p + 8 <= o + ssz;) {
-    u32 csz = rd32(d + p); if (csz < 8) break;
-    if (d[p + 4] == 'I' && d[p + 5] == 'V' && csz - 8 < (4u << 20)) {
-      u32 t = RD32(0xa4ff4); WR32(0xa4ff4, RD32(0xa4ff8)); WR32(0xa4ff8, t);
-      mcpy(M + BUF_IN, d + p + 8, csz - 8); mset(M + BUF_IN + csz - 8, 0, 64);
-      ubb_iv320(M, BUF_IN, 0, 0, 0, 0, 0, 0);
-    }
-    p += (csz + 3) & ~3u;
-  }
+int video_open(Video *v,uint8_t *data,size_t size,int height,int decode_audio){
+  int ok=video_open_source(v,data,size,height,decode_audio,0,0);if(!ok)video_close(v);return ok;
+}
+int video_open_iso(Video *v,const char *path,int height,int decode_audio){
+  IsoEnt e;if(!g_iso||!iso_find(path,&e)||e.dir){mset(v,0,sizeof *v);return 0;}
+  // A unique ownership token also preserves the renderer's video cache identity.
+  u8 *token=(u8 *)sys_alloc(1);int ok=video_open_source(v,token,e.size,height,decode_audio,1,(uint64_t)e.lba*2048);
+  if(!ok)video_close(v);else sys_log_asset(path);return ok;
+}
+static int decode_one(Video *v,int i){
+  u8 *M=g_M;size_t offset=v->frame_ofs[i];const u8 *head=video_bytes(v,offset,4);if(!head)return 0;
+  u32 ssz=rd32(head)&0xffffff;const u8 *d=video_bytes(v,offset,ssz);if(!d)return 0;
+  for(size_t pos=4;pos+8<=ssz;){u32 csz=rd32(d+pos);if(csz<8||csz>ssz-pos)break;
+    if(d[pos+4]=='I'&&d[pos+5]=='V'&&csz-8<(4u<<20)){
+      u32 t=RD32(0xa4ff4);WR32(0xa4ff4,RD32(0xa4ff8));WR32(0xa4ff8,t);
+      mcpy(M+BUF_IN,d+pos+8,csz-8);mset(M+BUF_IN+csz-8,0,64);ubb_iv320(M,BUF_IN,0,0,0,0,0,0);
+    }pos+=(csz+3)&~3u;
+  }return 1;
 }
 
 int video_decode(Video *v, int frame) {
@@ -333,7 +327,7 @@ int video_decode(Video *v, int frame) {
       mset(M + BUF_A, 0, 0x400000); mset(M + BUF_B, 0, 0x400000);
       start = k;
     }
-    for (int i = start; i <= frame; i++) decode_one(v, i);
+    for (int i = start; i <= frame; i++) if(!decode_one(v, i)){v->decoded_frame=-1;return 0;}
     v->decoded_frame = frame;
   }
   const u8 *src = M + RD32(0xa4ff8);
@@ -350,7 +344,7 @@ int video_decode(Video *v, int frame) {
 void video_close(Video *v) {
   if (g_dec_owner == v) g_dec_owner = 0;
   sys_free(v->data); sys_free(v->frame_ofs); sys_free(v->keyframe); sys_free(v->pal_id); sys_free(v->pals);
-  sys_free(v->pcm); sys_free(v->rgba);
+  sys_free(v->pcm); sys_free(v->rgba);sys_free(v->stream_buffer);
   mset(v, 0, sizeof *v);
 }
 

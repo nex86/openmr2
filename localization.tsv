@@ -312,3 +312,21 @@ Recording stopped	Aufnahme gestoppt	Recording stopped	Enregistrement arrêté
 Recording failed	Aufnahme fehlgeschlagen	Recording failed	Échec de l'enregistrement
 Screenshot saved	Screenshot erstellt	Screenshot saved	Capture enregistrée
 Screenshot failed	Screenshot fehlgeschlagen	Screenshot failed	Échec de la capture
+Vehicle reflections	Fahrzeugspiegelungen	Vehicle reflections	Reflets des véhicules
+Effect quality	Effektqualität	Effect quality	Qualité des effets
+Low	Niedrig	Low	Faible
+Medium	Mittel	Medium	Moyenne
+High	Hoch	High	Élevée
+Extreme	Extrem	Extreme	Extrême
+Effect quality hint	Mittel = bisherige Qualität. Hoch / Extrem = weichere Effekte.	Medium = previous quality. High / Extreme = smoother effects.	Moyenne = qualité précédente. Élevée / Extrême = effets plus fluides.
+Preparing race	Rennen vorbereiten	Preparing race	Préparation de la course
+Loading track data	Streckendaten laden	Loading track data	Chargement du circuit
+Loading 3D models and textures	3D-Modelle und Texturen laden	Loading 3D models and textures	Chargement des modèles et textures
+Loading HUD and custom textures	HUD und eigene Texturen laden	Loading HUD and custom textures	Chargement du HUD et des textures
+Loading race sounds	Renngeräusche laden	Loading race sounds	Chargement des sons
+Loading race music	Rennmusik laden	Loading race music	Chargement de la musique
+Compiling shaders	Shader kompilieren	Compiling shaders	Compilation des shaders
+Compiling video shaders	Video-Shader kompilieren	Compiling video shaders	Compilation des shaders vidéo
+Preparing streamed video	Videostream vorbereiten	Preparing streamed video	Préparation du flux vidéo
+Ready	Bereit	Ready	Prêt
+Shop sounds	Shopsounds	Shop sounds	Sons de la boutique

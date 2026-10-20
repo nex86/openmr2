@@ -34,7 +34,7 @@ static void test_audio_fonts(){
   }
   mem_zero(MX.v,sizeof MX.v);g_audio_percent[AUDIO_ENGINES]=100;
   int engine=engine_play(S_ENGINE,1,1);check(snd_voice(engine)&&SFX[S_ENGINE].pcm,"engine can load and play while sounds remain off");
-  g_audio_percent[AUDIO_MENU_SOUNDS]=100;msfx(S_MENU2,1);
+  g_audio_percent[AUDIO_MENU_SOUNDS]=100;G.state=GS_WEAPONSHOP;PF.single=0;G.in_single=0;msfx(S_MENU2,1);
   check(MX.v[2].active&&MX.v[3].active&&MX.v[2].bus!=MX.v[3].bus,"menu sounds and engines have separate active buses");
   g_audio_percent[AUDIO_ENGINES]=0;setup_apply();check(!snd_voice(engine)&&!SFX[S_ENGINE].pcm&&MX.v[3].active,"disabling engines frees them while menu sound survives");
   for(int b=0;b<AUDIO_COUNT;b++)g_audio_percent[b]=0;setup_apply();

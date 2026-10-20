@@ -51,7 +51,7 @@ static void retro_volume_bar(int x,int y,int value,uint32_t color){
 }
 static void screen_retro_sound(const Input *in){
   cv_pic(G.bg,0,0,1);cv_text(g_font_h14,320,6,"Advanced sound",ORANGE,1,1);
-  static const char *labels[]={"Sounds","Engines","Race music","Menu music","Menu sounds"};int hover=-1;
+  static const char *labels[]={"Sounds","Engines","Race music","Menu music","Shop sounds"};int hover=-1;
   if(G.sel<0||G.sel>5)G.sel=0;
   for(int b=0;b<AUDIO_COUNT;b++){
     int y=56+b*66;uint32_t col=G.kbd&&G.sel==b?WHITE:BEIGE;

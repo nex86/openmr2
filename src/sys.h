@@ -4,7 +4,7 @@
 #include <stdint.h>
 
 #define OPENMR2_NAME "OpenMR2"
-#define OPENMR2_VERSION "0.7.17-dev"
+#define OPENMR2_VERSION "0.7.18-dev"
 #define OPENMR2_FULLTITLE "OpenMR2 MegaRace2 Revived  v" OPENMR2_VERSION
 
 void *sys_alloc(size_t n);          // zeroed

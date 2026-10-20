@@ -67,7 +67,8 @@ struct GameUI {
   int custom_textures;
   int video_upscale,video_filter;
   int real_time_shadows,modern_explosions,vehicle_lights,damage_effects,enhanced_oil,missile_effects;
-  int effect_intensity[6]; int effects_muted;
+  int vehicle_reflections,effect_quality;
+  int effect_intensity[7]; int effects_muted;
   int startup_mode, remember_startup_mode;
   int gfx_mode, gfx_scale, gfx_msaa, gfx_fxaa, gfx_full, gfx_output_filter;   // output filter is Retro-only
   int opts_menumusic;            // music in the menus
@@ -112,7 +113,17 @@ static void loading_music_start(void) {
   else music_play(&G.menu_music,1,AUDIO_RACE_MUSIC);
   G.menu_music_on=MX.v[0].active;
 }
-static void msfx(int id, float vol) { if (audio_enabled(AUDIO_MENU_SOUNDS)) snd_play(sfx_sample(id,AUDIO_MENU_SOUNDS),vol,1,0,0,AUDIO_MENU_SOUNDS); }   // sound effects of the menus (can be switched off)
+static int menu_sfx_context(){
+  if(PF.single||G.in_single)return 0;
+  return G.state==GS_CARSHOP||G.state==GS_WEAPONSHOP||
+    (G.state==GS_MESSAGE&&(G.msg_next==GS_CARSHOP||G.msg_next==GS_WEAPONSHOP));
+}
+static void msfx(int id, float vol) {
+  // Menu effects belong only to the career shops and their modal messages.
+  // Check before looking up the WAV so silent menus do not load it either.
+  if(!menu_sfx_context()||!audio_enabled(AUDIO_MENU_SOUNDS)||id<S_MENU1||id>S_MENU4)return;
+  snd_play(sfx_sample(id,AUDIO_MENU_SOUNDS),vol,1,0,0,AUDIO_MENU_SOUNDS);
+}
 static void menu_music_stop(void) { if (G.menu_music_on) { music_stop(); G.menu_music_on = 0; } }
 static void race_music_start(){
   if(!audio_enabled(AUDIO_RACE_MUSIC))return;
@@ -125,5 +136,5 @@ static void load_vox(void);
 static void save_game(void);
 static int load_game(void);
 static void hiscore_offer(void);
-static void show_message(const char *m, int next) { str_cpy(G.msg, m, 256); G.msg_next = next; if(next==GS_CARSHOP){G.state=GS_MESSAGE;G.sel=0;G.t=0;}else go(GS_MESSAGE); }
+static void show_message(const char *m, int next) { if(next==GS_CARSHOP||next==GS_WEAPONSHOP)msfx(S_MENU1,60.f/127);str_cpy(G.msg, m, 256); G.msg_next = next; if(next==GS_CARSHOP){G.state=GS_MESSAGE;G.sel=0;G.t=0;}else go(GS_MESSAGE); }
 

@@ -79,8 +79,7 @@ static int fmv_open(int i) {
   FV.loaded = 0;
   if (!FV.n) return 0;
   FV.cur = ((i % FV.n) + FV.n) % FV.n;
-  size_t n; uint8_t *d = iso_load(FV.names[FV.cur], &n);
-  if (!d || !video_open(&FV.vid, d, n, 400,audio_enabled(AUDIO_SOUNDS))) { str_cpy(A.status, ui_translate("Video nicht lesbar"), 256); return 0; }
+  if (!video_open_iso(&FV.vid,FV.names[FV.cur],400,audio_enabled(AUDIO_SOUNDS))) { str_cpy(A.status, ui_translate("Video nicht lesbar"), 256); return 0; }
   FV.t = 0; FV.paused = 0; FV.loaded = 1;
   if (FV.vid.pcm) { g_fmv_snd.pcm = FV.vid.pcm; g_fmv_snd.frames = FV.vid.pcm_frames; g_fmv_snd.ch = 2; voice_play(&g_fmv_snd, 1.0f); }
   return 1;
@@ -267,7 +266,7 @@ static int game_mode_frame(int W, int H, float dt, const Input *in) {
       if (RC.paused) { static int pw; ready = ++pw > 15; } }
     else if (G.state == GS_REPLAY) { static int rw; ready = ++rw > 60; }
     else if (G.state == GS_CLIP) ready = G.clip_t >= (A.demo_time > 0 ? A.demo_time : 2.0);
-    else ready = g_game_frames > 20;
+    else ready = A.graphics_test==20&&G.state==GS_TRACKINFO?1:g_game_frames > 20;
     if (ready) { A.shot_pending = 1; g_shot_wanted = 0; }
   }
   if(A.native_shot_path[0]&&A.shot_pending&&A.frames_rendered+1>=(A.shot_after>0?A.shot_after:2)){

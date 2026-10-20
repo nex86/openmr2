@@ -7,7 +7,7 @@ Settings, controls, technical notes, development history and licensing.
 - [Configuration and migration](#configuration)
 - [Keyboard and mouse controls](#keyboard)
 - [Screenshots and recordings](#recording)
-- [Revived Effects - 0.7.11](#revive-effects)
+- [Revived Effects - 0.7.18](#revive-effects)
 - [GPU video upscaling (Revived only)](#video-upscaling)
 - [Driving and AI - 0.7.17-dev](#physics)
 - [Retro renderer: implementation and remaining differences](#retro-renderer)
@@ -51,6 +51,9 @@ Format: `key = value`, one setting per line; `#` starts a comment. UI language n
 | `msaa` | 0, 2, 4, 8 (menu); parser also retains up to 16 from existing settings, subject to driver support |
 | `fxaa`, `fullscreen` | 0/1 |
 | `frame_rate` | `original`, `60fps` |
+| `effect_quality` | 0 Low, 1 Medium (default), 2 High, 3 Extreme; Revived effect detail |
+| `vehicle_reflections` | 0/1; enable vehicle reflections in Revived, default 1 |
+| `reflection_intensity` | 0-200 percent; default 100 |
 | `sound_effects`, `race_music`, `menu_music`, `menu_sounds` | 0/1 |
 | `lance_boyle_videos` | 0/1 |
 | `laps` | 0 original 5/5/3 heats, or override 3/5 |
@@ -59,7 +62,7 @@ Format: `key = value`, one setting per line; `#` starts a comment. UI language n
 | `debug_console` | 0/1; Windows debug console, Linux detailed terminal diagnostics; diagnostics always English |
 | `debug_fps`, `debug_race_info`, `debug_road_markers`, `debug_no_opponents` | 0/1 |
 | `debug_stretch`, `debug_legacy_camera`, `debug_skip_videos` | 0/1; experimental/diagnostic presentation options |
-| `simulation_model` | 0 one complete step per reconstructed original update, 1 older subdivided Revived model |
+| `simulation_model` | Removed legacy preference; the validated original update is always used |
 | `ai_rescue` | 0/1 modern recovery assistance |
 | `cheat_money`, `cheat_ammo`, `cheat_weapons_and_cars`, `cheat_no_damage` | 0/1; championship cheats |
 
@@ -108,6 +111,11 @@ When `debug_console = 0`, console messages are discarded before history, debugge
 
 `revived_options_saved = 1` marks a saved snapshot. `revived_texture_filter`, `revived_msaa`, `revived_fxaa` and `revived_frame_rate` retain the previous Revived settings. The snapshot frame rate uses 0 Original / 1 60fps. While Retro Mode is active, the ordinary active settings read `texture_filter = 1`, `msaa = 0`, `fxaa = 0`, `frame_rate = original`. Re-selecting Retro does not overwrite the snapshot. Returning to Revived restores the previous values exactly. Upgrading an older Retro configuration captures its preferences once before enforcing the active restrictions.
 
+The seven Revived effect switches/intensities and `effect_quality` remain saved
+while Retro is active. Retro bypasses their rendering and resource preload;
+its runtime quality is fixed to Medium without overwriting the saved Revived
+quality. Returning to Revived restores that quality and the individual effects.
+
 
 <a id="configuration--custom-textures-075"></a>
 
@@ -120,7 +128,7 @@ Debug / Cheats > Dump textures exports original static assets and material refer
 
 ### 0.7.6 palette and export action corrections
 
-Only explicit accent marker colors at palette indices 248/249 are replaced; all other entries, including white barrel skulls, are preserved. Dump textures is an action, with no saved toggle or cancellation on repeated clicks. Export progresses in every view, displays the same bar as track loading, stops automatically and plays the Apply sound once. Existing dump_textures config keys are ignored. Corrected original dumps refresh only exact, unchanged legacy outputs; edited exports/replacement PNGs are preserved.
+Only explicit accent marker colors at palette indices 248/249 are replaced; all other entries, including white barrel skulls, are preserved. Dump textures is an action, with no saved toggle or cancellation on repeated clicks. Export progresses in every view, displays the same bar as track loading, stops automatically and finishes silently under the shop-only menu sound policy. Existing dump_textures config keys are ignored. Corrected original dumps refresh only exact, unchanged legacy outputs; edited exports/replacement PNGs are preserved.
 
 Texture export/replacement folders are stored inside revived_config: revived_config/texture_dumps and revived_config/texture_replacements.
 
@@ -137,11 +145,10 @@ keyboard/controller Up/Down for focus, Left/Right for 5-percent steps.
 
 0 prevents the category's samples/music from loading or starting playback.
 Turning a category down to 0 stops its active voices and frees its cached audio.
-Re-enabling it loads audio on demand. Loading-screen music follows Menu music.
+Re-enabling it loads audio on demand. Loading-screen WAIT.16 music follows Race music, even when Menu music is muted.
 Sounds covers race effects and speech/video sound; Engines covers the player
 and opponent engine loops. Video pictures still play when Sounds is 0; embedded
-audio is not decoded and video timing is preserved. Menu effects, including the
-texture-export completion effect, follow Menu sounds.
+audio is not decoded and video timing is preserved. Only career-shop transaction/dialog effects follow Shop sounds (`menu_sounds_volume`). Other menu actions and texture-export completion are silent.
 
 Legacy sound_effects/race_music/menu_music/menu_sounds Boolean values are still
 read; when a percentage key is absent, off migrates to 0 and on to 100. The
@@ -228,11 +235,18 @@ The switch back to Retro remains available in Revived.
 Filter sources, lookup table, full upstream licenses and SHA-256 provenance
 are in `src/third_party/output_filters`; see `THIRD_PARTY_NOTICES.txt`.
 
-<a id="configuration--revived-effects-079"></a>
+<a id="configuration--revived-effects"></a>
 
-### Revived Effects (0.7.9)
+### Revived Effects
 
-`real_time_shadows`, `vehicle_lights`, `enhanced_oil`, `modern_explosions` and `damage_effects` use 0/1 and default to 1. The submenu is hidden in Retro; saved preferences are retained. Damage: white smoke/light deformation at 70%, visibly stronger deformation at 80%, black smoke at 85%, fire at 90% (growing each percentage point), destroyed wreck/large explosion at 100%. See REVIVE_EFFECTS.md for details.
+`real_time_shadows`, `vehicle_lights`, `enhanced_oil`, `modern_explosions`,
+`damage_effects`, `missile_effects` and `vehicle_reflections` use 0/1 and default
+to 1. The submenu is hidden in Retro; saved preferences are retained. Damage:
+white smoke/light deformation at 70%, visibly stronger deformation at 80%, black
+smoke at 85%, fire at 90% (growing each percentage point), destroyed wreck/large
+explosion at 100%. Reflections use the finite camera-visible track environment;
+they do not recover a full 360-degree scene or unavailable off-screen geometry.
+See REVIVE_EFFECTS.md for details and rendering limits.
 
 Scaling now honors the selected maximum factor even with `integer_scale = 0`; only fitting to smaller windows can reduce it.
 
@@ -247,10 +261,30 @@ Scaling now honors the selected maximum factor even with `integer_scale = 0`; on
 ### Revived effect intensity (0.7.11)
 
 `shadow_intensity`, `light_intensity`, `oil_intensity`, `explosion_intensity`,
-`damage_intensity`, `missile_intensity`: each 0-200, default 100. Zero suppresses
-that effect while retaining its checkbox preference. Reset restores enabled
-switches and 100% values. Retro preserves these settings without rendering the
+`damage_intensity`, `missile_intensity`, `reflection_intensity`: each 0-200, default 100. Zero suppresses
+that effect while retaining its checkbox preference. Reset enables all seven
+switches and restores 100% values and Medium effect quality. Retro preserves these settings without rendering the
 effects. See REVIVE_EFFECTS.md for mapping and lamp restrictions.
+
+<a id="configuration--effect-quality-0718"></a>
+
+### Effect quality (0.7.18)
+
+`effect_quality` accepts 0 **Low**, 1 **Medium** (default), 2 **High** and
+3 **Extreme**. It changes rendering detail rather than effect intensity or
+physics. Medium retains the existing particle/light-trail path; 1,200 focused
+byte comparisons match its previous vertices and trail transforms/weights.
+Low reduces particle and trail work. High/Extreme use denser bounded effects,
+presentation-time emitter interpolation and connected fire/smoke paths. Rear
+trails integrate the exact rear-only light mask along history, replacing
+separated ghost copies. Higher tiers cost more GPU time; see REVIVE_EFFECTS.md
+for rates, budgets and approximations.
+
+The selected effect shaders, light resources and fire atlas preload during track
+loading. Changing quality is saved independently of the seven switches and
+their 0-200 percent intensities. **Reset** restores all seven enabled at 100%
+and quality 1; F9 mutes/restores all seven only in Revived. Retro never enables
+these effects, regardless of saved quality or legacy `retro_surprise` values.
 
 <a id="configuration--experimental-gpu-video-upscaling"></a>
 
@@ -281,7 +315,7 @@ See VIDEO_UPSCALING.md for processing, image limits and remaining artifacts.
 
 ### 0.7.13 controls and capture
 
-`effects_muted = 0/1` temporarily mutes all six modern effect groups without
+`effects_muted = 0/1` temporarily mutes all seven modern effect groups without
 changing their individual saved switches/intensities. The obsolete
 `retro_surprise` key is ignored and removed on save. Retro always disables all
 modern effect categories. The legacy `simulation_model` setting is also ignored;
@@ -293,6 +327,26 @@ in `revived_config/screenshots`. See RECORDING.md for encoder setup and limits.
 Loading WAIT.16 music uses `race_music_volume`, independently of menu volume.
 The message beneath the audio sliders is localized as "0% = off" (German:
 "0% = ausgeschaltet"). Capture notifications are localized and top-right.
+
+The displayed Shop sounds slider retains the compatible `menu_sounds_volume` key. It now controls career-shop purchases, sales and warning dialogs only. Other menu actions are silent; this does not mute menu music, cinematic soundtracks or race effects.
+
+<a id="configuration--race-preparation"></a>
+
+### Race preparation
+
+The loading bar counts completed work rather than elapsed seconds. The selected
+track's geometry, visibility/camera metadata, all vehicle and race-object models,
+original/model replacement textures, HUD/pause assets, enabled race sounds/music
+and selected GPU effect/video shaders are prepared before racing. Muted audio
+categories are skipped. Work runs in small batches; no minimum loading delay is
+imposed. Esc cancels preparation without starting a partially loaded race.
+
+UBB files keep a small frame/palette index and bounded compressed-frame storage.
+The loader skips compressed image payload while indexing; the initial displayed
+frame is decoded at the last preparation step and later images are read as
+needed, including keyframe dependencies when seeking. Movie audio, when enabled,
+retains its existing PCM preparation for synchronized playback. No entire UBB
+video buffer or decoded movie is preloaded by the race resource job.
 
 
 ---
@@ -318,7 +372,7 @@ The message beneath the audio sliders is localized as "0% = off" (German:
 | F6 | Cycle Retro scaling: 1x, 2x, 3x, 4x |
 | F7 | Toggle experimental video upscaling in Revived |
 | F8 | Cycle experimental video filters: FSR, HQ4x, 4xBR, Lanczos3, FSRCNNX AI, FSRCNNX AI HQ |
-| F9 | Mute/restore all six Revived effect groups, preserving their preferences |
+| F9 | Mute/restore all seven Revived effect groups, preserving their preferences |
 | F10 | Open the current mode's full options; Apply/Esc returns to the paused scene |
 | F11 | Start/stop H.264/AAC MP4 recording; external FFmpeg required |
 | F12 | Save a quality-98 JPEG screenshot |
@@ -485,7 +539,7 @@ FFmpeg reference: [command line documentation](https://ffmpeg.org/ffmpeg.html),
 | F6 | Cycle Retro scaling 1x–4x |
 | F7 | Toggle experimental video upscaling in Revived |
 | F8 | Cycle FSR / HQ4x / 4xBR / Lanczos3 / FSRCNNX AI / FSRCNNX AI HQ in Revived |
-| F9 | Mute or restore all six Revived effect groups together |
+| F9 | Mute or restore all seven Revived effect groups together |
 | F10 | Open the full mode-specific options; Apply/Esc returns to the same scene |
 | F11 | Start/stop MP4 recording |
 | F12 | Save a quality-98 JPG screenshot |
@@ -516,40 +570,87 @@ F9 mutes/restores only Revived effects and leaves their individual preferences i
 
 <a id="revive-effects"></a>
 
-## Revived Effects - 0.7.11
+## Revived Effects - 0.7.18
 
-<a id="revive-effects--revived-effects---0711"></a>
+<a id="revive-effects--revived-effects---0718"></a>
 
 
 Open **Advanced Graphics > Revived Effects** (German: **Erweiterte Grafik > Revived Effekte**).
 These preferences apply to player and opponent vehicles. Retro hides the submenu,
 keeps original rendering and preserves the saved Revived preferences for later.
-All six switches default to enabled when no explicit setting exists.
+All seven switches default to enabled when no explicit setting exists.
 
 | Switch / CFG key | Behavior |
 |---|---|
-| Real-time shadows / `real_time_shadows` | A 2048 x 2048 directional shadow map, updated from the actual interpolated car/object poses; filtered shadows on reconstructed road surfaces and other models |
+| Real-time shadows / `real_time_shadows` | A directional shadow map, 2048 x 2048 at Medium, updated from the actual interpolated car/object poses; filtered shadows on reconstructed road surfaces and other models |
 | Vehicle lights / `vehicle_lights` | Yellow texture regions emit warm headlights; red regions emit neon rear lights; braking intensifies the rear lights. HDR bloom softens the glow. Short red-only trails follow previous world poses, preserving the actual shape and number of lights |
 | Enhanced oil slicks / `enhanced_oil` | Original slick mesh, translucent oily surface, subtle thin-film color variation and highlights |
 | Modern explosion effects / `modern_explosions` | Animated RGBA flame atlas with upward-flow distortion and smooth variant blending; smoke, sparks and real 3D debris. Debris flies briefly and fades after approximately 1.1-1.55 seconds; smoke expires within 3.6 seconds |
 | Damage effects / `damage_effects` | Progressive mesh damage, engine smoke/fire, vehicle destruction and metal-contact sparks, as detailed below |
 | Missile effects / `missile_effects` | A short launch pulse, animated compact exhaust flame and soft smoke trail for all three missile types, fired by players or opponents |
+| Vehicle reflections / `vehicle_reflections` | Reflections derived from the current track-video environment, with a separate intensity control; the finite camera view cannot supply a complete surrounding scene |
 
-All keys use 0/1 and remain in `revived_config/openmr2_setup.cfg`.
-Each of the six effects has an independent **0-200% intensity** slider. **100%**
+Switch keys use 0/1 and remain in `revived_config/openmr2_setup.cfg`.
+Each of the seven effects has an independent **0-200% intensity** slider. **100%**
 is exactly the current tuned default, including brighter headlights/braking,
 stronger rear-light trails and intense explosive-hazard bursts. Zero suppresses
 that checked effect without changing physics. Left/Right changes intensity by
 5%; mouse clicking/dragging adjusts it directly. Enter/Space toggles the selected
-checkbox. **Reset** enables all six switches and restores every intensity to 100%.
+checkbox. **Reset** enables all seven switches, restores every intensity to 100%
+and sets **Effect quality** to **Medium**. F9 mutes or restores all seven effects
+together in Revived without changing their individual preferences.
 Values persist across launches and are retained while Retro is active.
 
-The six CFG keys are `shadow_intensity`, `light_intensity`, `oil_intensity`,
-`explosion_intensity`, `damage_intensity`, and `missile_intensity` (0-200).
+The seven CFG keys are `shadow_intensity`, `light_intensity`, `oil_intensity`,
+`explosion_intensity`, `damage_intensity`, `missile_intensity` and
+`reflection_intensity` (0-200).
 Shadow intensity changes opacity, light intensity changes emission/bloom,
 oil intensity changes opacity, explosion/missile intensity changes particle
 visibility, and damage intensity changes visual deformation and damage-particle
-visibility. Damage thresholds and simulation damage remain unchanged.
+visibility. Reflection intensity controls the added reflected environment.
+Damage thresholds and simulation damage remain unchanged.
+
+<a id="revive-effects--effect-quality"></a>
+
+### Effect quality
+
+`effect_quality` selects **Low (0)**, **Medium (1, default)**, **High (2)** or
+**Extreme (3)**. Quality controls rendering detail and sampling, independently of
+each effect's strength. Medium retains the existing six effects' appearance;
+the newly added reflection switch has its own saved setting. A focused comparison
+of 1,200 Medium particle-vertex and lamp-trail transform/weight cases matches
+the previous implementation byte for byte.
+
+| Quality | Particle and trail detail |
+|---|---|
+| Low | Fewer explosion fragments and contact sparks; 10 Hz engine emission, 60 Hz missile smoke, four rear-light history samples |
+| Medium | Existing particle detail; 20 Hz engine emission, 120 Hz missile smoke and nine faded rear-light poses |
+| High | More explosion/spark detail; 80 Hz engine paths and 180 Hz missile smoke; connected shader-textured flame/smoke strips; rear masks integrated along 16 history points with at most 128 samples |
+| Extreme | More detail within the same fixed budgets; 120 Hz engine paths and 240 Hz missile smoke; additional flame layers; 32-point rear-light paths with at most 192 integration samples |
+
+High and Extreme use presentation-time emitter positions between simulation
+updates. Their rear-light trails integrate each car's exact rear-only emission
+mask along its projected path instead of drawing separated car-shaped echoes.
+Burning vehicles and missile smoke use connected strips, so fast movement does
+not leave isolated flame blobs. Timeline seeks, slot reuse and recovery jumps
+reset the affected histories. Medium continues to use its original timing/path.
+
+Reflection targets are capped at 256, 512, 768 and 1,024 pixels per side from
+Low through Extreme. Shadow maps use 1,024, 2,048, 3,072 and 4,096 pixels per
+side, subject to device limits, with 1/9/25/49 filter samples. Medium keeps its
+existing 3x3 shadow filter and oil material. High adds animated thin-film oil
+interference and a sharper highlight; Extreme adds finer surface flow.
+
+Work stays bounded: 48 explosion events, 128 contact bursts, 256 engine samples
+per vehicle at High/Extreme, 4,096 shared missile-smoke samples and 65,536 effect
+vertices. The highest tiers can require substantially more GPU time, especially
+with several burning vehicles or overlapping explosions. These settings do not
+change physics or consume the gameplay/audio random-number sequences.
+
+Selected effect shaders, light targets and the flame atlas are prepared during
+track loading, before their first active event. Retro bypasses all seven effects
+and their preload work. Its active quality remains Medium internally while the
+user's saved Revived quality is retained for the next mode switch.
 
 Lamp sources use the **original indexed texture markers**, not a general RGB
 red/yellow detector. Red markers require at least four directly connected pixels.
@@ -560,16 +661,36 @@ are brighter, braking emission rises from 1.35 to 7.0, and warm-white headlights
 use 4.5 before the user intensity multiplier. HDR bloom follows these sources;
 it does not turn nearby paint or wheels into emitting geometry.
 
-Short red trails use nine faded historical poses (up to about 0.13 seconds and
-9 render-world units) and remain visible without braking. Both career car selection and
+At Medium, short red trails use nine faded historical poses (up to about
+0.13 seconds and 9 render-world units) and remain visible without braking.
+High/Extreme use the continuous mask integration described above.
+Both career car selection and
 single-race car selection use the same emission masks, intensity and HDR glow.
 Custom textures preserve the original lamp UV footprint: painting new red/yellow
 body pixels does not create extra lights. Transparent replacement pixels do not
 emit. The Blatt 96 has front markers but no original red rear markers; its bright
 front lights remain active, without inventing rear lights from paint speckles.
 
+<a id="revive-effects--vehicle-reflections"></a>
+
+### Vehicle reflections
+
+Reflections use the race backplate captured before vehicles, particles and HUD.
+Car previews use their clean original or custom background without menu labels
+or the cursor. The shader projects reflected surface directions into that
+camera-visible image, varying softness with roughness and emphasizing grazing
+angles. Glass has a stronger reflection; damaged bodywork becomes rougher and
+less reflective. Only vehicle body/glass nodes receive the effect, excluding
+rotating wheels and road objects.
+
+This is a finite camera probe, not a 360-degree environment or depth-based ray
+tracing. Rays outside the captured view fall back to an average of its visible
+colors. Missing off-screen scenery and other vehicles cannot appear accurately
+in these reflections.
+
 Barrels and mines now have a rapidly expanding bright blast core, a brief ground
-shock ring, secondary flame tongues, heavier smoke and **48 solid debris pieces**.
+shock ring, secondary flame tongues, heavier smoke and **48 solid debris pieces
+at Medium**.
 The debris travels farther, stays bounded and still fades within about 1.55 seconds.
 The modern-explosion switch controls these visuals independently of damage effects;
 Retro and disabled-modern-explosion behavior retain the original sprites. No blast
@@ -586,7 +707,7 @@ on/off options within Revived Effects keep their checkboxes.
 Each missile has a brief stronger ignition pulse followed by a small turbulent
 white/yellow/orange jet aligned behind its model. The emitter follows the exact
 interpolated missile pose and scales modestly for Kard, Boomer and Hi-Trax.
-Smoke is sampled along the travelled world-space path at 120 samples/second;
+At Medium, smoke is sampled along the travelled world-space path at 120 samples/second;
 it expands, drifts upward and fades within 0.65 seconds. It stays behind when a
 missile turns. On impact, the jet stops immediately and existing smoke fades out.
 
@@ -640,8 +761,13 @@ these particles. No collision impulses or damage calculations are changed.
 The original scenery remains prerendered video. Dynamic shadows can be received
 by the reconstructed road surface and rendered models; unavailable scenery meshes
 cannot receive arbitrary accurate dynamic shadows. This is a directional shadow
-map with soft filtering, not ray tracing. Fire and smoke combine camera-facing
-particles and shaders; debris is solid 3D geometry. This is not a fluid simulation.
+map with soft filtering, not ray tracing. Vehicle reflections approximate the
+environment visible in a finite prerendered camera view; they do not reconstruct
+a 360-degree environment or missing off-screen geometry. High/Extreme rear-light
+blur reconstructs a screen-space path from the current emission mask and past
+positions/depth scales; past rotation and occlusion are approximate. Fire and
+smoke combine camera-facing particles, connected strips and shaders; debris is
+solid 3D geometry. This is not a fluid simulation.
 Historic replay files do not contain full damage or brake histories; those
 unrecorded states cannot be reconstructed accurately from old recordings.
 
@@ -676,6 +802,10 @@ across all six worlds and three languages, sweeps, detonations, scrape audio,
 all eight vehicle deaths, particle lifetimes and RNG isolation. The companion
 `tests/gameplay_graphics.py` captures actual OpenGL output for effects, threshold
 states, opponent effects, trails, Retro isolation and expiration.
+
+`tests/effect_quality.cpp` checks the four quality tiers, bounded emission and
+geometry, continuous strip generation, interpolation, history resets, Retro
+isolation and unchanged gameplay/audio RNG state.
 
 
 ---
@@ -1125,10 +1255,10 @@ settings and reproduction steps. Redact personal paths and account details.
 The Git repository contains development source and documentation. Downloadable
 assets are kept under GitHub Releases, separate from tracked source files:
 
-- `OpenMR2-0.7.17-dev-source.tar.gz`: complete source snapshot, upstream source
+- `OpenMR2-0.7.18-dev-source.tar.gz`: complete source snapshot, upstream source
   and license texts, tools, build scripts, documentation and graphics provenance.
-- `OpenMR2-0.7.17-dev-Windows-x64.zip`: Windows executable and runtime documents.
-- `OpenMR2-0.7.17-dev-Linux-x86_64.zip`: native Linux executable and runtime
+- `OpenMR2-0.7.18-dev-Windows-x64.zip`: Windows executable and runtime documents.
+- `OpenMR2-0.7.18-dev-Linux-x86_64.zip`: native Linux executable and runtime
   documents; uses host libraries, without bundled AppImage dependencies.
 - `SHA256SUMS.txt`: SHA-256 hashes of the three downloadable archives.
 
@@ -1342,6 +1472,8 @@ Primary references:
 
 ## Changelog
 
+0.7.18-dev (2026-10-20): real incremental race resource preparation for models, textures, custom PNGs, enabled sounds/music and selected GPU shaders; progress follows completed work, with no forced delay. UBB sources index headers and stream compressed frames on demand. Added Revived vehicle environment reflections with an independent intensity and four effect quality levels. Medium retains the previous effect paths; High/Extreme use continuous shader light trails and swept fire/smoke, denser particles and better shadows. Menu effects are silent outside the career shops; buy/sell/dialog sounds now follow the original executable's mapping.
+
 0.7.17-dev (2026-10-19): restored speed-dependent race wheel rotation, reverse direction and smooth 60 FPS wheel interpolation without changing physics. Experimental Revived video upscaling now offers six GPU filters: FSR, HQ4x, 4xBR, Lanczos3, FSRCNNX AI (8 channels) and FSRCNNX AI HQ (16 channels). The two learned filters reconstruct luma at 2x before Lanczos scaling to the output size. Retro keeps its original video path. See PHYSICS.md and VIDEO_UPSCALING.md.
 
 0.7.16-dev (2026-10-19): reconstructed the complete fixed-point pilot/drive/shared-road/car-contact chain from the DOS executable. All 57,600 controlled vehicle states match on six tracks; 6,000 separate contact cases also pass. Removed empirical steering/curvature gains and fixed excessive contact bounce. Strong impacts use varied original sounds; light touches stay quiet. Counterclockwise vehicle previews sit on the pedestal; Retro uses original shop font/colors and no model shadow, while Revived uses optional realtime shadows. Removed the DOS launcher from Linux. See PHYSICS.md for test scope and remaining approximations.
@@ -1501,6 +1633,8 @@ Based on the supplied OpenMR2 0.6.4 ZIP. Local development candidate; not approv
 <a id="release-notes"></a>
 
 ## Release notes
+
+0.7.18-dev (2026-10-20): real incremental race resource preparation for models, textures, custom PNGs, enabled sounds/music and selected GPU shaders; progress follows completed work, with no forced delay. UBB sources index headers and stream compressed frames on demand. Added Revived vehicle environment reflections with an independent intensity and four effect quality levels. Medium retains the previous effect paths; High/Extreme use continuous shader light trails and swept fire/smoke, denser particles and better shadows. Menu effects are silent outside the career shops; buy/sell/dialog sounds now follow the original executable's mapping.
 
 0.7.17-dev (2026-10-19): restored speed-dependent race wheel rotation, reverse direction and smooth 60 FPS wheel interpolation without changing physics. Experimental Revived video upscaling now offers six GPU filters: FSR, HQ4x, 4xBR, Lanczos3, FSRCNNX AI (8 channels) and FSRCNNX AI HQ (16 channels). The two learned filters reconstruct luma at 2x before Lanczos scaling to the output size. Retro keeps its original video path. See PHYSICS.md and VIDEO_UPSCALING.md.
 
@@ -1836,6 +1970,43 @@ sample changes and cleanup. The surrounding spatial mixer and driving model
 remain the port's implementation; this work establishes the original sample
 assignment and playback curve rather than full DOS mixer/physics equivalence.
 
+<a id="engine-audio--shop-effects-and-silent-menus"></a>
+
+### Shop effects and silent menus
+
+Menu sound effects are restricted to the career car/equipment shops and their
+modal messages. Main-menu controls, settings, single-race selection and other
+pages remain silent. Menu music, cinematic soundtracks, race effects and engine
+audio retain their separate controls. The newer silent-menu rule also removes
+the former Apply/texture-export completion sound.
+
+The original executable uses these assignments:
+
+| Event | Original sample |
+| --- | --- |
+| Successful ammunition, launcher or shield purchase | SFX/MENU2.WAV |
+| Successful equipment sale | SFX/MENU3.WAV |
+| Shop warning/confirmation dialog | SFX/MENU1.WAV |
+| Vehicle browsing, equipment selection and navigation | Silent |
+| Successful car purchase or repair | Silent |
+
+Evidence below refers to the German GOG relocated LE image. Its four menu
+sample records begin at `0xDD99C`, with 32-byte filenames and 32-bit levels at
+a 36-byte stride. `0x44EF0` plays a zero-based sample index passed in EAX.
+The purchase routine at `0x196A9` passes index 1 at `0x1974A`/`0x197AD`;
+the sale routine at `0x19993` passes index 2 at `0x19A27`. The modal routine
+at `0x1ADBC` passes index 0 at `0x1AF0D`. The successful car-purchase block
+at `0x1B22A`-`0x1B26D` and repair routine at `0x19F62`-`0x19FC2` update
+the purchase/repair state without a menu-sample call. These are all four
+direct calls to the menu-sample player in the original code section;
+MENU4 is present in the loaded sample table but has no corresponding call.
+
+Race preparation warms missing sound effects one WAV at a time, and only
+the unique engine samples needed by the selected vehicles. It does not start
+voices, preload shop effects, or decode disabled audio categories. Cached
+samples need no repeated work. Music loading remains separate from this
+sound-effect cache.
+
 
 ---
 
@@ -2009,28 +2180,39 @@ The generated C++ registry is `src/remastered_ui_data.h`.
 <a id="docs-validation--publication-build-validation"></a>
 
 
-Validation on 2026-10-19 used the separate exported source tree, without
-changing the installed development build or original game data.
+Version **0.7.18-dev**, validated on 2026-10-20 from the separate publication
+source tree. Original game files remain private and are excluded from releases.
 
 | Check | Result |
 | --- | --- |
-| Windows x64 clean-source compile | Passed; all import libraries generated from .def files |
-| Windows native regressions | 16,324 assertions, zero failures |
-| Linux x86_64 clean-source compile | Passed on Ubuntu 24.04 |
-| Linux native regressions | 16,314 assertions, zero failures |
-| Actual Windows rendering | Six captures: race/options/car selection, both modes |
-| Actual Linux rendering | Six captures: race/options/car selection, both modes |
-| Export checker negative/positive cases | Eight tests, zero failures |
+| Windows x64 build and native regressions | 16,730 assertions, zero failures |
+| Linux x86_64 build and native regressions | 16,720 assertions, zero failures |
+| Release-binary scene rendering | Six captures per platform: race/options/car selection, both modes |
+| Release-binary reflection and PNG-alpha checks | 13 captures and six checks per platform; zero GL errors |
+| Effect quality and Retro image checks | 43 Windows / 37 Linux captures; all four quality levels pass |
+| Native race-loading checks | Four runs, two captures and 28 checks per platform |
+| Video streaming | 27 cases / 1,629 checks across English, French and German; zero failures |
+| Effect geometry and history | 142 checks, zero failures |
+| Accepted Medium comparison | 1,200 particle/trail cases match byte for byte; Windows shadow/oil/fire captures also match the previous version |
+| Original driving/contact loop | 57,600 controlled states on six tracks; zero differences |
+| Publication export safeguards | 12 tests, zero failures |
 
-Exact tested executable hashes are in VALIDATION.json. Native tests used private
-original-data fixtures; these were neither copied into the source snapshot nor
-bundled with the archives. Screenshots in docs/images are selected actual
-in-engine captures, with their separate provenance inventory.
+Loading tests verify genuine partial progress, all fourteen vehicle models and
+thirteen world-object models ready before racing, bounded streamed video reads,
+selected shader readiness and strict Retro bypass. Reflection tests cover the
+race, vehicle previews, disabled shadows, 4x MSAA and transparent custom PNGs.
 
-Only build/tooling/docs/export changes were made for publication. Earlier
-extensive 0.7.13 rendering/recording validation remains separate from these new
-checks. The GitHub Actions workflow has been prepared but has not yet run on
-GitHub. Technical checks are not a legal clearance of the P01/P02 audit findings.
+The complete quality suites were captured before the final narrow PNG-alpha
+and Reset corrections; the affected reflection/alpha groups and the scene smoke
+tests were rerun on the exact release binaries. Exact hashes and reports are in
+[VALIDATION.json](docs/VALIDATION.json). The actual Game Over audio recording remains
+the explicitly versioned 0.7.16 baseline, rather than a newly recorded claim.
+
+The [GitHub Actions workflow](https://github.com/nex86/openmr2/actions) independently
+rebuilds the published source. See each commit's run for its CI result. Existing
+P01/P02 rights findings remain documented in the publication audit; technical
+checks do not resolve them. See the physics notes for the scope of original-game
+matching and the remaining approximations.
 
 
 ---

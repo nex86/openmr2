@@ -22,6 +22,8 @@ static void check(int condition, const char *name) {
 }
 
 #include "audio_fonts.inc"
+#include "audio_menu.inc"
+#include "preload.inc"
 #include "engine_retro.inc"
 #include "startup_dos.inc"
 #include "gameplay_graphics.inc"
@@ -297,8 +299,8 @@ extern "C" void WinMainCRTStartup(void) {
   check(g_cv[426*CW+180]==ORANGE && g_cv[426*CW+460]==rgba(20,18,16,255) && g_cv[418*CW+168]==rgba(150,140,120,255),"export overlay uses the shared track loading bar with correct partial fill and frame");
   snd_stop_all_sfx();g_dump_index=g_dump_assets.n;int serial_before=MX.serial;texture_dump_step();int apply_playing=0;
   for(int i=2;i<NVOICES;i++)if(MX.v[i].active && MX.v[i].snd==&SFX[S_MENU2])apply_playing++;
-  check(g_dump_complete && !g_dump_active && apply_playing==1 && MX.serial==serial_before+1,"completion stops the job and plays exactly the Apply menu sound once");
-  texture_dump_step();check(MX.serial==serial_before+1,"finished export never repeats the completion sound");
+  check(g_dump_complete && !g_dump_active && apply_playing==0 && MX.serial==serial_before,"completion stops the job silently under the shop-only menu sound policy");
+  texture_dump_step();check(MX.serial==serial_before,"finished export remains silent");
   setup_save();char cfg_file[512];cfg_path(cfg_file,"openmr2_setup.cfg");size_t saved_n=0;u8 *saved_cfg=sys_read_file(cfg_file,&saved_n);
   check(saved_cfg && !str_icontains((char *)saved_cfg,"dump_textures"),"one-shot export has no persisted on/off setting");
   char legacy_cfg[10000]="";if(saved_cfg)str_cpy(legacy_cfg,(char *)saved_cfg,sizeof legacy_cfg);str_cat(legacy_cfg,"\ndump_textures = 1\n",sizeof legacy_cfg);sys_free(saved_cfg);sys_write_file(cfg_file,legacy_cfg,str_len(legacy_cfg));setup_load();check(!g_dump_active,"legacy dump checkbox config cannot restart exporting on launch");
@@ -311,6 +313,7 @@ extern "C" void WinMainCRTStartup(void) {
   png_write(repair_path,edited_blue,1,1);texture_dump_rgba("LOCAL/TEST/LEGACY.HLZ.png",correct_white,1,1,"white",old_green);fixed=png_read(repair_path,&pw,&ph);
   check(fixed && !fixed[0] && !fixed[1] && fixed[2]==255,"user-edited dump PNG is preserved during palette repair");sys_free(fixed);sys_delete_file(repair_path);sys_delete_file("revived_config/texture_dumps/LOCAL/TEST/LEGACY.HLZ.png.txt");
   test_audio_fonts();
+  test_audio_menu();
   test_engine_retro();
   test_startup_dos();
   test_gameplay_graphics();
@@ -318,6 +321,21 @@ extern "C" void WinMainCRTStartup(void) {
   test_controls_0713();
   test_revision_0714();
   test_revision_0715();
+  test_race_preload();
+  G.gfx_mode=0;effect_defaults();check(G.effect_quality==1,"effect defaults preserve the previous Medium quality");
+  g_game_ready=1;Input mute_effects={};mute_effects.pressed[K_F9]=1;global_shortcuts(640,480,&mute_effects);
+  check(G.effects_muted&&!g_realtime_shadows&&!g_vehicle_lights&&!g_enhanced_oil&&!g_modern_explosions&&!g_damage_effects&&!g_missile_effects&&!g_vehicle_reflections,"F9 mutes all seven effects before the Reset regression case");
+  G.effect_quality=3;for(int i=0;i<EFFECT_COUNT;i++){G.effect_intensity[i]=37;*effect_switches(i)=0;}debug_apply();
+  Input reset_effects={};reset_effects.pressed[K_ENTER]=1;G.state=GS_REVIVE_EFFECTS;G.sel=EFFECT_RESET_ROW;G.click=0;screen_revive_effects(&reset_effects);
+  int all_defaults=1;for(int i=0;i<EFFECT_COUNT;i++)if(G.effect_intensity[i]!=100||!*effect_switches(i))all_defaults=0;
+  check(all_defaults&&!G.effects_muted&&G.effect_quality==1&&g_effect_quality==1&&g_realtime_shadows&&g_vehicle_lights&&g_enhanced_oil&&g_modern_explosions&&g_damage_effects&&g_missile_effects&&g_vehicle_reflections,"Reset clears F9 mute and immediately restores all seven enabled at 100 percent with Medium quality");
+  G.effects_muted=1;G.effect_quality=3;G.effect_intensity[6]=0;setup_load();
+  check(!G.effects_muted&&G.effect_quality==1&&G.effect_intensity[6]==100&&g_vehicle_reflections,"Reset also persists the cleared mute and restored defaults across settings reload");
+  effect_quality_set(9);check(G.effect_quality==3&&g_effect_quality==3,"quality control clamps to Extreme");
+  G.effect_intensity[6]=137;setup_save();G.effect_quality=0;G.effect_intensity[6]=0;setup_load();check(G.effect_quality==3&&G.effect_intensity[6]==137,"reflection intensity and quality survive config saving");
+  graphics_mode_set(1);check(!g_vehicle_reflections&&g_effect_quality==1&&G.effect_quality==3,"Retro bypasses reflection and quality while retaining Revived preferences");
+  graphics_mode_set(0);check(g_vehicle_reflections&&g_effect_quality==3,"returning to Revived restores reflections and saved quality");
+  effect_defaults();
   s_cat(report, "Assertions: ", sizeof report); str_int(report, sizeof report, assertions);
   s_cat(report, "\r\nFailures: ", sizeof report); str_int(report, sizeof report, failures); s_cat(report, "\r\n", sizeof report);
   sys_write_file("regression-results.txt", report, s_len(report));

@@ -32,8 +32,11 @@ struct Video {
   int16_t *pcm; int pcm_frames;                // interleaved stereo, 22050 Hz
   int decoded_frame;                            // last frame decoded into the decoder buffers (-1 none)
   uint8_t *rgba;                                // w*h*4 output
+  int streaming; uint64_t stream_offset,stream_bytes_read;
+  uint8_t *stream_buffer; size_t stream_capacity;
 };
 int video_open(Video *v, uint8_t *data, size_t size, int track_height,int decode_audio=1);  // takes ownership of data
+int video_open_iso(Video *v,const char *path,int track_height,int decode_audio=1); // indexes headers; reads compressed frames on demand
 int video_decode(Video *v, int frame);           // decodes (seeking via keyframes) and fills v->rgba
 void video_close(Video *v);
 

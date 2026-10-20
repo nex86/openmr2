@@ -1,73 +1,1222 @@
 {
-  "version": "0.7.13-dev",
-  "date": "2026-10-19",
-  "ci_status": "workflow prepared; not executed on GitHub yet",
+  "version": "0.7.18-dev",
+  "date": "2026-10-20",
+  "ci_status": "See GitHub Actions for commit-specific build results; local native validation is recorded here.",
   "export_checks": {
-    "tests": 8,
+    "tests": 12,
     "failures": 0
   },
   "platforms": {
     "windows": {
-      "binary_sha256": "3ccfe933f960bf2b8a36a75cce1237bcac7e57a2579de9d5fccee8bd040094bc",
-      "native_assertions": 16324,
+      "binary_sha256": "7a9615c9896b3bad409d1c7240696d889612bf522c0b06721d20a8abfabd2758",
+      "native_assertions": 16730,
       "native_failures": 0,
-      "render_captures": [
-        {
-          "name": "revived-race",
-          "pass": true
+      "release_binary_smoke": {
+        "binary_sha256": "7a9615c9896b3bad409d1c7240696d889612bf522c0b06721d20a8abfabd2758",
+        "captures": [
+          {
+            "name": "revived-race",
+            "pass": true
+          },
+          {
+            "name": "revived-options",
+            "pass": true
+          },
+          {
+            "name": "revived-carshop",
+            "pass": true
+          },
+          {
+            "name": "retro-race",
+            "pass": true
+          },
+          {
+            "name": "retro-options",
+            "pass": true
+          },
+          {
+            "name": "retro-carshop",
+            "pass": true
+          }
+        ],
+        "failures": 0
+      },
+      "release_binary_alpha": {
+        "platform": "windows",
+        "captures": 4,
+        "checks": [
+          {
+            "check": "Transparent custom-preview colors are composited before reflection mipmapping; hidden RGB stays invisible",
+            "pass": true
+          }
+        ],
+        "states": {
+          "transparent-magenta-off": {
+            "graphics_test": 14,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 0,
+            "reflection_captures": 0,
+            "reflection_draws": 0,
+            "reflection_valid": 0,
+            "reflection_failed": 0
+          },
+          "transparent-magenta-on": {
+            "graphics_test": 14,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 512,
+            "reflection_captures": 21,
+            "reflection_draws": 189,
+            "reflection_valid": 1,
+            "reflection_failed": 0
+          },
+          "transparent-green-off": {
+            "graphics_test": 14,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 0,
+            "reflection_captures": 0,
+            "reflection_draws": 0,
+            "reflection_valid": 0,
+            "reflection_failed": 0
+          },
+          "transparent-green-on": {
+            "graphics_test": 14,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 512,
+            "reflection_captures": 21,
+            "reflection_draws": 189,
+            "reflection_valid": 1,
+            "reflection_failed": 0
+          }
         },
-        {
-          "name": "revived-options",
-          "pass": true
+        "binary_sha256": "7a9615c9896b3bad409d1c7240696d889612bf522c0b06721d20a8abfabd2758",
+        "failures": 0
+      },
+      "release_binary_reflections": {
+        "platform": "windows",
+        "captures": 9,
+        "checks": [
+          {
+            "check": "Race environment reflections are visible with shadows disabled; HUD unchanged",
+            "pass": true,
+            "changed_pixels": 531
+          },
+          {
+            "check": "Multisampled backplate resolves into reflection capture without GL errors/fallback",
+            "pass": true
+          },
+          {
+            "check": "Career preview reflects its clean backdrop independently of shadows; change stays inside viewport",
+            "pass": true
+          },
+          {
+            "check": "Retro race remains pixel-identical and allocates no reflection map",
+            "pass": true
+          },
+          {
+            "check": "Retro preview remains pixel-identical and allocates no reflection map",
+            "pass": true
+          }
+        ],
+        "states": {
+          "race-reflections-off": {
+            "graphics_test": 4,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 0,
+            "reflection_captures": 0,
+            "reflection_draws": 0,
+            "reflection_valid": 0,
+            "reflection_failed": 0
+          },
+          "race-reflections-on": {
+            "graphics_test": 4,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 512,
+            "reflection_captures": 26,
+            "reflection_draws": 234,
+            "reflection_valid": 1,
+            "reflection_failed": 0
+          },
+          "race-reflections-msaa4": {
+            "graphics_test": 4,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 512,
+            "reflection_captures": 26,
+            "reflection_draws": 234,
+            "reflection_valid": 1,
+            "reflection_failed": 0
+          },
+          "preview-reflections-off": {
+            "graphics_test": 14,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 0,
+            "reflection_captures": 0,
+            "reflection_draws": 0,
+            "reflection_valid": 0,
+            "reflection_failed": 0
+          },
+          "preview-reflections-on": {
+            "graphics_test": 14,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 512,
+            "reflection_captures": 21,
+            "reflection_draws": 189,
+            "reflection_valid": 1,
+            "reflection_failed": 0
+          },
+          "retro-race-off": {
+            "graphics_test": 6,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 0,
+            "reflection_captures": 0,
+            "reflection_draws": 0,
+            "reflection_valid": 0,
+            "reflection_failed": 0
+          },
+          "retro-race-all-on": {
+            "graphics_test": 6,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 0,
+            "reflection_captures": 0,
+            "reflection_draws": 0,
+            "reflection_valid": 0,
+            "reflection_failed": 0
+          },
+          "retro-preview-off": {
+            "graphics_test": 14,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 0,
+            "reflection_captures": 0,
+            "reflection_draws": 0,
+            "reflection_valid": 0,
+            "reflection_failed": 0
+          },
+          "retro-preview-all-on": {
+            "graphics_test": 14,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 0,
+            "reflection_captures": 0,
+            "reflection_draws": 0,
+            "reflection_valid": 0,
+            "reflection_failed": 0
+          }
         },
-        {
-          "name": "revived-carshop",
-          "pass": true
+        "binary_sha256": "7a9615c9896b3bad409d1c7240696d889612bf522c0b06721d20a8abfabd2758",
+        "failures": 0
+      },
+      "quality_and_retro_capture_suite": {
+        "platform": "windows",
+        "captures": 9,
+        "checks": [
+          {
+            "check": "Race environment reflections are visible with shadows disabled; HUD unchanged",
+            "pass": true,
+            "changed_pixels": 531
+          },
+          {
+            "check": "Multisampled backplate resolves into reflection capture without GL errors/fallback",
+            "pass": true
+          },
+          {
+            "check": "Career preview reflects its clean backdrop independently of shadows; change stays inside viewport",
+            "pass": true
+          },
+          {
+            "check": "Retro race remains pixel-identical and allocates no reflection map",
+            "pass": true
+          },
+          {
+            "check": "Retro preview remains pixel-identical and allocates no reflection map",
+            "pass": true
+          }
+        ],
+        "states": {
+          "race-reflections-off": {
+            "graphics_test": 4,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 0,
+            "reflection_captures": 0,
+            "reflection_draws": 0,
+            "reflection_valid": 0,
+            "reflection_failed": 0
+          },
+          "race-reflections-on": {
+            "graphics_test": 4,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 512,
+            "reflection_captures": 26,
+            "reflection_draws": 234,
+            "reflection_valid": 1,
+            "reflection_failed": 0
+          },
+          "race-reflections-msaa4": {
+            "graphics_test": 4,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 512,
+            "reflection_captures": 26,
+            "reflection_draws": 234,
+            "reflection_valid": 1,
+            "reflection_failed": 0
+          },
+          "preview-reflections-off": {
+            "graphics_test": 14,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 0,
+            "reflection_captures": 0,
+            "reflection_draws": 0,
+            "reflection_valid": 0,
+            "reflection_failed": 0
+          },
+          "preview-reflections-on": {
+            "graphics_test": 14,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 512,
+            "reflection_captures": 21,
+            "reflection_draws": 189,
+            "reflection_valid": 1,
+            "reflection_failed": 0
+          },
+          "retro-race-off": {
+            "graphics_test": 6,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 0,
+            "reflection_captures": 0,
+            "reflection_draws": 0,
+            "reflection_valid": 0,
+            "reflection_failed": 0
+          },
+          "retro-race-all-on": {
+            "graphics_test": 6,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 0,
+            "reflection_captures": 0,
+            "reflection_draws": 0,
+            "reflection_valid": 0,
+            "reflection_failed": 0
+          },
+          "retro-preview-off": {
+            "graphics_test": 14,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 0,
+            "reflection_captures": 0,
+            "reflection_draws": 0,
+            "reflection_valid": 0,
+            "reflection_failed": 0
+          },
+          "retro-preview-all-on": {
+            "graphics_test": 14,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 0,
+            "reflection_captures": 0,
+            "reflection_draws": 0,
+            "reflection_valid": 0,
+            "reflection_failed": 0
+          }
         },
-        {
-          "name": "retro-race",
-          "pass": true
+        "binary_sha256": "7a9615c9896b3bad409d1c7240696d889612bf522c0b06721d20a8abfabd2758",
+        "failures": 0
+      },
+      "race_preloading": {
+        "runs": 4,
+        "captures": 2,
+        "checks": [
+          {
+            "check": "revived-partial: native application exits successfully",
+            "pass": true
+          },
+          {
+            "check": "revived-partial: actual frame loop writes both reports",
+            "pass": true
+          },
+          {
+            "check": "revived-partial: loading/race render loop has no resource failures or OpenGL errors",
+            "pass": true
+          },
+          {
+            "check": "revived-partial: video remains disk-streamed during preparation and racing",
+            "pass": true
+          },
+          {
+            "check": "revived-partial: screenshot captures genuine partial work before readiness",
+            "pass": true
+          },
+          {
+            "check": "revived-partial: partial loading screen is captured",
+            "pass": true
+          },
+          {
+            "check": "revived-partial: visible progress-bar fill matches completed resource jobs",
+            "pass": true
+          },
+          {
+            "check": "revived-complete: native application exits successfully",
+            "pass": true
+          },
+          {
+            "check": "revived-complete: actual frame loop writes both reports",
+            "pass": true
+          },
+          {
+            "check": "revived-complete: loading/race render loop has no resource failures or OpenGL errors",
+            "pass": true
+          },
+          {
+            "check": "revived-complete: video remains disk-streamed during preparation and racing",
+            "pass": true
+          },
+          {
+            "check": "revived-complete: ordinary updates finish every job before entering the race",
+            "pass": true
+          },
+          {
+            "check": "revived-complete: every vehicle and race-object model is cached before racing",
+            "pass": true
+          },
+          {
+            "check": "revived-complete: enabled effects and vehicle-light shaders are prepared before racing",
+            "pass": true
+          },
+          {
+            "check": "retro-partial: native application exits successfully",
+            "pass": true
+          },
+          {
+            "check": "retro-partial: actual frame loop writes both reports",
+            "pass": true
+          },
+          {
+            "check": "retro-partial: loading/race render loop has no resource failures or OpenGL errors",
+            "pass": true
+          },
+          {
+            "check": "retro-partial: video remains disk-streamed during preparation and racing",
+            "pass": true
+          },
+          {
+            "check": "retro-partial: screenshot captures genuine partial work before readiness",
+            "pass": true
+          },
+          {
+            "check": "retro-partial: partial loading screen is captured",
+            "pass": true
+          },
+          {
+            "check": "retro-partial: visible progress-bar fill matches completed resource jobs",
+            "pass": true
+          },
+          {
+            "check": "retro-complete: native application exits successfully",
+            "pass": true
+          },
+          {
+            "check": "retro-complete: actual frame loop writes both reports",
+            "pass": true
+          },
+          {
+            "check": "retro-complete: loading/race render loop has no resource failures or OpenGL errors",
+            "pass": true
+          },
+          {
+            "check": "retro-complete: video remains disk-streamed during preparation and racing",
+            "pass": true
+          },
+          {
+            "check": "retro-complete: ordinary updates finish every job before entering the race",
+            "pass": true
+          },
+          {
+            "check": "retro-complete: every vehicle and race-object model is cached before racing",
+            "pass": true
+          },
+          {
+            "check": "retro-complete: Retro bypasses modern effect/light preparation despite saved preferences",
+            "pass": true
+          }
+        ],
+        "reports": {
+          "revived-partial": {
+            "state": {
+              "state": 4,
+              "completed_jobs": 7,
+              "total_jobs": 79,
+              "complete": 0,
+              "failed": 0,
+              "cars": 6,
+              "objects": 0,
+              "video_streaming": 1,
+              "video_bytes": 126820,
+              "video_size": 28056140,
+              "effects_shader": 0,
+              "light_shader": 0
+            },
+            "graphics": {
+              "graphics_test": 20,
+              "gl_errors": 0,
+              "effect_quality": 1,
+              "shadow_map_size": 0,
+              "reflection_map_size": 0,
+              "reflection_captures": 0,
+              "reflection_draws": 0,
+              "reflection_valid": 0,
+              "reflection_failed": 0
+            },
+            "elapsed_seconds": 0.596
+          },
+          "revived-complete": {
+            "state": {
+              "state": 5,
+              "completed_jobs": 79,
+              "total_jobs": 79,
+              "complete": 1,
+              "failed": 0,
+              "cars": 14,
+              "objects": 13,
+              "video_streaming": 1,
+              "video_bytes": 672936,
+              "video_size": 28056140,
+              "effects_shader": 1,
+              "light_shader": 1
+            },
+            "graphics": {
+              "graphics_test": 20,
+              "gl_errors": 0,
+              "effect_quality": 1,
+              "shadow_map_size": 2048,
+              "reflection_map_size": 512,
+              "reflection_captures": 96,
+              "reflection_draws": 6336,
+              "reflection_valid": 1,
+              "reflection_failed": 0
+            },
+            "elapsed_seconds": 4.661
+          },
+          "retro-partial": {
+            "state": {
+              "state": 4,
+              "completed_jobs": 7,
+              "total_jobs": 51,
+              "complete": 0,
+              "failed": 0,
+              "cars": 6,
+              "objects": 0,
+              "video_streaming": 1,
+              "video_bytes": 126820,
+              "video_size": 28056140,
+              "effects_shader": 0,
+              "light_shader": 0
+            },
+            "graphics": {
+              "graphics_test": 20,
+              "gl_errors": 0,
+              "effect_quality": 1,
+              "shadow_map_size": 0,
+              "reflection_map_size": 0,
+              "reflection_captures": 0,
+              "reflection_draws": 0,
+              "reflection_valid": 0,
+              "reflection_failed": 0
+            },
+            "elapsed_seconds": 0.552
+          },
+          "retro-complete": {
+            "state": {
+              "state": 5,
+              "completed_jobs": 51,
+              "total_jobs": 51,
+              "complete": 1,
+              "failed": 0,
+              "cars": 14,
+              "objects": 13,
+              "video_streaming": 1,
+              "video_bytes": 839072,
+              "video_size": 28056140,
+              "effects_shader": 0,
+              "light_shader": 0
+            },
+            "graphics": {
+              "graphics_test": 20,
+              "gl_errors": 0,
+              "effect_quality": 1,
+              "shadow_map_size": 0,
+              "reflection_map_size": 0,
+              "reflection_captures": 0,
+              "reflection_draws": 0,
+              "reflection_valid": 0,
+              "reflection_failed": 0
+            },
+            "elapsed_seconds": 4.573
+          }
         },
-        {
-          "name": "retro-options",
-          "pass": true
-        },
-        {
-          "name": "retro-carshop",
-          "pass": true
-        }
-      ]
+        "failures": 0
+      }
     },
     "linux": {
-      "binary_sha256": "4bc7f2b4ade4a6549a554cb70b6813948a773005ca6e7828add0274d265c95cd",
-      "native_assertions": 16314,
+      "binary_sha256": "8625784d1555045666f36f6788e964a2628f75e734cb42a261fe3efa77a53057",
+      "native_assertions": 16720,
       "native_failures": 0,
-      "render_captures": [
-        {
-          "name": "revived-race",
-          "pass": true
+      "release_binary_smoke": {
+        "binary_sha256": "8625784d1555045666f36f6788e964a2628f75e734cb42a261fe3efa77a53057",
+        "captures": [
+          {
+            "name": "revived-race",
+            "pass": true
+          },
+          {
+            "name": "revived-options",
+            "pass": true
+          },
+          {
+            "name": "revived-carshop",
+            "pass": true
+          },
+          {
+            "name": "retro-race",
+            "pass": true
+          },
+          {
+            "name": "retro-options",
+            "pass": true
+          },
+          {
+            "name": "retro-carshop",
+            "pass": true
+          }
+        ],
+        "failures": 0
+      },
+      "release_binary_alpha": {
+        "platform": "linux",
+        "captures": 4,
+        "checks": [
+          {
+            "check": "Transparent custom-preview colors are composited before reflection mipmapping; hidden RGB stays invisible",
+            "pass": true
+          }
+        ],
+        "states": {
+          "transparent-magenta-off": {
+            "graphics_test": 14,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 0,
+            "reflection_captures": 0,
+            "reflection_draws": 0,
+            "reflection_valid": 0,
+            "reflection_failed": 0
+          },
+          "transparent-magenta-on": {
+            "graphics_test": 14,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 512,
+            "reflection_captures": 21,
+            "reflection_draws": 189,
+            "reflection_valid": 1,
+            "reflection_failed": 0
+          },
+          "transparent-green-off": {
+            "graphics_test": 14,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 0,
+            "reflection_captures": 0,
+            "reflection_draws": 0,
+            "reflection_valid": 0,
+            "reflection_failed": 0
+          },
+          "transparent-green-on": {
+            "graphics_test": 14,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 512,
+            "reflection_captures": 21,
+            "reflection_draws": 189,
+            "reflection_valid": 1,
+            "reflection_failed": 0
+          }
         },
-        {
-          "name": "revived-options",
-          "pass": true
+        "binary_sha256": "8625784d1555045666f36f6788e964a2628f75e734cb42a261fe3efa77a53057",
+        "failures": 0
+      },
+      "release_binary_reflections": {
+        "platform": "linux",
+        "captures": 9,
+        "checks": [
+          {
+            "check": "Race environment reflections are visible with shadows disabled; HUD unchanged",
+            "pass": true,
+            "changed_pixels": 550
+          },
+          {
+            "check": "Multisampled backplate resolves into reflection capture without GL errors/fallback",
+            "pass": true
+          },
+          {
+            "check": "Career preview reflects its clean backdrop independently of shadows; change stays inside viewport",
+            "pass": true
+          },
+          {
+            "check": "Retro race remains pixel-identical and allocates no reflection map",
+            "pass": true
+          },
+          {
+            "check": "Retro preview remains pixel-identical and allocates no reflection map",
+            "pass": true
+          }
+        ],
+        "states": {
+          "race-reflections-off": {
+            "graphics_test": 4,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 0,
+            "reflection_captures": 0,
+            "reflection_draws": 0,
+            "reflection_valid": 0,
+            "reflection_failed": 0
+          },
+          "race-reflections-on": {
+            "graphics_test": 4,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 512,
+            "reflection_captures": 26,
+            "reflection_draws": 234,
+            "reflection_valid": 1,
+            "reflection_failed": 0
+          },
+          "race-reflections-msaa4": {
+            "graphics_test": 4,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 512,
+            "reflection_captures": 26,
+            "reflection_draws": 234,
+            "reflection_valid": 1,
+            "reflection_failed": 0
+          },
+          "preview-reflections-off": {
+            "graphics_test": 14,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 0,
+            "reflection_captures": 0,
+            "reflection_draws": 0,
+            "reflection_valid": 0,
+            "reflection_failed": 0
+          },
+          "preview-reflections-on": {
+            "graphics_test": 14,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 512,
+            "reflection_captures": 21,
+            "reflection_draws": 189,
+            "reflection_valid": 1,
+            "reflection_failed": 0
+          },
+          "retro-race-off": {
+            "graphics_test": 6,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 0,
+            "reflection_captures": 0,
+            "reflection_draws": 0,
+            "reflection_valid": 0,
+            "reflection_failed": 0
+          },
+          "retro-race-all-on": {
+            "graphics_test": 6,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 0,
+            "reflection_captures": 0,
+            "reflection_draws": 0,
+            "reflection_valid": 0,
+            "reflection_failed": 0
+          },
+          "retro-preview-off": {
+            "graphics_test": 14,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 0,
+            "reflection_captures": 0,
+            "reflection_draws": 0,
+            "reflection_valid": 0,
+            "reflection_failed": 0
+          },
+          "retro-preview-all-on": {
+            "graphics_test": 14,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 0,
+            "reflection_captures": 0,
+            "reflection_draws": 0,
+            "reflection_valid": 0,
+            "reflection_failed": 0
+          }
         },
-        {
-          "name": "revived-carshop",
-          "pass": true
+        "binary_sha256": "8625784d1555045666f36f6788e964a2628f75e734cb42a261fe3efa77a53057",
+        "failures": 0
+      },
+      "quality_and_retro_capture_suite": {
+        "platform": "linux",
+        "captures": 9,
+        "checks": [
+          {
+            "check": "Race environment reflections are visible with shadows disabled; HUD unchanged",
+            "pass": true,
+            "changed_pixels": 550
+          },
+          {
+            "check": "Multisampled backplate resolves into reflection capture without GL errors/fallback",
+            "pass": true
+          },
+          {
+            "check": "Career preview reflects its clean backdrop independently of shadows; change stays inside viewport",
+            "pass": true
+          },
+          {
+            "check": "Retro race remains pixel-identical and allocates no reflection map",
+            "pass": true
+          },
+          {
+            "check": "Retro preview remains pixel-identical and allocates no reflection map",
+            "pass": true
+          }
+        ],
+        "states": {
+          "race-reflections-off": {
+            "graphics_test": 4,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 0,
+            "reflection_captures": 0,
+            "reflection_draws": 0,
+            "reflection_valid": 0,
+            "reflection_failed": 0
+          },
+          "race-reflections-on": {
+            "graphics_test": 4,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 512,
+            "reflection_captures": 26,
+            "reflection_draws": 234,
+            "reflection_valid": 1,
+            "reflection_failed": 0
+          },
+          "race-reflections-msaa4": {
+            "graphics_test": 4,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 512,
+            "reflection_captures": 26,
+            "reflection_draws": 234,
+            "reflection_valid": 1,
+            "reflection_failed": 0
+          },
+          "preview-reflections-off": {
+            "graphics_test": 14,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 0,
+            "reflection_captures": 0,
+            "reflection_draws": 0,
+            "reflection_valid": 0,
+            "reflection_failed": 0
+          },
+          "preview-reflections-on": {
+            "graphics_test": 14,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 512,
+            "reflection_captures": 21,
+            "reflection_draws": 189,
+            "reflection_valid": 1,
+            "reflection_failed": 0
+          },
+          "retro-race-off": {
+            "graphics_test": 6,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 0,
+            "reflection_captures": 0,
+            "reflection_draws": 0,
+            "reflection_valid": 0,
+            "reflection_failed": 0
+          },
+          "retro-race-all-on": {
+            "graphics_test": 6,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 0,
+            "reflection_captures": 0,
+            "reflection_draws": 0,
+            "reflection_valid": 0,
+            "reflection_failed": 0
+          },
+          "retro-preview-off": {
+            "graphics_test": 14,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 0,
+            "reflection_captures": 0,
+            "reflection_draws": 0,
+            "reflection_valid": 0,
+            "reflection_failed": 0
+          },
+          "retro-preview-all-on": {
+            "graphics_test": 14,
+            "gl_errors": 0,
+            "effect_quality": 1,
+            "shadow_map_size": 0,
+            "reflection_map_size": 0,
+            "reflection_captures": 0,
+            "reflection_draws": 0,
+            "reflection_valid": 0,
+            "reflection_failed": 0
+          }
         },
-        {
-          "name": "retro-race",
-          "pass": true
+        "binary_sha256": "8625784d1555045666f36f6788e964a2628f75e734cb42a261fe3efa77a53057",
+        "failures": 0
+      },
+      "race_preloading": {
+        "runs": 4,
+        "captures": 2,
+        "checks": [
+          {
+            "check": "revived-partial: native application exits successfully",
+            "pass": true
+          },
+          {
+            "check": "revived-partial: actual frame loop writes both reports",
+            "pass": true
+          },
+          {
+            "check": "revived-partial: loading/race render loop has no resource failures or OpenGL errors",
+            "pass": true
+          },
+          {
+            "check": "revived-partial: video remains disk-streamed during preparation and racing",
+            "pass": true
+          },
+          {
+            "check": "revived-partial: screenshot captures genuine partial work before readiness",
+            "pass": true
+          },
+          {
+            "check": "revived-partial: partial loading screen is captured",
+            "pass": true
+          },
+          {
+            "check": "revived-partial: visible progress-bar fill matches completed resource jobs",
+            "pass": true
+          },
+          {
+            "check": "revived-complete: native application exits successfully",
+            "pass": true
+          },
+          {
+            "check": "revived-complete: actual frame loop writes both reports",
+            "pass": true
+          },
+          {
+            "check": "revived-complete: loading/race render loop has no resource failures or OpenGL errors",
+            "pass": true
+          },
+          {
+            "check": "revived-complete: video remains disk-streamed during preparation and racing",
+            "pass": true
+          },
+          {
+            "check": "revived-complete: ordinary updates finish every job before entering the race",
+            "pass": true
+          },
+          {
+            "check": "revived-complete: every vehicle and race-object model is cached before racing",
+            "pass": true
+          },
+          {
+            "check": "revived-complete: enabled effects and vehicle-light shaders are prepared before racing",
+            "pass": true
+          },
+          {
+            "check": "retro-partial: native application exits successfully",
+            "pass": true
+          },
+          {
+            "check": "retro-partial: actual frame loop writes both reports",
+            "pass": true
+          },
+          {
+            "check": "retro-partial: loading/race render loop has no resource failures or OpenGL errors",
+            "pass": true
+          },
+          {
+            "check": "retro-partial: video remains disk-streamed during preparation and racing",
+            "pass": true
+          },
+          {
+            "check": "retro-partial: screenshot captures genuine partial work before readiness",
+            "pass": true
+          },
+          {
+            "check": "retro-partial: partial loading screen is captured",
+            "pass": true
+          },
+          {
+            "check": "retro-partial: visible progress-bar fill matches completed resource jobs",
+            "pass": true
+          },
+          {
+            "check": "retro-complete: native application exits successfully",
+            "pass": true
+          },
+          {
+            "check": "retro-complete: actual frame loop writes both reports",
+            "pass": true
+          },
+          {
+            "check": "retro-complete: loading/race render loop has no resource failures or OpenGL errors",
+            "pass": true
+          },
+          {
+            "check": "retro-complete: video remains disk-streamed during preparation and racing",
+            "pass": true
+          },
+          {
+            "check": "retro-complete: ordinary updates finish every job before entering the race",
+            "pass": true
+          },
+          {
+            "check": "retro-complete: every vehicle and race-object model is cached before racing",
+            "pass": true
+          },
+          {
+            "check": "retro-complete: Retro bypasses modern effect/light preparation despite saved preferences",
+            "pass": true
+          }
+        ],
+        "reports": {
+          "revived-partial": {
+            "state": {
+              "state": 4,
+              "completed_jobs": 2,
+              "total_jobs": 79,
+              "complete": 0,
+              "failed": 0,
+              "cars": 1,
+              "objects": 0,
+              "video_streaming": 1,
+              "video_bytes": 126820,
+              "video_size": 28056140,
+              "effects_shader": 0,
+              "light_shader": 0
+            },
+            "graphics": {
+              "graphics_test": 20,
+              "gl_errors": 0,
+              "effect_quality": 1,
+              "shadow_map_size": 0,
+              "reflection_map_size": 0,
+              "reflection_captures": 0,
+              "reflection_draws": 0,
+              "reflection_valid": 0,
+              "reflection_failed": 0
+            },
+            "elapsed_seconds": 2.156
+          },
+          "revived-complete": {
+            "state": {
+              "state": 5,
+              "completed_jobs": 79,
+              "total_jobs": 79,
+              "complete": 1,
+              "failed": 0,
+              "cars": 14,
+              "objects": 13,
+              "video_streaming": 1,
+              "video_bytes": 355548,
+              "video_size": 28056140,
+              "effects_shader": 1,
+              "light_shader": 1
+            },
+            "graphics": {
+              "graphics_test": 20,
+              "gl_errors": 0,
+              "effect_quality": 1,
+              "shadow_map_size": 2048,
+              "reflection_map_size": 512,
+              "reflection_captures": 15,
+              "reflection_draws": 900,
+              "reflection_valid": 1,
+              "reflection_failed": 0
+            },
+            "elapsed_seconds": 5.906
+          },
+          "retro-partial": {
+            "state": {
+              "state": 4,
+              "completed_jobs": 2,
+              "total_jobs": 51,
+              "complete": 0,
+              "failed": 0,
+              "cars": 1,
+              "objects": 0,
+              "video_streaming": 1,
+              "video_bytes": 126820,
+              "video_size": 28056140,
+              "effects_shader": 0,
+              "light_shader": 0
+            },
+            "graphics": {
+              "graphics_test": 20,
+              "gl_errors": 0,
+              "effect_quality": 1,
+              "shadow_map_size": 0,
+              "reflection_map_size": 0,
+              "reflection_captures": 0,
+              "reflection_draws": 0,
+              "reflection_valid": 0,
+              "reflection_failed": 0
+            },
+            "elapsed_seconds": 1.657
+          },
+          "retro-complete": {
+            "state": {
+              "state": 5,
+              "completed_jobs": 51,
+              "total_jobs": 51,
+              "complete": 1,
+              "failed": 0,
+              "cars": 14,
+              "objects": 13,
+              "video_streaming": 1,
+              "video_bytes": 683960,
+              "video_size": 28056140,
+              "effects_shader": 0,
+              "light_shader": 0
+            },
+            "graphics": {
+              "graphics_test": 20,
+              "gl_errors": 0,
+              "effect_quality": 1,
+              "shadow_map_size": 0,
+              "reflection_map_size": 0,
+              "reflection_captures": 0,
+              "reflection_draws": 0,
+              "reflection_valid": 0,
+              "reflection_failed": 0
+            },
+            "elapsed_seconds": 5.815
+          }
         },
-        {
-          "name": "retro-options",
-          "pass": true
-        },
-        {
-          "name": "retro-carshop",
-          "pass": true
-        }
-      ]
+        "failures": 0
+      }
     }
-  }
+  },
+  "effect_geometry": {
+    "checks": 142,
+    "failures": 0
+  },
+  "medium_comparison": {
+    "cases": 1200,
+    "byte_differences": 0
+  },
+  "video_streaming": {
+    "cases": 27,
+    "checks": 1629,
+    "languages": [
+      "English",
+      "French",
+      "German"
+    ],
+    "failures": 0
+  },
+  "full_original_loop": {
+    "samples": 57600,
+    "tracks": 6,
+    "cars": 8,
+    "seconds_per_track": 48.0,
+    "compared_fields": [
+      "node",
+      "x",
+      "angle",
+      "steer",
+      "lateral",
+      "forward",
+      "speed",
+      "along"
+    ],
+    "failures": 0,
+    "first_failures": [],
+    "original_exe_sha256": "3d9c967a00c6dd15814adff51f09d830608c5c5c11cfdfe45a075e6fc64524fa",
+    "scope": "fixed pilot, drive, shared 2D road frames, car contacts, wall response; no tactics, weapons, road objects or retirement"
+  },
+  "capture_scope": "Full quality suites precede the narrow final PNG-alpha and Reset corrections; affected alpha/reflection groups and six scene captures were rerun on the exact release binaries."
 }

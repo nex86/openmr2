@@ -269,8 +269,7 @@ static void obj_update_world(TrackObj &o) {
   double lon = o.lon + o.dlon, lat = o.lat + o.dlat, h = o.h + o.hz;
   for (int k = 0; k < 3; k++) o.W[k] = q.p[k] + q.fw[k] * lon + q.rt[k] * lat + q.up[k] * h;
 }
-static uint8_t *g_preload_ubb; static size_t g_preload_n; static int g_preload_track = -1;   // track video read beforehand (loading bar)
-static int track_load(int ti, int heat) {
+static int track_load(int ti, int heat,int load_assets=1) {
   if(sys_debug_enabled()){char event[160]="[event] Loading track: ";str_cat(event,ui_debug_text(TRACKS[ti].name),sizeof event);str_cat(event," heat ",sizeof event);str_int(event,sizeof event,heat+1);sys_log(event);}
   if (TK.loaded && TK.idx == ti) { TK.heat = heat; }
   else {
@@ -292,9 +291,7 @@ static int track_load(int ti, int heat) {
     mem_cpy(TK.hud_pal + 251 * 3, hud_data + 251 * 3, 5 * 3); sys_free(hud_data);
     str_cpy(p, td.cd, 128); str_cat(p, ".UBB", 128);
     uint8_t *d;
-    if (g_preload_ubb && g_preload_track == ti) { d = g_preload_ubb; n = g_preload_n; g_preload_ubb = 0; g_preload_track = -1; }
-    else d = iso_load(p, &n);
-    if (!d || !video_open(&TK.vid, d, n, 350,0)) { str_cpy(A.status, ui_translate("Streckenvideo nicht lesbar"), 256); return 0; }
+    if (!video_open_iso(&TK.vid,p,350,0)) { str_cpy(A.status, ui_translate("Streckenvideo nicht lesbar"), 256); return 0; }
     str_cpy(p, td.cd, 128); str_cat(p, ".CAM", 128);
     d = iso_load(p, &n); if (!d) return 0;
     TK.ncam = (int)(n / 64); TK.cam = (double *)sys_alloc(sizeof(double) * 12 * TK.ncam);
@@ -396,10 +393,11 @@ static int track_load(int ti, int heat) {
       char m[200] = "video/CAM: frames "; str_int(m, 200, TK.vid.nframes); str_cat(m, " CAM ", 200); str_int(m, 200, TK.ncam);
       str_cat(m, " offset base ", 200); str_int(m, 200, base); str_cat(m, " mismatches ", 200); str_int(m, 200, bad); str_cat(m, "/", 200); str_int(m, 200, cnt); sys_log(m);
     }
-    for (int i = 0; i < OM_COUNT; i++) TK.obj_models[i] = load_model_from(td.set, OBJ_MODEL_FILES[i]);
-    char md[64] = "MUSIC/"; str_cat(md, td.music, 64);
-    if(audio_enabled(AUDIO_RACE_MUSIC))load_music_dir(&TK.music, md, ".16");
     TK.loaded = 1;
+  }
+  if(load_assets){
+    for(int i=0;i<OM_COUNT;i++)if(!TK.obj_models[i])TK.obj_models[i]=load_model_from(TRACKS[ti].set,OBJ_MODEL_FILES[i]);
+    if(audio_enabled(AUDIO_RACE_MUSIC)&&!TK.music.pcm){char md[64]="MUSIC/";str_cat(md,TRACKS[ti].music,sizeof md);load_music_dir(&TK.music,md,".16");}
   }
   // objects of this race: 16-byte header (total, count type 1, count type 2, count type 8), then 12-byte records
   // (PST node, local longitudinal, local lateral) in this type order (M.EXE 0x232A9 ff.). The height comes from

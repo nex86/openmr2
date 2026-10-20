@@ -524,8 +524,11 @@ static void catalog_build(const char *gamedir) {
 
 // ------------------------------------------------------------------ renderer
 #define SHADOW_SAMPLE_GLSL \
- "uniform sampler2D uShadowMap; uniform int uShadowEnabled;\n" \
- "float shadowCoverage(vec4 p,float bias){if(uShadowEnabled==0)return 0.0;vec3 q=p.xyz/p.w*0.5+0.5;if(q.z<=0.0||q.z>=1.0||any(lessThan(q.xy,vec2(0.002)))||any(greaterThan(q.xy,vec2(0.998))))return 0.0;float s=0.0;vec2 step=1.0/vec2(textureSize(uShadowMap,0));for(int y=-1;y<=1;y++)for(int x=-1;x<=1;x++)s+=q.z-bias>texture(uShadowMap,q.xy+vec2(x,y)*step).r?1.0:0.0;return s/9.0;}\n"
+ "uniform sampler2D uShadowMap; uniform int uShadowEnabled;uniform int uShadowQuality=1;\n" \
+ "float shadowCoverage(vec4 p,float bias){if(uShadowEnabled==0)return 0.0;vec3 q=p.xyz/p.w*0.5+0.5;if(q.z<=0.0||q.z>=1.0||any(lessThan(q.xy,vec2(0.002)))||any(greaterThan(q.xy,vec2(0.998))))return 0.0;float s=0.0;vec2 step=1.0/vec2(textureSize(uShadowMap,0));if(uShadowQuality==1){for(int y=-1;y<=1;y++)for(int x=-1;x<=1;x++)s+=q.z-bias>texture(uShadowMap,q.xy+vec2(x,y)*step).r?1.0:0.0;return s/9.0;}int radius=uShadowQuality<=0?0:uShadowQuality==2?2:3;float count=0.0;for(int y=-3;y<=3;y++)for(int x=-3;x<=3;x++){if(abs(x)>radius||abs(y)>radius)continue;s+=q.z-bias>texture(uShadowMap,q.xy+vec2(x,y)*step).r?1.0:0.0;count+=1.0;}return s/max(count,1.0);}\n"
+#define VEHICLE_REFLECTION_GLSL \
+ "uniform sampler2D uReflectionMap;uniform mat4 uReflectionProjection;uniform vec3 uReflectionCamera;uniform float uReflectionMaxLod,uReflectionStrength;uniform int uReflectionEnabled,uReflectionMaterial;\n" \
+ "vec3 vehicleReflection(vec3 color,vec4 albedo,vec3 normal,vec3 view){if(uReflectionEnabled==0||uReflectionMaterial==0||uLampNode==0)return color;float nv=clamp(dot(normal,view),0.0,1.0);vec3 ray=reflect(-view,normal);float distance=max(length(vW-uReflectionCamera)*4.0,12.0);vec4 projected=uReflectionProjection*vec4(vW+ray*distance,1.0);vec2 uv=projected.xy/max(projected.w,0.0001)*0.5+0.5;vec2 border=min(uv,vec2(1.0)-uv);float confidence=smoothstep(0.0,0.12,min(border.x,border.y))*step(0.001,projected.w);vec3 average=textureLod(uReflectionMap,vec2(0.5),uReflectionMaxLod).rgb;float luminance=dot(albedo.rgb,vec3(0.299,0.587,0.114));float saturation=max(albedo.r,max(albedo.g,albedo.b))-min(albedo.r,min(albedo.g,albedo.b));float glass=uReflectionMaterial==2?1.0:0.0;float worn=clamp((uDamage-0.65)/0.35,0.0,1.0);float roughness=mix(clamp(0.29-saturation*0.08,0.20,0.32),0.095,glass);roughness=mix(roughness,0.62,worn);float lod=clamp(roughness*uReflectionMaxLod,0.0,uReflectionMaxLod);vec3 environment=textureLod(uReflectionMap,clamp(uv,vec2(0.001),vec2(0.999)),lod).rgb;environment=mix(average*0.45,environment,confidence);vec3 tint=mix(vec3(1.0),max(albedo.rgb,vec3(0.25)),0.12*(1.0-glass));float fresnel=mix(0.055,1.0,pow(1.0-nv,5.0));float coating=mix(0.58+0.30*smoothstep(0.03,0.25,luminance),1.0,glass);float amount=clamp(uReflectionStrength*coating*(fresnel+0.055)*(1.0-worn*0.72),0.0,0.88);vec3 base=pow(max(color,vec3(0.0)),vec3(2.2));vec3 reflected=pow(max(environment*tint,vec3(0.0)),vec3(2.2));return pow(max(mix(base,reflected,amount),vec3(0.0)),vec3(1.0/2.2));}\n"
 static const char *VS_MODEL =
   "#version 330 core\n"
   "layout(location=0) in vec3 aPos; layout(location=1) in vec3 aNrm; layout(location=2) in vec2 aUV;layout(location=3) in float aLampFacing;\n"
@@ -536,8 +539,9 @@ static const char *FS_MODEL =
   "#version 330 core\n"
   "in vec3 vW; in vec3 vN; in vec3 vLocal;in vec3 vObject;flat in float vLampFacing;flat in vec3 vForward; in vec4 vShadow; in vec2 vUV; noperspective in vec2 vRetroUV; uniform int uRetro;\n"
   "uniform sampler2D uTex; uniform int uMode; uniform vec3 uCam; uniform vec4 uColor; uniform float uLit; uniform float uGain; uniform float uGray;\n"
-  "uniform vec3 uVisualStrength;uniform float uDamageStrength;uniform sampler2D uLampMask;uniform vec2 uLampEnds;uniform int uLampNode;uniform float uDamage;uniform int uLamps,uLampPass,uRearOnly;uniform float uBrake,uTrailWeight; uniform int uShadowPass; uniform int uOil; uniform vec4 uOilBounds; uniform vec3 uLightDir=vec3(0.45,0.85,0.35);\n"
+  "uniform vec3 uVisualStrength;uniform float uDamageStrength;uniform sampler2D uLampMask;uniform vec2 uLampEnds;uniform int uLampNode;uniform float uDamage;uniform int uLamps,uLampPass,uRearOnly;uniform float uBrake,uTrailWeight; uniform int uShadowPass; uniform int uOil; uniform vec4 uOilBounds;uniform int uEffectQuality=1;uniform float uEffectTime; uniform vec3 uLightDir=vec3(0.45,0.85,0.35);\n"
   SHADOW_SAMPLE_GLSL
+  VEHICLE_REFLECTION_GLSL
   "vec3 vehicleEmission(vec4 t,vec3 v){vec3 emission=vec3(0.0);if(uLamps!=0&&uMode==1&&uLampNode!=0){ivec2 size=textureSize(uLampMask,0);vec2 mask=texelFetch(uLampMask,ivec2(fract(vUV)*vec2(size)),0).rg;float red=mask.r*step(0.35,vLampFacing)*step(dot(vForward,v),0.0)*step(vObject.z,uLampEnds.x)*step(t.g*1.5,t.r)*step(t.b*1.4,t.r);float yellow=mask.g*step(0.0,dot(vForward,v))*step(uLampEnds.y,vObject.z)*step(t.b*1.5,min(t.r,t.g));emission=vec3(1.0,0.012,0.035)*red*mix(1.35,7.0,uBrake);if(uRearOnly==0)emission+=mix(vec3(1.0,0.72,0.14),vec3(1.0,0.94,0.78),clamp(mask.g,0.0,1.0))*yellow*4.5;}emission*=uVisualStrength.y;if(uDamage>=1.0)emission*=0.08;return emission;}\n"
   "out vec4 o;\n"
   "void main(){\n"
@@ -548,7 +552,7 @@ static const char *FS_MODEL =
   "  vec4 t = (uMode==0||uMode==3) ? uColor : texture(uTex, vUV);\n"
   "  if(t.a<=0.0)discard;vec3 emission=vehicleEmission(t,v);if(uLampPass!=0){if(max(emission.r,max(emission.g,emission.b))<0.01)discard;o=vec4(emission*uTrailWeight,1.0);return;}\n"
   "  if(t.a<=0.0)discard; if(uMode==2){ o = vec4(mix(t.rgb, vec3(dot(t.rgb, vec3(0.3,0.59,0.11))), uGray)*uColor.rgb*uGain*t.a, t.a); return; }\n"
-  "  if(uOil!=0){vec2 q=(vLocal.xz-uOilBounds.xy)/uOilBounds.zw;float r=length(q);float edge=1.0-smoothstep(0.70,1.12,r);float swirl=sin(q.x*13.0+sin(q.y*9.0))*sin(q.y*17.0+q.x*5.0);float film=0.5+0.5*sin(swirl*4.0+q.x*5.0+q.y*7.0);float f=pow(1.0-abs(dot(n,v)),3.0);vec3 rainbow=0.5+0.5*sin(vec3(0.0,2.1,4.2)+film*8.0+f*4.0);vec3 oil=vec3(0.012,0.017,0.020)+rainbow*(0.016+0.045*f);float glint=pow(max(dot(reflect(-normalize(uLightDir),n),v),0.0),48.0);o=vec4(oil+glint*0.18,min(0.92,edge*(0.38+film*0.17+f*0.10)*uVisualStrength.z));return;}\n"
+  "  if(uOil!=0){vec2 q=(vLocal.xz-uOilBounds.xy)/uOilBounds.zw;float r=length(q);float edge=1.0-smoothstep(0.70,1.12,r);float swirl=sin(q.x*13.0+sin(q.y*9.0))*sin(q.y*17.0+q.x*5.0);float film=0.5+0.5*sin(swirl*4.0+q.x*5.0+q.y*7.0);float f=pow(1.0-abs(dot(n,v)),3.0);vec3 rainbow=0.5+0.5*sin(vec3(0.0,2.1,4.2)+film*8.0+f*4.0);vec3 oil=vec3(0.012,0.017,0.020)+rainbow*(0.016+0.045*f);float glint=pow(max(dot(reflect(-normalize(uLightDir),n),v),0.0),48.0);if(uEffectQuality>=2){vec2 flow=q+vec2(sin(q.y*3.0+uEffectTime*.22),cos(q.x*4.0-uEffectTime*.17))*.035;float thickness=sin(flow.x*11.0+sin(flow.y*8.0)*1.6)+cos(flow.y*14.0-flow.x*3.0);if(uEffectQuality>=3)thickness+=sin(flow.x*25.0+flow.y*18.0+uEffectTime*.12)*.18;float angle=1.0-clamp(dot(n,v),0.0,1.0);vec3 interference=.5+.5*cos(vec3(5.1,6.4,8.5)*(thickness*.85+angle*2.1)+vec3(0.0,1.0,2.0));oil=mix(oil,vec3(.008,.012,.016)+interference*(.025+angle*.065),.68);glint=pow(max(dot(reflect(-normalize(uLightDir),n),v),0.0),uEffectQuality>=3?112.0:80.0);}o=vec4(oil+glint*0.18,min(0.92,edge*(0.38+film*0.17+f*0.10)*uVisualStrength.z));return;}\n"
   "  vec3 L1 = normalize(uLightDir);float vis=1.0-min(0.95,0.78*uVisualStrength.x)*shadowCoverage(vShadow,0.00015);\n"
   "  vec3 L2 = normalize(vec3(-0.6, 0.25, -0.75));\n"
   "  float d1 = max(dot(n,L1),0.0), d2 = max(dot(n,L2),0.0);\n"
@@ -558,7 +562,7 @@ static const char *FS_MODEL =
   "  float rim = pow(1.0-max(dot(n,v),0.0), 3.0)*0.30;\n"
   "  vec3 light = amb + d1*vis*vec3(1.0,0.95,0.88)*0.85 + d2*vec3(0.35,0.45,0.65)*0.45;\n"
   "  vec3 c = t.rgb*mix(vec3(1.0), light, uLit) + (s*vis + rim*vec3(0.45,0.65,0.9))*uLit;\n"
-  "  if(uDamage>=0.7){float d=uDamage>=1.0?1.0:0.04+0.20*clamp((uDamage-0.7)/0.29,0.0,1.0);float scars=0.5+0.5*sin(vLocal.x*7.0+sin(vLocal.z*9.0)*2.0);c*=mix(vec3(1.0),vec3(0.16,0.13,0.115),min(1.0,d*uDamageStrength*(0.65+scars*0.35)));}c+=emission; c = mix(c, vec3(dot(c, vec3(0.3,0.59,0.11))), uGray);\n  o = vec4(c*uGain, uMode==3 ? uColor.a : t.a);\n"
+  "  if(uDamage>=0.7){float d=uDamage>=1.0?1.0:0.04+0.20*clamp((uDamage-0.7)/0.29,0.0,1.0);float scars=0.5+0.5*sin(vLocal.x*7.0+sin(vLocal.z*9.0)*2.0);c*=mix(vec3(1.0),vec3(0.16,0.13,0.115),min(1.0,d*uDamageStrength*(0.65+scars*0.35)));}c=vehicleReflection(c,t,n,v);c+=emission; c = mix(c, vec3(dot(c, vec3(0.3,0.59,0.11))), uGray);\n  o = vec4(c*uGain, uMode==3 ? uColor.a : t.a);\n"
   "}\n";
 static const char *VS_FULL =
   "#version 330 core\n"
@@ -598,13 +602,17 @@ static const char *FS_GROUND =
   "}\n";
 
 static int g_realtime_shadows=1,g_modern_explosions=1,g_vehicle_lights=1,g_damage_effects=1,g_enhanced_oil=1,g_missile_effects=1;
+static int g_vehicle_reflections=1,g_effect_quality=1;
+static double g_effect_render_time=0;
+static int g_graphics_test_active,g_effect_shadow_resolution;
 static int g_video_upscale,g_video_filter;
-static float g_effect_strength[6]={1,1,1,1,1,1};
+static float g_effect_strength[7]={1,1,1,1,1,1,1};
 static int g_shadow_pass,g_shadow_active,g_oil_render,g_lamp_pass,g_hide_model_shadows;
 static int g_tex_nearest;   // nearest-neighbour model textures (Retro Mode)
 static int g_post_done;   // the game mode has already presented the picture (post-processing pipeline)
 struct Renderer {
   GLuint prog_model, prog_bg, prog_hud, prog_ground, empty_vao;
+  GLint um_reflection_map,um_reflection_projection,um_reflection_camera,um_reflection_lod,um_reflection_strength,um_reflection_enabled,um_reflection_material,um_shadow_quality,um_effect_quality,um_effect_time;
   GLint um_visual_strength,um_damage_strength;
   GLint um_damage,um_damage_center,um_damage_extent,um_damage_offset;
   GLint um_lamps,um_lamp_pass,um_brake,um_rear_only,um_trail_weight,um_lamp_mask,um_lamp_ends,um_lamp_node;
@@ -621,6 +629,8 @@ static Renderer R;
 
 static void renderer_init(void) {
   R.prog_model = shader_build(VS_MODEL, FS_MODEL);
+  R.um_effect_quality=glGetUniformLocation(R.prog_model,"uEffectQuality");R.um_effect_time=glGetUniformLocation(R.prog_model,"uEffectTime");
+  R.um_reflection_map=glGetUniformLocation(R.prog_model,"uReflectionMap");R.um_reflection_projection=glGetUniformLocation(R.prog_model,"uReflectionProjection");R.um_reflection_camera=glGetUniformLocation(R.prog_model,"uReflectionCamera");R.um_reflection_lod=glGetUniformLocation(R.prog_model,"uReflectionMaxLod");R.um_reflection_strength=glGetUniformLocation(R.prog_model,"uReflectionStrength");R.um_reflection_enabled=glGetUniformLocation(R.prog_model,"uReflectionEnabled");R.um_reflection_material=glGetUniformLocation(R.prog_model,"uReflectionMaterial");R.um_shadow_quality=glGetUniformLocation(R.prog_model,"uShadowQuality");
   R.um_damage=glGetUniformLocation(R.prog_model,"uDamage");R.um_damage_center=glGetUniformLocation(R.prog_model,"uDamageCenter");R.um_damage_extent=glGetUniformLocation(R.prog_model,"uDamageExtent");R.um_damage_offset=glGetUniformLocation(R.prog_model,"uDamageOffset");
   R.um_rear_only=glGetUniformLocation(R.prog_model,"uRearOnly");R.um_trail_weight=glGetUniformLocation(R.prog_model,"uTrailWeight");
   R.um_visual_strength=glGetUniformLocation(R.prog_model,"uVisualStrength");R.um_damage_strength=glGetUniformLocation(R.prog_model,"uDamageStrength");R.um_lamp_mask=glGetUniformLocation(R.prog_model,"uLampMask");R.um_lamp_ends=glGetUniformLocation(R.prog_model,"uLampEnds");R.um_lamp_node=glGetUniformLocation(R.prog_model,"uLampNode");R.um_lamps=glGetUniformLocation(R.prog_model,"uLamps");R.um_lamp_pass=glGetUniformLocation(R.prog_model,"uLampPass");R.um_brake=glGetUniformLocation(R.prog_model,"uBrake");
@@ -652,6 +662,8 @@ static void renderer_init(void) {
   texture_key(R.bg_texture_key,p,0);str_cat(R.bg_texture_key,".png",512);
   if (image_load_hlz(p, &img)) { R.bg_tex = tex_upload(img.rgba, img.w, img.h, 0, 1); R.bg_w = img.w; R.bg_h = img.h; sys_free(img.rgba); }
 }
+
+#include "g_reflections.inc"
 
 static void fbo_ensure(int w, int h) {
   if (!R.samples) return;
@@ -692,7 +704,7 @@ static void hud_set(const char *text) {
 // ------------------------------------------------------------------ app state
 enum { MODE_VIEWER, MODE_TRACK, MODE_FMV, MODE_VIEWER_FORCED };
 struct App {
-  int graphics_test,effect_age_ms,test_damage,no_light_trails;
+  int graphics_test,effect_age_ms,test_damage,no_light_trails,no_engine_fire;
   int mode; char status[256]; int have_mexe; int start_mode, start_track, start_frame; int start_opp_ahead; float demo_time, demo_t; char start_screen[64]; int start_car, start_laps; int roaddbg, audiolog, camoff, dumpvideo; int yoff, yoff_set; float quit_after; int warptest; int debug_console, debug_start_console,export_textures; int retro_scale, fxaa_test; int focal_pct, halfw_pct; int shot_fps, objtest, sim_revived, trace;
   Model model; int cur; int lod; int wire; int spin_on; int autorot; int show_bg; int show_help; int show_ground;
   float yaw, pitch, dist, wheel_angle, time, frame_time;
@@ -762,6 +774,7 @@ int app_init(const char *gamedir, int argc, char **argv) {
     else if (!str_icmp(argv[i], "--trace")) { A.trace = 1; }   // per-update state trace: revived_config/openmr2_trace.csv
     else if (!str_icmp(argv[i], "--simrevived")) { A.sim_revived = 1; }   // test: subdivided Revived physics
     else if (!str_icmp(argv[i], "--no-light-trails"))A.no_light_trails=1;
+    else if (!str_icmp(argv[i], "--no-engine-fire"))A.no_engine_fire=1;
     else if (!str_icmp(argv[i], "--graphics-test")&&i+1<argc)A.graphics_test=(int)str_toi(argv[++i]);
     else if (!str_icmp(argv[i], "--test-damage")&&i+1<argc)A.test_damage=(int)str_toi(argv[++i]);
     else if (!str_icmp(argv[i], "--effect-age-ms")&&i+1<argc)A.effect_age_ms=(int)str_toi(argv[++i]);
@@ -790,6 +803,7 @@ int app_init(const char *gamedir, int argc, char **argv) {
     else if (!str_icmp(argv[i], "--frame") && i + 1 < argc) { A.start_frame = (int)str_toi(argv[++i]); }
     else if (!str_icmp(argv[i], "--fmv") && i + 1 < argc) { A.start_mode = MODE_FMV; A.start_frame = (int)str_toi(argv[++i]); }
   }
+  g_graphics_test_active=A.graphics_test!=0;
   select_model(start);
   app_start_media();
   return 1;
@@ -828,6 +842,7 @@ static void write_screenshot_jpg(const char *path,int w,int h){
 
 static void draw_mesh(const Model &m, const Mesh &me, const M4 &model_mtx, int pass) {
   if (!me.ok) return;
+  reflections_model_bind();glUniform1i(R.um_shadow_quality,g_effect_quality);glUniform1i(R.um_effect_quality,g_effect_quality);glUniform1f(R.um_effect_time,(float)g_effect_render_time);
   float center=(m.bmin.z+m.bmax.z)*.5f,extent=(m.bmax.z-m.bmin.z)*.5f;glUniform2f(R.um_lamp_ends,center-extent*.20f,center+extent*.20f);
   glUniform1i(R.um_retro,g_tex_nearest);
   if(g_tex_nearest){GLint viewport[4]={0,0,1,1};glGetIntegerv(0x0BA2,viewport);glUniform2f(R.um_viewport,(float)(viewport[2]>0?viewport[2]:1),(float)(viewport[3]>0?viewport[3]:1));}
@@ -835,6 +850,7 @@ static void draw_mesh(const Model &m, const Mesh &me, const M4 &model_mtx, int p
   glBindVertexArray(me.vao);
   for (int b = 0; b < me.nb; b++) {
     const Mat &mt = m.mats[me.b[b].mat];
+    glUniform1i(R.um_reflection_material,mt.type==MT_TRANS?2:mt.type==MT_FLAT||mt.type==MT_TEX?1:0);
     if(g_hide_model_shadows&&mt.type==MT_SHADOW)continue;
     if(g_lamp_pass&&mt.type!=MT_TEX)continue;
     if(g_shadow_pass&&(mt.type==MT_SHADOW||mt.type==MT_TRANS||mt.type==MT_ADD))continue;
@@ -925,7 +941,9 @@ static void texture_dump_overlay_draw(int W,int H);
 static int texture_dump_frame_tick();
 static char g_shortcut_notice[600];static double g_shortcut_until;static int g_shortcut_right;
 static void capture_frame(int W,int H);
+static void race_preload_test_report();
 static int frame_finish(int W, int H) {
+  if(A.graphics_test==20)race_preload_test_report();
   if(!g_post_done)texture_dump_overlay_draw(W,H);
   if (R.samples && !g_post_done) {
     glBindFramebuffer(GL_READ_FRAMEBUFFER, R.fbo); glBindFramebuffer(GL_DRAW_FRAMEBUFFER, 0);
@@ -933,6 +951,13 @@ static int frame_finish(int W, int H) {
     glBindFramebuffer(GL_FRAMEBUFFER, 0);
   }
   g_post_done = 0;
+  if(A.graphics_test){
+    static int errors;for(int i=0;i<32;i++){GLenum error=glGetError();if(!error)break;errors++;}
+    char report[800]="graphics_test=";str_int(report,sizeof report,A.graphics_test);
+    const char *names[]={"\ngl_errors=","\neffect_quality=","\nshadow_map_size=","\nreflection_map_size=","\nreflection_captures=","\nreflection_draws=","\nreflection_valid=","\nreflection_failed="};
+    long values[]={errors,g_effect_quality,g_effect_shadow_resolution,RF.size,RF.test_captures,RF.test_draws,RF.valid,RF.failed};
+    for(int i=0;i<8;i++){str_cat(report,names[i],sizeof report);str_int(report,sizeof report,values[i]);}str_cat(report,"\n",sizeof report);sys_write_file("graphics-state.txt",report,str_len(report));
+  }
   capture_frame(W,H);
   A.frames_rendered++;
   if (A.shot_pending && A.frames_rendered >= (A.shot_after>0?A.shot_after:2)) {

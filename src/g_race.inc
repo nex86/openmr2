@@ -115,6 +115,25 @@ static void car_engine_select(int *handle,int car,float vol,float rate){
   if(voice&&voice->snd!=&SFX[id]){snd_stop(*handle);voice=0;}
   if(!voice)*handle=car_engine_play(car,vol,rate);
 }
+struct RaceAudioPreload { int ids[S_COUNT],count,next; };
+static void race_audio_preload_queue(RaceAudioPreload *job,int id){
+  if(id<0||id>=S_COUNT||!audio_enabled(sfx_bus(id))||SFX[id].pcm)return;
+  for(int i=0;i<job->count;i++)if(job->ids[i]==id)return;
+  if(job->count<S_COUNT)job->ids[job->count++]=id;
+}
+static int race_audio_preload_begin(RaceAudioPreload *job,const int *cars,int count){
+  mem_zero(job,sizeof *job);
+  // Only samples used in races: no shop sounds, unused engines or playback.
+  if(audio_enabled(AUDIO_SOUNDS))for(int id=S_CHOC1;id<=S_PLOT;id++)race_audio_preload_queue(job,id);
+  if(audio_enabled(AUDIO_ENGINES)&&cars)for(int i=0;i<count;i++)
+    if(cars[i]>=0&&cars[i]<NCARS)race_audio_preload_queue(job,car_engine_id(cars[i]));
+  return job->count;
+}
+static int race_audio_preload_step(RaceAudioPreload *job){
+  // One bounded file/decode task per call. A nonzero result means complete.
+  if(job->next<job->count){int id=job->ids[job->next++];sfx_sample(id,sfx_bus(id));}
+  return job->next>=job->count;
+}
 static void sfx(int id, float vol) { snd_play(sfx_sample(id,AUDIO_SOUNDS), vol, 1.0f, 0, 0); }
 static void scrape_stop(){snd_stop(RC.scrape_voice);RC.scrape_voice=-1;}
 static int projectile_model(int kind){return kind==W_KARD?OM_MISSILE:kind==W_BOOMER?OM_MISSILE_MID:kind==W_HITRAX?OM_MISSILE_BIG:-1;}
@@ -721,7 +740,7 @@ static void cam_frame_phase(void) { if (RC.cam_mob) cam_mob_frame(); else cam_fi
 static void cam_step(void) { cam_time_phase(); cam_frame_phase(); }
 // ---- poses of two consecutive packages (for the debug output modes 60 FPS: the 3D picture is
 // interpolated between the previous and the latest update; the Original mode shows the packages as they are)
-struct PoseSnap { int valid, frame; double cam[12]; double pos[8][3], R[8][3], U[8][3], F[8][3], wheel[8]; int cgen[8];
+struct PoseSnap { int valid, frame; double time,cam[12]; double pos[8][3], R[8][3], U[8][3], F[8][3], wheel[8]; int cgen[8];
                  double ppos[32][3], pR[32][3], pU[32][3], pF[32][3]; int palive[32], pgen[32];
                  double opos[MAXOBJ][3], oR[MAXOBJ][3], oU[MAXOBJ][3], oF[MAXOBJ][3]; int oalive[MAXOBJ]; };
 static PoseSnap g_snap[2];   // 0 previous, 1 latest
@@ -744,7 +763,7 @@ static void obj_pose(const TrackObj &o, double pos[3], double R[3], double U[3],
 static void snap_take(void) {
   g_snap[0] = g_snap[1];
   PoseSnap &n = g_snap[1];
-  n.valid = 1; n.frame = RC.frame; for (int k = 0; k < 12; k++) n.cam[k] = RC.vcam[k];
+  n.valid = 1; n.frame = RC.frame; n.time=RC.t; for (int k = 0; k < 12; k++) n.cam[k] = RC.vcam[k];
   for (int i = 0; i < RC.ncar && i < 8; i++) { const RCar &c = RC.car[i]; pose_of(c.pp, c.x, 0, c.psi, n.pos[i], n.R[i], n.U[i], n.F[i]); n.cgen[i] = c.pose_gen; n.wheel[i] = c.wheel; }
   for (int i = 0; i < 32; i++) { const Proj &q = RC.proj[i]; n.palive[i] = q.alive; n.pgen[i] = q.gen; if (q.alive) pose_of(q.pp, q.x, 0, q.psi, n.ppos[i], n.pR[i], n.pU[i], n.pF[i]); }
   for (int i = 0; i < TK.nobj && i < MAXOBJ; i++) { const TrackObj &o = TK.obj[i]; n.oalive[i] = o.alive; if (o.alive) obj_pose(o, n.opos[i], n.oR[i], n.oU[i], n.oF[i]); }
@@ -1168,7 +1187,7 @@ static void route_build(void) {
 // by the road itself (the video has no depth, so without this they were drawn floating above the hill).
 static GLuint g_occ_prog, g_occ_vao, g_occ_vbo; static GLint g_occ_uP;
 static float g_occ_buf[256 * 2 * 6 * 6 * 3];
-static void occluder_draw(const double *cam) {
+static void occluder_preload() {
   if (!g_occ_prog) {
     g_occ_prog = shader_build("#version 330 core\nlayout(location=0) in vec3 aPos; uniform mat4 uP; void main(){ gl_Position = uP * vec4(aPos, 1.0); }\n",
                               "#version 330 core\nout vec4 o; void main(){ o = vec4(0.0); }\n");
@@ -1177,6 +1196,9 @@ static void occluder_draw(const double *cam) {
     glBindVertexArray(g_occ_vao); glBindBuffer(GL_ARRAY_BUFFER, g_occ_vbo);
     glEnableVertexAttribArray(0); glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 12, 0);
   }
+}
+static void occluder_draw(const double *cam) {
+  occluder_preload();
   const double *R0 = cam + 3, *R1 = cam + 6, *R2 = cam + 9;
   int n = 0; const int SUB = 3;
   auto eye = [&](const double w[3]) {
@@ -1212,6 +1234,7 @@ static void occluder_draw(const double *cam) {
   glBindVertexArray(0);
 }
 static float VIDEO_Y0 = 45, VIDEO_H = 350;    // track video on the 640x480 screen: unstretched as in the original 640x400 picture (debug option: 30/420 = 4:3 stretched)
+static GLuint vslot[2];static int vslot_frame[2]={-1,-1},vslot_next;
 
 #include "g_shadows.inc"
 #include "g_effects.inc"
@@ -1251,6 +1274,7 @@ static void race_draw(int W, int H) {
       for (int r = 0; r < 3; r++) lerp3(a.cam + 3 + r * 3, b.cam + 3 + r * 3, ia, RC.vcam + 3 + r * 3, 1);
     }
   }
+  g_effect_render_time=ia>=0&&g_effect_quality>=2?g_snap[0].time+(g_snap[1].time-g_snap[0].time)*ia:RC.t;
   if(A.graphics_test){ // Deterministic developer captures; no normal gameplay path uses this.
     TK.nobj=0;mem_zero(RC.haz,sizeof RC.haz);mem_zero(RC.proj,sizeof RC.proj);mem_zero(RC.fx,sizeof RC.fx);
     PPos q=P.pp;double x=P.x;pp_move(q,x,1.8*PT);
@@ -1260,6 +1284,7 @@ static void race_draw(int W, int H) {
     if(A.graphics_test==7){RC.ncar=2;RCar &c=RC.car[1];c=P;c.car=1;c.player=0;c.pp=q;c.x=x-17000;c.damage=A.test_damage;c.braking=1;c.out=A.test_damage>=100;car_update_world(c);}
     if(A.graphics_test==8&&(g_contact_next==0||RC.t-g_contacts[(g_contact_next-1)%128].birth>.035)){double w[3],vel[3];for(int k=0;k<3;k++){w[k]=P.W[k]+P.Rt[k]*(P.hwm+250)-P.F[k]*7000+P.U[k]*1000;vel[k]=-P.F[k]*65000;}contact_sparks(w,P.U,vel,.9f,1);}
     if(A.graphics_test==9){static PPos base;static double base_x;static int have;if(!have){base=P.pp;base_x=P.x;have=1;}P.pp=base;P.x=base_x;pp_move(P.pp,P.x,RC.t*8000);car_update_world(P);}
+    if(A.graphics_test==21||A.graphics_test==22){static PPos base;static int have;if(!have){base=P.pp;have=1;}P.pp=base;P.x=d_sin(RC.t*8)*18000;if(A.graphics_test==22){P.damage=A.test_damage>0?A.test_damage:95;P.out=P.damage>=100;}car_update_world(P);}
     if(A.graphics_test==5)P.braking=1;
     if(A.graphics_test==6){P.damage=A.test_damage;P.out=A.test_damage>=100;if(P.out&&g_damage_effects){effects_reset();Fx &f=RC.fx[0];f.alive=1;f.model=OM_EXP_BIG;f.scale=2.4;f.t=A.effect_age_ms*.001;pp_world(P.pp,P.x,2500,f.W);}}
     if(A.graphics_test==12||A.graphics_test==13){effects_reset();Fx &f=RC.fx[0];f.alive=1;f.model=OM_EXP_BIG;f.scale=A.graphics_test==12?1.4:1.3;f.t=A.effect_age_ms*.001;pp_world(q,x-12000,2500,f.W);}
@@ -1268,7 +1293,6 @@ static void race_draw(int W, int H) {
   route_build();
   // two textures hold the last two track pictures, so switching between the previous and the latest picture
   // (60 FPS) needs no new decoding
-  static GLuint vslot[2]; static int vslot_frame[2] = {-1, -1}, vslot_next;
   if (g_race_tex_frame < 0) vslot_frame[0] = vslot_frame[1] = -1;   // the textures were used for something else
   GLuint vtex = 0;
   for (int k = 0; k < 2; k++) if (vslot[k] && vslot_frame[k] == RC.frame && !A.warptest) vtex = vslot[k];

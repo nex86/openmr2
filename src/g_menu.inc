@@ -67,7 +67,8 @@ struct GameUI {
   int custom_textures;
   int video_upscale,video_filter;
   int real_time_shadows,modern_explosions,vehicle_lights,damage_effects,enhanced_oil,missile_effects;
-  int effect_intensity[6]; int effects_muted;
+  int vehicle_reflections,effect_quality;
+  int effect_intensity[7]; int effects_muted;
   int startup_mode, remember_startup_mode;
   int gfx_mode, gfx_scale, gfx_msaa, gfx_fxaa, gfx_full, gfx_output_filter;   // output filter is Retro-only
   int opts_menumusic;            // music in the menus
@@ -112,7 +113,17 @@ static void loading_music_start(void) {
   else music_play(&G.menu_music,1,AUDIO_RACE_MUSIC);
   G.menu_music_on=MX.v[0].active;
 }
-static void msfx(int id, float vol) { if (audio_enabled(AUDIO_MENU_SOUNDS)) snd_play(sfx_sample(id,AUDIO_MENU_SOUNDS),vol,1,0,0,AUDIO_MENU_SOUNDS); }   // sound effects of the menus (can be switched off)
+static int menu_sfx_context(){
+  if(PF.single||G.in_single)return 0;
+  return G.state==GS_CARSHOP||G.state==GS_WEAPONSHOP||
+    (G.state==GS_MESSAGE&&(G.msg_next==GS_CARSHOP||G.msg_next==GS_WEAPONSHOP));
+}
+static void msfx(int id, float vol) {
+  // Menu effects belong only to the career shops and their modal messages.
+  // Check before looking up the WAV so silent menus do not load it either.
+  if(!menu_sfx_context()||!audio_enabled(AUDIO_MENU_SOUNDS)||id<S_MENU1||id>S_MENU4)return;
+  snd_play(sfx_sample(id,AUDIO_MENU_SOUNDS),vol,1,0,0,AUDIO_MENU_SOUNDS);
+}
 static void menu_music_stop(void) { if (G.menu_music_on) { music_stop(); G.menu_music_on = 0; } }
 static void race_music_start(){
   if(!audio_enabled(AUDIO_RACE_MUSIC))return;
@@ -125,7 +136,7 @@ static void load_vox(void);
 static void save_game(void);
 static int load_game(void);
 static void hiscore_offer(void);
-static void show_message(const char *m, int next) { str_cpy(G.msg, m, 256); G.msg_next = next; if(next==GS_CARSHOP){G.state=GS_MESSAGE;G.sel=0;G.t=0;}else go(GS_MESSAGE); }
+static void show_message(const char *m, int next) { if(next==GS_CARSHOP||next==GS_WEAPONSHOP)msfx(S_MENU1,60.f/127);str_cpy(G.msg, m, 256); G.msg_next = next; if(next==GS_CARSHOP){G.state=GS_MESSAGE;G.sel=0;G.t=0;}else go(GS_MESSAGE); }
 
 // ------------------------------------------------------------------ clips (Lance Boyle, intro)
 static void clip_queue(const char *path) { if (G.clip_nq < 4) str_cpy(G.clip_queue[G.clip_nq++], path, 40); }
@@ -135,8 +146,7 @@ static int clip_start_next(void) {
     for (int i = 1; i < G.clip_nq; i++) str_cpy(G.clip_queue[i - 1], G.clip_queue[i], 40);
     G.clip_nq--;
     if (G.clip.data) video_close(&G.clip);
-    size_t n; uint8_t *d = iso_load(p, &n);
-    if (d && video_open(&G.clip, d, n, 400,audio_enabled(AUDIO_SOUNDS))) {
+    if (video_open_iso(&G.clip,p,400,audio_enabled(AUDIO_SOUNDS))) {
       if(sys_debug_enabled()){char event[100]="[event] Playing video: ";str_cat(event,p,sizeof event);sys_log(event);}
       G.clip_ok = 1; G.clip_t = 0;
       if (G.clip.pcm) { g_fmv_snd.pcm = G.clip.pcm; g_fmv_snd.frames = G.clip.pcm_frames; g_fmv_snd.ch = 2; voice_play(&g_fmv_snd, 0.9f); }
@@ -278,11 +288,14 @@ static void draw_turntable(int W, int H, int car, double angle, float x, float y
   V3 c = (m->bmin + m->bmax) * 0.5f;
   M4 base = m4_mul(m4_roty((float)angle),m4_trans(v3(-c.x,-m->bmin.y,-c.z)));
   int old_hide=g_hide_model_shadows;g_hide_model_shadows=1;
+  reflections_preview_picture(G.bg.px,G.bg.pal,G.bg.w,G.bg.h,G.bg.texture_key,(!g_tex_nearest&&g_vehicle_reflections)?texture_custom(G.bg.texture_key):0,x,y-h*.08f,w,h,vp,eye);
   preview_shadow_draw(*m,vp,base,(float)(angle*3));
   model_shader_begin(vp,1);glUniform1i(R.um_lamps,g_vehicle_lights&&(!g_tex_nearest));glUniform1i(R.um_rear_only,A.graphics_test==15);glUniform1f(R.um_brake,A.graphics_test==15&&A.test_damage?1.f:0.f);
   glUniformMatrix4fv(R.um_vp, 1, GL_FALSE, vp.m); glUniform3f(R.um_cam, eye.x, eye.y, eye.z);
   glUniform1i(R.um_tex, 0); glUniform1f(R.um_lit, 1.0f); glUniform1f(R.um_gain, 1.0f); glUniform1f(R.um_gray, 0.0f);
+  reflections_vehicle(1);
   draw_model_mv(*m, base, (float)(angle * 3), 0);
+  reflections_vehicle(0);
   preview_lights_draw(*m,vp,base,eye,(float)(angle*3),W,H);
   g_hide_model_shadows=old_hide;
   glBindVertexArray(0);
@@ -571,7 +584,7 @@ static void pad_apply(Input *in, double dt, int W, int H) {
 
 static void texture_options_apply();
 static void debug_apply(void) {
-  for(int i=0;i<6;i++)g_effect_strength[i]=(float)G.effect_intensity[i]/100.f;
+  for(int i=0;i<7;i++)g_effect_strength[i]=(float)G.effect_intensity[i]/100.f;
   int enabled=G.gfx_mode==0&&!G.effects_muted;
   g_vehicle_lights=(enabled&&G.vehicle_lights&&G.effect_intensity[1]>0);
   g_damage_effects=(enabled&&G.damage_effects&&G.effect_intensity[4]>0);
@@ -579,6 +592,8 @@ static void debug_apply(void) {
   g_realtime_shadows=(enabled&&G.real_time_shadows&&G.effect_intensity[0]>0);
   g_modern_explosions=(enabled&&G.modern_explosions&&G.effect_intensity[3]>0);
   g_missile_effects=(enabled&&G.missile_effects&&G.effect_intensity[5]>0);
+  g_vehicle_reflections=(enabled&&G.vehicle_reflections&&G.effect_intensity[6]>0);
+  g_effect_quality=G.gfx_mode==0?G.effect_quality:1;
   graphics_options_apply();   // technical debug options (championship and single race)
   if(A.debug_start_console){G.dbg_console=1;A.debug_start_console=0;}
   G.dbg_console=A.debug_console=sys_debug_console(G.dbg_console);
@@ -599,7 +614,7 @@ static void graphics_mode_set(int mode){
 }
 // settings as plain text: revived_config/openmr2_setup.cfg ("key = value" per line, # comments)
 struct CfgItem { const char *key; int *val; int lo, hi; const char *note; };
-enum { CFG_MAX_ITEMS=80 };
+enum { CFG_MAX_ITEMS=96 };
 #include "config_keys.h"
 #include "game_directory.h"
 static char g_cfg_gamedir[600];   // "spielverzeichnis" (kept when the settings are written)
@@ -625,8 +640,10 @@ static int cfg_items(CfgItem *it) {
   add("real_time_shadows",&G.real_time_shadows,0,1,"");
   add("modern_explosions",&G.modern_explosions,0,1,"");
   add("missile_effects",&G.missile_effects,0,1,"");
-  const char *intensity_keys[]={"shadow_intensity","light_intensity","oil_intensity","explosion_intensity","damage_intensity","missile_intensity"};
-  for(int i=0;i<6;i++)add(intensity_keys[i],&G.effect_intensity[i],0,200,"");
+  add("vehicle_reflections",&G.vehicle_reflections,0,1,"");
+  add("effect_quality",&G.effect_quality,0,3,"");
+  const char *intensity_keys[]={"shadow_intensity","light_intensity","oil_intensity","explosion_intensity","damage_intensity","missile_intensity","reflection_intensity"};
+  for(int i=0;i<7;i++)add(intensity_keys[i],&G.effect_intensity[i],0,200,"");
   add("msaa", &G.gfx_msaa, 0, 16, "0, 2, 4, 8, 16");
   add("fxaa", &G.gfx_fxaa, 0, 1, "0/1");
   add("vollbild", &G.gfx_full, 0, 1, "0/1");
@@ -698,7 +715,8 @@ static void single_load(void) {
 static void setup_load(void) {
   G.vehicle_lights=G.damage_effects=G.enhanced_oil=1;
   G.real_time_shadows=G.modern_explosions=G.missile_effects=1;
-  for(int i=0;i<6;i++)G.effect_intensity[i]=100;
+  for(int i=0;i<7;i++)G.effect_intensity[i]=100;
+  G.vehicle_reflections=1;G.effect_quality=1;
   G.startup_mode=G.remember_startup_mode=0;
   G.gfx_output_filter=0;
   for(int i=0;i<AUDIO_COUNT;i++)g_audio_percent[i]=100;
@@ -781,6 +799,7 @@ static void go(int state) {
   if(sys_debug_enabled() && G.state!=state){char event[160]="[event] State: ";str_cat(event,game_state_name(G.state),sizeof event);str_cat(event," -> ",sizeof event);str_cat(event,game_state_name(state),sizeof event);sys_log(event);}
   if (state != GS_RACE && (G.state == GS_RACE || state == GS_GAMEOVER)) race_end_sounds();
   G.state = state; G.sel = 0; G.t = 0; G.menu_click = -1;
+  if(!menu_sfx_context())for(int i=2;i<NVOICES;i++)if(MX.v[i].bus==AUDIO_MENU_SOUNDS)MX.v[i].active=0;
   if (state != GS_TRACKINFO && !G.opts_menumusic) menu_music_stop();   // the loading music only belongs to the loading screen
   switch (state) {
     case GS_MENU: game_set_bg("DATA640/MENUFOND.HLZ"); menu_music_start(); break;
@@ -850,7 +869,7 @@ static void game_init(void) {
   spr_load(&g_pausedrum[0], "DATA640/MENUA.SPR"); spr_load(&g_pausedrum[1], "DATA640/MENUB.SPR"); spr_load(&g_pausedrum[2], "DATA640/MENUC.SPR");
   migrate_old_files(); hiscore_load(); setup_load();
   if(sys_startup_mode()>=0)graphics_mode_set(sys_startup_mode());
-  sfx_load_all();menu_music_load();
+  menu_music_load();
   PF.car = -1;
   G.single_track = 0;
 }
@@ -980,9 +999,9 @@ static void screen_carshop(int W, int H, const Input *in, double dt) {
   if (b >= 0 && in->lmb) cv_spr(G.shop_spr.f[b], G.bg.pal, 0, 0, 1);
   int act = G.click ? b : -1;
   if (in->pressed[K_LEFT]) act = 0; if (in->pressed[K_RIGHT]) act = 1; if (in->pressed[K_ESC]) act = 2; if (in->pressed[K_ENTER]) act = 3;
-  if (act == 0) { G.shop_car = (c + NCARS - 1) % NCARS; msfx(S_MENU2, 0.7f); }
-  if (act == 1) { G.shop_car = (c + 1) % NCARS; msfx(S_MENU2, 0.7f); }
-  if (act == 2) { msfx(S_MENU1, 0.7f); if (PF.car >= 0) go(GS_WEAPONSHOP); else go(GS_MENU); }
+  if (act == 0) { G.shop_car = (c + NCARS - 1) % NCARS; }
+  if (act == 1) { G.shop_car = (c + 1) % NCARS; }
+  if (act == 2) { if (PF.car >= 0) go(GS_WEAPONSHOP); else go(GS_MENU); }
   if (act == 3) {
     if (PF.car == c) { go(GS_WEAPONSHOP); }
     else if (!avail) show_message("Dieser Wagen ist noch nicht erh\xe4ltlich.", GS_CARSHOP);
@@ -992,7 +1011,6 @@ static void screen_carshop(int W, int H, const Input *in, double dt) {
       else {
         int first = PF.car < 0;
         pay(CARS[c].price - tradein); debug_purchase("Vehicle purchased",CARS[c].name,CARS[c].price-tradein); PF.car = c; PF.field[0] = c; PF.damage = 0;
-        msfx(S_MENU3, 0.8f);
         if (first) default_loadout(&PF.lo);
         save_game(); go(GS_WEAPONSHOP);
       }
@@ -1017,9 +1035,9 @@ static int lo_find(const Loadout &lo, int w, int front) { for (int i = 0; i < 2;
 static void shop_buy(int item) {
   Loadout &lo = PF.lo;
   if (item == W_SHIELD) {   // buy (1500, full shield) or sell (750) the shield
-    if (lo.shield) { PF.money += WEAPONS[W_SHIELD].launcher_price / 2; lo.shield = 0; debug_purchase("Upgrade sold","Shield",WEAPONS[W_SHIELD].launcher_price/2); msfx(S_MENU2, 0.7f); return; }
+    if (lo.shield) { PF.money += WEAPONS[W_SHIELD].launcher_price / 2; lo.shield = 0; debug_purchase("Upgrade sold","Shield",WEAPONS[W_SHIELD].launcher_price/2);msfx(S_MENU3,60.f/127);return; }
     if (!can_pay(WEAPONS[W_SHIELD].launcher_price)) { show_message("Sorry, nicht genug Geld", GS_WEAPONSHOP); return; }
-    pay(WEAPONS[W_SHIELD].launcher_price); lo.shield = 100; debug_purchase("Upgrade purchased","Shield",WEAPONS[W_SHIELD].launcher_price); msfx(S_MENU3, 0.8f); return;
+    pay(WEAPONS[W_SHIELD].launcher_price); lo.shield = 100; debug_purchase("Upgrade purchased","Shield",WEAPONS[W_SHIELD].launcher_price); msfx(S_MENU2, 60.f/127); return;
   }
   int launcher = item < 0; int w = launcher ? -item : item; int front = w <= W_HITRAX;
   int slot = lo_find(lo, w, front);
@@ -1028,7 +1046,7 @@ static void shop_buy(int item) {
       PF.money += WEAPONS[w].launcher_price / 2;
       if (front) { lo.front[slot] = W_NONE; lo.fammo[slot] = 0; } else { lo.rear[slot] = W_NONE; lo.rammo[slot] = 0; }
       debug_purchase("Weapon launcher sold",WEAPONS[w].launcher,WEAPONS[w].launcher_price/2);
-      msfx(S_MENU2, 0.7f); return;
+      msfx(S_MENU3, 60.f/127); return;
     }
     int free = front ? (lo.front[0] == W_NONE ? 0 : lo.front[1] == W_NONE ? 1 : -1) : (lo.rear[0] == W_NONE ? 0 : lo.rear[1] == W_NONE ? 1 : -1);
     if (free < 0) { show_message(front ? "Beide Pl\xe4tze f\xfcr Frontwaffen sind belegt.\nZuerst einen Werfer verkaufen." : "Beide Pl\xe4tze f\xfcr Heckwaffen sind belegt.\nZuerst einen Werfer verkaufen.", GS_WEAPONSHOP); return; }
@@ -1036,13 +1054,13 @@ static void shop_buy(int item) {
     pay(WEAPONS[w].launcher_price);
     if (front) { lo.front[free] = w; lo.fammo[free] = LAUNCHER_FILL[w]; } else { lo.rear[free] = w; lo.rammo[free] = LAUNCHER_FILL[w]; }   // M.EXE fill: 12 / 10 / 4 / 4 / 4
     debug_purchase("Weapon launcher purchased",WEAPONS[w].launcher,WEAPONS[w].launcher_price);
-    msfx(S_MENU3, 0.8f);
+    msfx(S_MENU2, 60.f/127);
   } else {
     if (slot < 0) { show_message("Zuerst den passenden Werfer kaufen.", GS_WEAPONSHOP); return; }
     int &ammo = front ? lo.fammo[slot] : lo.rammo[slot];
     if (ammo >= WEAPONS[w].capacity) { show_message("Der Werfer ist voll.", GS_WEAPONSHOP); return; }
     if (!can_pay(WEAPONS[w].ammo_price)) { show_message("Sorry, nicht genug Geld", GS_WEAPONSHOP); return; }
-    pay(WEAPONS[w].ammo_price); ammo++; debug_purchase("Ammunition purchased",WEAPONS[w].name,WEAPONS[w].ammo_price); msfx(S_MENU4, 0.6f);
+    pay(WEAPONS[w].ammo_price); ammo++; debug_purchase("Ammunition purchased",WEAPONS[w].name,WEAPONS[w].ammo_price); msfx(S_MENU2, 60.f/127);
   }
 }
 static void shop_info(char *t, int item) {   // the texts of the original info panel
@@ -1069,7 +1087,7 @@ static void screen_weaponshop(int W, int H, const Input *in, double dt) {
   // shelf at the bottom
   int hover = -1;
   for (int i = 0; i < 11 && i < G.icon_spr.n; i++) { const Sprite &s = G.icon_spr.f[i];int x,y,w,h;shop_icon_rect(i,s,&x,&y,&w,&h);if(hit(x,y,w,h))hover=i; }
-  if (G.click && hover >= 0) { G.wsel = hover; msfx(S_MENU2, 0.6f); }
+  if (G.click && hover >= 0) { G.wsel = hover; }
   if (in->pressed[K_LEFT]) G.wsel = (G.wsel + 10) % 11; if (in->pressed[K_RIGHT]) G.wsel = (G.wsel + 1) % 11;
   for (int i = 0; i < 11 && i < G.icon_spr.n; i++){const Sprite &s=G.icon_spr.f[i];if(G.gfx_mode==0&&g_revived_ui){int x,y,w,h;shop_icon_rect(i,s,&x,&y,&w,&h);char key[512];texture_sprite_key(key,s.texture_source,s.frame,G.bg.pal);if(g_dump_active)texture_dump_sprite(s,G.bg.pal);if(texture_canvas_image(key,x,y,w,h))continue;}cv_spr(s,G.bg.pal,0,SHOP_ICON_DY,1);}
   { const Sprite &s = G.icon_spr.f[G.wsel < G.icon_spr.n ? G.wsel : 0]; uint32_t c = rgba(200, 170, 90, 255);int x,y,w,h;shop_icon_rect(G.wsel,s,&x,&y,&w,&h);x-=3;y-=3;w+=6;h+=6;
@@ -1106,16 +1124,16 @@ static void screen_weaponshop(int W, int H, const Input *in, double dt) {
   if (in->pressed[K_ENTER]) act = 0; if (in->pressed[K_ESC]) act = 1; if (in->pressed[K_R]) act = 4;
   if (in->pressed[K_UP]) act = 3; if (in->pressed[K_DOWN]) act = 2;
   if (act == 0) shop_buy(item);
-  if (act == 1) { msfx(S_MENU1, 0.7f); if (PF.active) save_game(); go(GS_MENU); }
+  if (act == 1) { if (PF.active) save_game(); go(GS_MENU); }
   if (act == 3) { G.repair_amount += in->down[K_UP] && G.t > 0 ? 1 : 1; if (G.repair_amount > maxsteps) G.repair_amount = maxsteps; }
   if (act == 2) { G.repair_amount -= 1; if (G.repair_amount < 0) G.repair_amount = 0; }
   if (act == 4) {
     int cost = G.repair_amount * 169;
     if (cost <= 0) {}
     else if (!can_pay(cost)) show_message("Sorry, nicht genug Geld", GS_WEAPONSHOP);
-    else { pay(cost); PF.damage = 100 - after / 2.56; if (PF.damage < 0.01) PF.damage = 0; G.repair_amount = 0; debug_purchase("Vehicle repaired",CARS[PF.car].name,cost); msfx(S_MENU3, 0.8f); }
+    else { pay(cost); PF.damage = 100 - after / 2.56; if (PF.damage < 0.01) PF.damage = 0; G.repair_amount = 0; debug_purchase("Vehicle repaired",CARS[PF.car].name,cost); }
   }
-  if (act == 5) { msfx(S_MENU1, 0.7f); go(GS_CARSHOP); }
+  if (act == 5) { go(GS_CARSHOP); }
   draw_cursor();
   canvas_draw(W, H);
   draw_turntable(W, H, PF.car, G.turn, 20, 20, 300, 170, TRACKS[PF.active ? PF.track : 0].set);
@@ -1130,7 +1148,7 @@ static void draw_loading_bar(float fraction,const char *label){
   cv_rect(bx-2,by-2,bw+4,bh+4,rgba(150,140,120,255));cv_rect(bx,by,bw,bh,rgba(20,18,16,255));
   cv_rect(bx,by,(int)(bw*fraction),bh,ORANGE);cv_text(g_font_small,320,by-18,label,BEIGE,1,1);
 }
-static void texture_dump_finished_sound(){msfx(S_MENU2,0.7f);sys_log("[event] Texture export finished; Apply sound played (if menu effects are enabled).");}
+static void texture_dump_finished_sound(){sys_log("[event] Texture export finished.");}
 static int texture_dump_frame_tick(){texture_dump_step();return A.export_textures && g_dump_complete;}
 static void texture_dump_overlay_draw(int W,int H){
   if(!g_dump_active && !g_dump_overlay_until)return;
@@ -1142,36 +1160,20 @@ static void texture_dump_overlay_draw(int W,int H){
   cv_rect(100,396,440,44,rgba(10,10,12,235));draw_loading_bar(fraction,label);canvas_draw(W,H);
 }
 
-// loading screen of the track with a loading bar (the track video is read in steps)
-static IsoStream g_ld; static int g_ld_state;   // 0 start, 1 reading, 2 done (start the race next frame)
-static const double LOAD_MIN_TIME = 3.5;   // the loading screen stays at least this long (so the bar can be seen)
-static void screen_trackinfo(const Input *in) {
-  if (G.bg.px) cv_pic(G.bg, 0, 0, G.bg.w <= 320 ? 2 : 1); else cv_clear(rgba(0, 0, 0, 255));
-  int ti = PF.single ? G.single_track : PF.track;
-  char t[200] = ""; str_cpy(t, ui_translate("Fertigmachen f\xfcrs Rennen: "), 200); str_cat(t, ui_translate(TRACKS[ti].name), 200);
-  if (!PF.single) { str_cat(t, ui_translate(" , Runde : "), 200); str_int(t, 200, PF.heat + 1); }
-  cv_text(g_font_small, 320, 458, t, ORANGE, 1, 1);
-  if (g_ld_state < 0) g_ld_state = 0;
-  float rf = 1;   // part of the track video that has been read
-  if (g_ld_state == 0) {
-    if (G.t > 0.05) {
-      if (TK.loaded && TK.idx == ti) g_ld_state = 2;
-      else {
-        char p[128]; str_cpy(p, TRACKS[ti].cd, 128); str_cat(p, ".UBB", 128);
-        sys_free(g_preload_ubb); g_preload_ubb = 0; g_preload_track = -1;
-        g_ld_state = iso_stream_begin(p, &g_ld) ? 1 : 2;
-      }
-    }
-    rf = 0;
-  } else if (g_ld_state == 1) {
-    int r = iso_stream_step(&g_ld, 3u << 20);
-    rf = g_ld.size ? (float)g_ld.done / g_ld.size : 0;
-    if (r == 1) { g_preload_ubb = g_ld.buf; g_preload_n = g_ld.size; g_preload_track = ti; g_ld.buf = 0; g_ld_state = 2; }
-    else if (r < 0) g_ld_state = 2;
-  } else if (g_ld_state == 2) { if (G.t >= LOAD_MIN_TIME) g_ld_state = 3; }
-  else { g_ld_state = -1; start_race(); return; }
-  float tf = (float)(G.t / LOAD_MIN_TIME); if (tf > 1) tf = 1;
-  float frac = rf < tf ? rf : tf;
+#include "g_preload.inc"
+static void screen_trackinfo(int W,int H,const Input *in) {
+  int ti=PF.single?G.single_track:PF.track;
+  if(!g_race_preload.active)race_preload_begin(ti,PF.single?0:PF.heat);
+  else if(g_race_preload.complete){g_race_preload.active=0;start_race();return;}
+  if(in->pressed[K_ESC]){race_preload_cancel();if(PF.single)single_end();go(GS_MENU);return;}
+  double deadline=sys_time()+.006;int work=0;
+  do{race_preload_step(W,H);work++;}while(!g_race_preload.complete&&!g_race_preload.failed&&work<8&&sys_time()<deadline);
+  if(g_race_preload.failed){race_preload_cancel();show_message("Strecke konnte nicht geladen werden.",GS_MENU);return;}
+  if(G.bg.px)cv_pic(G.bg,0,0,G.bg.w<=320?2:1);else cv_clear(rgba(0,0,0,255));
+  char t[200]="";str_cpy(t,ui_translate("Fertigmachen f\xfcrs Rennen: "),sizeof t);str_cat(t,ui_translate(TRACKS[ti].name),sizeof t);
+  if(!PF.single){str_cat(t,ui_translate(" , Runde : "),sizeof t);str_int(t,sizeof t,PF.heat+1);}
+  cv_text(g_font_small,320,458,t,ORANGE,1,1);
+  float frac=g_race_preload.count?(float)g_race_preload.next/g_race_preload.count:0;
   // information panel: car, money, weapons, upgrades
   {
     int x = 150, y = 300, w = 340, h = 96;
@@ -1198,8 +1200,7 @@ static void screen_trackinfo(const Input *in) {
     if (!cheats_cur().nodamage && PF.damage > 0) { str_cat(c, ui_translate("    Schaden : "), 160); str_int(c, 160, (int)PF.damage); str_cat(c, " %", 160); }
     cv_text(g_font_small, x + 12, ly + 40, c, BEIGE, 0, 1);
   }
-  draw_loading_bar(frac,"Strecke wird geladen ...");
-  if (in->pressed[K_ESC] && g_ld_state >= 1 && g_ld_state <= 2) { sys_free(g_ld.buf); g_ld.buf = 0; g_ld_state = -1; if (PF.single) single_end(); go(GS_MENU); }
+  char label[180]="";str_cpy(label,ui_translate(g_race_preload.phase),sizeof label);str_cat(label,"  ",sizeof label);str_int(label,sizeof label,g_race_preload.next);str_cat(label,"/",sizeof label);str_int(label,sizeof label,g_race_preload.count);draw_loading_bar(frac,label);
 }
 
 // classification after a race, laid out like the original (DATA640\CLASS.HLZ grid: name column,
@@ -1304,7 +1305,7 @@ static void audio_volume_set(int bus,int value){
   if(value<0)value=0;if(value>100)value=100;
   if(g_audio_percent[bus]==value)return;
   g_audio_percent[bus]=value;setup_apply();
-  if(sys_debug_enabled()){static const char *names[]={"Sounds","Engines","Race music","Menu music","Menu sounds"};char event[120]="[event] Volume: ";str_cat(event,names[bus],sizeof event);str_cat(event," = ",sizeof event);str_int(event,sizeof event,value);str_cat(event,"%",sizeof event);sys_log(event);}
+  if(sys_debug_enabled()){static const char *names[]={"Sounds","Engines","Race music","Menu music","Shop sounds"};char event[120]="[event] Volume: ";str_cat(event,names[bus],sizeof event);str_cat(event," = ",sizeof event);str_int(event,sizeof event,value);str_cat(event,"%",sizeof event);sys_log(event);}
   if(bus==AUDIO_MENU_MUSIC && value)menu_music_start();
 }
 static void screen_retro_options(const Input *in);
@@ -1331,7 +1332,7 @@ static void screen_options(const Input *in) {
   if(G.opts_laps)str_int(laps,sizeof laps,G.opts_laps);else str_cat(laps,"5/5/3",sizeof laps);
   str_cat(laps," >",sizeof laps);item(4,262,laps,0,1);
   cv_text(g_font_small,340,320,"Audio off hint",GREY,0,1);
-  static const char *labels[]={"Sounds","Engines","Race music","Menu music","Menu sounds"};
+  static const char *labels[]={"Sounds","Engines","Race music","Menu music","Shop sounds"};
   for(int bus=0;bus<AUDIO_COUNT;bus++){
     int y=77+bus*47,sel=5+bus,value=g_audio_percent[bus];
     cv_text(g_font_h10,340,y,labels[bus],selected(sel),0,1);
@@ -1491,34 +1492,52 @@ static void screen_gfx(const Input *in) {
   draw_cursor();
 }
 
+enum{EFFECT_COUNT=7,EFFECT_QUALITY_ROW=7,EFFECT_RESET_ROW=8,EFFECT_APPLY_ROW=9};
 static int g_effect_drag=-1;
-static int *effect_switches(int index){int *values[]={&G.real_time_shadows,&G.vehicle_lights,&G.enhanced_oil,&G.modern_explosions,&G.damage_effects,&G.missile_effects};return values[index];}
+static const char *EFFECT_QUALITY_NAMES[]={"Low","Medium","High","Extreme"};
+static int *effect_switches(int index){int *values[]={&G.real_time_shadows,&G.vehicle_lights,&G.enhanced_oil,&G.modern_explosions,&G.damage_effects,&G.missile_effects,&G.vehicle_reflections};return values[index];}
 static void effect_intensity_set(int index,int value){
-  value=value<0?0:value>200?200:value;if(index<0||index>=6||G.effect_intensity[index]==value)return;G.effect_intensity[index]=value;debug_apply();
-  if(sys_debug_enabled()){const char *names[]={"Shadows","Vehicle lights","Oil slicks","Explosions","Damage effects","Missile exhaust"};char message[120]="[event] Revived effect intensity: ";str_cat(message,names[index],sizeof message);str_cat(message," = ",sizeof message);str_int(message,sizeof message,value);str_cat(message,"%",sizeof message);sys_log(message);}
+  value=value<0?0:value>200?200:value;if(index<0||index>=EFFECT_COUNT||G.effect_intensity[index]==value)return;G.effect_intensity[index]=value;debug_apply();
+  if(sys_debug_enabled()){const char *names[]={"Shadows","Vehicle lights","Oil slicks","Explosions","Damage effects","Missile exhaust","Vehicle reflections"};char message[120]="[event] Revived effect intensity: ";str_cat(message,names[index],sizeof message);str_cat(message," = ",sizeof message);str_int(message,sizeof message,value);str_cat(message,"%",sizeof message);sys_log(message);}
 }
-static void effect_defaults(){for(int i=0;i<6;i++){G.effect_intensity[i]=100;*effect_switches(i)=1;}debug_apply();setup_save();if(sys_debug_enabled())sys_log("[event] Revived effects reset to enabled, with their original 100% intensities.");}
+static void effect_quality_set(int value){
+  value=value<0?0:value>3?3:value;if(G.effect_quality==value)return;G.effect_quality=value;debug_apply();
+  if(sys_debug_enabled()){char text[128]="[event] Revived effect quality: ";str_cat(text,EFFECT_QUALITY_NAMES[value],sizeof text);sys_log(text);}
+}
+static void effect_defaults(){for(int i=0;i<EFFECT_COUNT;i++){G.effect_intensity[i]=100;*effect_switches(i)=1;}G.effects_muted=0;G.effect_quality=1;debug_apply();setup_save();sys_log("[event] Revived effects reset: enabled, 100% intensities, Medium quality.");}
 static void screen_revive_effects(const Input *in){
   if(G.gfx_mode!=0){g_effect_drag=-1;go(GS_OPTIONS);return;}
   cv_pic(G.bg,0,0,1);cv_text(g_font_h14,320,6,"Revived Effects",ORANGE,1,1);
-  const char *labels[]={"Real-time shadows","Vehicle lights","Enhanced oil slicks","Modern explosion effects","Damage effects","Missile effects"};
-  if(G.sel<0||G.sel>7)G.sel=0;int hover=-1,slider=-1;
-  for(int i=0;i<6;i++){int y=64+i*43;const SprFile &sp=*effect_switches(i)?G.chk_on:G.chk_off;uint32_t color=G.sel==i?WHITE:BEIGE;if(sp.n)cv_spr(spr_at(sp.f[0],34,y-2),G.bg.pal,0,0,1);cv_text(g_font_h14,66,y,labels[i],color,0,1);
+  const char *labels[]={"Real-time shadows","Vehicle lights","Enhanced oil slicks","Modern explosion effects","Damage effects","Missile effects","Vehicle reflections"};
+  if(G.sel<0||G.sel>EFFECT_APPLY_ROW)G.sel=0;int hover=-1,slider=-1;
+  for(int i=0;i<EFFECT_COUNT;i++){int y=52+i*37;const SprFile &sp=*effect_switches(i)?G.chk_on:G.chk_off;uint32_t color=G.sel==i?WHITE:BEIGE;
+    if(sp.n)cv_spr(spr_at(sp.f[0],34,y-2),G.bg.pal,0,0,1);cv_text(g_font_h14,66,y,labels[i],color,0,1);
     int value=G.effect_intensity[i];cv_rect(365,y+12,180,4,GREY);cv_rect(365,y+12,180*value/200,4,ORANGE);cv_rect(362+180*value/200,y+7,7,14,color);
     char text[16]="";str_int(text,sizeof text,value);str_cat(text,"%",sizeof text);cv_text(g_font_h10,626,y+2,text,color,2,1);
     if(hit(31,y-4,600,30))hover=i;if(hit(355,y-4,198,30))slider=i;
   }
-  cv_text(g_font_small,34,330,"Revived effects hint",GREY,0,1);cv_text(g_font_small,34,373,"Effect intensity hint",GREY,0,1);
+  cv_text(g_font_small,34,310,"Effect intensity hint",GREY,0,1);
+  uint32_t quality_color=G.sel==EFFECT_QUALITY_ROW?WHITE:BEIGE;cv_text(g_font_h14,66,342,"Effect quality",quality_color,0,1);
+  cv_rect(365,354,180,4,GREY);cv_rect(365,354,G.effect_quality*60,4,ORANGE);
+  for(int i=0;i<4;i++)cv_rect(364+i*60,351,3,10,GREY);
+  cv_rect(362+G.effect_quality*60,349,7,14,quality_color);
+  cv_text(g_font_h10,626,344,EFFECT_QUALITY_NAMES[G.effect_quality],quality_color,2,1);
+  if(hit(31,336,600,32))hover=EFFECT_QUALITY_ROW;if(hit(355,336,198,32))slider=EFFECT_QUALITY_ROW;
+  cv_text(g_font_small,34,382,"Effect quality hint",GREY,0,1);
   if(G.exit_spr.n){cv_spr(spr_at(G.exit_spr.f[0],34,441),G.bg.pal,0,0,1);cv_spr(spr_at(G.exit_spr.f[0],443,441),G.bg.pal,0,0,1);}
-  cv_text(g_font_h14,87,443,"Reset effects",G.sel==6?WHITE:BEIGE,0,1);if(hit(31,436,275,35))hover=6;
-  cv_text(g_font_h14,496,443,"\xdc" "bernehmen",G.sel==7?WHITE:BEIGE,0,1);if(hit(440,436,195,35))hover=7;
-  if(in->pressed[K_DOWN])G.sel=(G.sel+1)%8;if(in->pressed[K_UP])G.sel=(G.sel+7)%8;if(hover>=0&&(in->mouse_dx||in->mouse_dy))G.sel=hover;
+  cv_text(g_font_h14,87,443,"Reset effects",G.sel==EFFECT_RESET_ROW?WHITE:BEIGE,0,1);if(hit(31,436,275,35))hover=EFFECT_RESET_ROW;
+  cv_text(g_font_h14,496,443,"\xdc" "bernehmen",G.sel==EFFECT_APPLY_ROW?WHITE:BEIGE,0,1);if(hit(440,436,195,35))hover=EFFECT_APPLY_ROW;
+  if(in->pressed[K_DOWN])G.sel=(G.sel+1)%10;if(in->pressed[K_UP])G.sel=(G.sel+9)%10;if(hover>=0&&(in->mouse_dx||in->mouse_dy))G.sel=hover;
   if(!in->lmb&&g_effect_drag>=0){setup_save();g_effect_drag=-1;}
   if(G.click&&slider>=0){G.sel=slider;g_effect_drag=slider;}
-  if(g_effect_drag>=0&&(in->lmb||G.click))effect_intensity_set(g_effect_drag,((G.mx-365)*200+90)/180);
-  if(G.sel<6){int dir=in->pressed[K_RIGHT]?1:in->pressed[K_LEFT]?-1:0;if(dir){effect_intensity_set(G.sel,G.effect_intensity[G.sel]+dir*5);setup_save();}}
-  int action=G.click&&hover>=0&&slider<0?hover:in->pressed[K_ENTER]||in->pressed[K_SPACE]?G.sel:-1;if(in->pressed[K_ESC])action=7;
-  if(action>=0){msfx(S_MENU2,.7f);if(action<6){*effect_switches(action)^=1;debug_apply();setup_save();}else if(action==6){g_effect_drag=-1;effect_defaults();}else{g_effect_drag=-1;setup_save();G.state=GS_GFX;G.sel=10;return;}}
+  if(g_effect_drag>=0&&(in->lmb||G.click)){
+    if(g_effect_drag==EFFECT_QUALITY_ROW)effect_quality_set(((G.mx-365)*3+90)/180);
+    else effect_intensity_set(g_effect_drag,((G.mx-365)*200+90)/180);
+  }
+  int dir=in->pressed[K_RIGHT]?1:in->pressed[K_LEFT]?-1:0;
+  if(dir&&G.sel<=EFFECT_QUALITY_ROW){if(G.sel==EFFECT_QUALITY_ROW)effect_quality_set(G.effect_quality+dir);else effect_intensity_set(G.sel,G.effect_intensity[G.sel]+dir*5);setup_save();}
+  int action=G.click&&hover>=0&&slider<0?hover:in->pressed[K_ENTER]||in->pressed[K_SPACE]?G.sel:-1;if(in->pressed[K_ESC])action=EFFECT_APPLY_ROW;
+  if(action>=0){if(action<EFFECT_COUNT){*effect_switches(action)^=1;debug_apply();setup_save();}else if(action==EFFECT_QUALITY_ROW){effect_quality_set((G.effect_quality+1)%4);setup_save();}else if(action==EFFECT_RESET_ROW){g_effect_drag=-1;effect_defaults();}else{g_effect_drag=-1;setup_save();G.state=GS_GFX;G.sel=10;return;}}
   draw_cursor();
 }
 
@@ -1855,7 +1874,7 @@ static int game_frame(int W, int H, double dt, const Input *in) {
     case GS_MENU: screen_menu(in); draw_cursor(); break;
     case GS_CARSHOP: screen_carshop(W, H, in, dt); return 1;
     case GS_WEAPONSHOP: screen_weaponshop(W, H, in, dt); return 1;
-    case GS_TRACKINFO: screen_trackinfo(in); break;
+    case GS_TRACKINFO: screen_trackinfo(W,H,in); break;
     case GS_RESULTS: screen_results(in); draw_cursor(); break;
     case GS_PRIZE: screen_prize(in); break;
     case GS_GAMEOVER: screen_gameover(in); break;

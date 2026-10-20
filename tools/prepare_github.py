@@ -227,7 +227,7 @@ def export(destination):
     manifest = {
         'date': '2026-10-20',
         'target': 'https://github.com/nex86/openmr2',
-        'version': '0.7.18-dev',
+        'version': '0.7.19-dev',
         'classification': 'complete local development source snapshot, not legal clearance',
         'original_game_data_included': False,
         'bundled_executables_included': False,

@@ -65,6 +65,10 @@ int main(){
     for(int i=0;i<count;i++)check(path[i*4+2]>=.5f&&path[i*4+2]<=2&&path[i*4+3]>=0&&path[i*4+3]<=1,"lamp history projection keeps scale and fade finite");
     check(rect[0]>=-1&&rect[1]>=-1&&rect[2]<=1&&rect[3]<=1&&rect[2]>rect[0]&&rect[3]>rect[1],"lamp blur is restricted to a valid projected car/trail rectangle");
     g_effect_render_time=.2;lamp_pose_record(camera,g_scene[0]);check(!g_lamp_history[0][1].valid,"replay seeks clear future lamp history");
+    reset_world(quality);LM.w=1280;LM.h=960;car_model.bmin=v3(-3,-2,-5);car_model.bmax=v3(3,2,5);
+    for(int i=0;i<20;i++){RC.t=1+i*.01;g_effect_render_time=RC.t;g_scene[0].mv.m[12]=0;g_scene[0].mv.m[13]=0;g_scene[0].mv.m[14]=-40-i*.25f;lamp_pose_record(camera,g_scene[0]);}
+    count=lamp_motion_path(camera,g_scene[0],viewport,path,rect,samples);
+    check(count==(quality==2?16:32)&&samples>0,"forward perspective motion keeps its light trail when the projected anchor is stationary");
   }
   reset_world(3);RC.t=1;g_effect_render_time=1;double W[3]={0,0,0},up[3]={0,1,0},v[3]={2000,0,-20000};
   for(int i=0;i<200;i++)contact_sparks(W,up,v,1,1);check(g_contact_next==200,"contact event ring remains bounded under repeated impacts");

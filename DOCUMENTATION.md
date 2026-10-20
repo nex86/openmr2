@@ -7,7 +7,7 @@ Settings, controls, technical notes, development history and licensing.
 - [Configuration and migration](#configuration)
 - [Keyboard and mouse controls](#keyboard)
 - [Screenshots and recordings](#recording)
-- [Revived Effects - 0.7.18](#revive-effects)
+- [Revived Effects - 0.7.19](#revive-effects)
 - [GPU video upscaling (Revived only)](#video-upscaling)
 - [Driving and AI - 0.7.17-dev](#physics)
 - [Retro renderer: implementation and remaining differences](#retro-renderer)
@@ -570,9 +570,9 @@ F9 mutes/restores only Revived effects and leaves their individual preferences i
 
 <a id="revive-effects"></a>
 
-## Revived Effects - 0.7.18
+## Revived Effects - 0.7.19
 
-<a id="revive-effects--revived-effects---0718"></a>
+<a id="revive-effects--revived-effects---0719"></a>
 
 
 Open **Advanced Graphics > Revived Effects** (German: **Erweiterte Grafik > Revived Effekte**).
@@ -629,8 +629,11 @@ the previous implementation byte for byte.
 | Extreme | More detail within the same fixed budgets; 120 Hz engine paths and 240 Hz missile smoke; additional flame layers; 32-point rear-light paths with at most 192 integration samples |
 
 High and Extreme use presentation-time emitter positions between simulation
-updates. Their rear-light trails integrate each car's exact rear-only emission
-mask along its projected path instead of drawing separated car-shaped echoes.
+updates. Their rear-light trails sweep each car's exact rear-only emission mask along
+its projected path instead of drawing separated car-shaped echoes. A faded
+per-pixel envelope retains thin-light brightness; empty path samples do not
+dim it. The rear-lamp anchor and movement gate include perspective scaling,
+so ordinary forward movement remains visible in the chase camera.
 Burning vehicles and missile smoke use connected strips, so fast movement does
 not leave isolated flame blobs. Timeline seeks, slot reuse and recovery jumps
 reset the affected histories. Medium continues to use its original timing/path.
@@ -1255,10 +1258,10 @@ settings and reproduction steps. Redact personal paths and account details.
 The Git repository contains development source and documentation. Downloadable
 assets are kept under GitHub Releases, separate from tracked source files:
 
-- `OpenMR2-0.7.18-dev-source.tar.gz`: complete source snapshot, upstream source
+- `OpenMR2-0.7.19-dev-source.tar.gz`: complete source snapshot, upstream source
   and license texts, tools, build scripts, documentation and graphics provenance.
-- `OpenMR2-0.7.18-dev-Windows-x64.zip`: Windows executable and runtime documents.
-- `OpenMR2-0.7.18-dev-Linux-x86_64.zip`: native Linux executable and runtime
+- `OpenMR2-0.7.19-dev-Windows-x64.zip`: Windows executable and runtime documents.
+- `OpenMR2-0.7.19-dev-Linux-x86_64.zip`: native Linux executable and runtime
   documents; uses host libraries, without bundled AppImage dependencies.
 - `SHA256SUMS.txt`: SHA-256 hashes of the three downloadable archives.
 
@@ -1472,6 +1475,8 @@ Primary references:
 
 ## Changelog
 
+0.7.19-dev (2026-10-20): restored visible High/Extreme rear-light trails in normal forward/chase-camera motion. Their swept lamp-mask envelope preserves brightness instead of averaging it across empty samples; the motion gate includes perspective scale around the rear lamps. Medium and Retro visuals are unchanged. Restored the original player tire-skid loop from the fixed-point slip counter, including pause, sound-volume and race-end handling; no driving physics changed.
+
 0.7.18-dev (2026-10-20): real incremental race resource preparation for models, textures, custom PNGs, enabled sounds/music and selected GPU shaders; progress follows completed work, with no forced delay. UBB sources index headers and stream compressed frames on demand. Added Revived vehicle environment reflections with an independent intensity and four effect quality levels. Medium retains the previous effect paths; High/Extreme use continuous shader light trails and swept fire/smoke, denser particles and better shadows. Menu effects are silent outside the career shops; buy/sell/dialog sounds now follow the original executable's mapping.
 
 0.7.17-dev (2026-10-19): restored speed-dependent race wheel rotation, reverse direction and smooth 60 FPS wheel interpolation without changing physics. Experimental Revived video upscaling now offers six GPU filters: FSR, HQ4x, 4xBR, Lanczos3, FSRCNNX AI (8 channels) and FSRCNNX AI HQ (16 channels). The two learned filters reconstruct luma at 2x before Lanczos scaling to the output size. Retro keeps its original video path. See PHYSICS.md and VIDEO_UPSCALING.md.
@@ -1633,6 +1638,8 @@ Based on the supplied OpenMR2 0.6.4 ZIP. Local development candidate; not approv
 <a id="release-notes"></a>
 
 ## Release notes
+
+0.7.19-dev (2026-10-20): restored visible High/Extreme rear-light trails in normal forward/chase-camera motion. Their swept lamp-mask envelope preserves brightness instead of averaging it across empty samples; the motion gate includes perspective scale around the rear lamps. Medium and Retro visuals are unchanged. Restored the original player tire-skid loop from the fixed-point slip counter, including pause, sound-volume and race-end handling; no driving physics changed.
 
 0.7.18-dev (2026-10-20): real incremental race resource preparation for models, textures, custom PNGs, enabled sounds/music and selected GPU shaders; progress follows completed work, with no forced delay. UBB sources index headers and stream compressed frames on demand. Added Revived vehicle environment reflections with an independent intensity and four effect quality levels. Medium retains the previous effect paths; High/Extreme use continuous shader light trails and swept fire/smoke, denser particles and better shadows. Menu effects are silent outside the career shops; buy/sell/dialog sounds now follow the original executable's mapping.
 
@@ -1970,6 +1977,59 @@ sample changes and cleanup. The surrounding spatial mixer and driving model
 remain the port's implementation; this work establishes the original sample
 assignment and playback curve rather than full DOS mixer/physics equivalence.
 
+<a id="engine-audio--tire-squeal"></a>
+
+### Tire squeal
+
+Road sliding uses the original **SFX/DERAP_A.WAV**, separately from the existing
+oil-hit **DERAPOIL.WAV** cue. The former was still cached but had lost its playback
+call when the old approximate driving integration was replaced. The restored
+loop reads the validated `OriginalDrive.slip_frames` counter: start after more
+than two consecutive slipping updates, keep an already active loop through
+counter values one/two, and stop immediately at zero. It does not change grip,
+steering or any driving state. This correction applies equally to both modes.
+
+German GOG evidence, in the relocated LE image:
+
+- `0x2229C` copies player field `0xAD0A4` (car base `0xACF34` plus `0x170`,
+  the compared `slip_frames` field) into the audio snapshot at `0x87A3C`.
+- `0x456D5`-`0x45736` starts sample ID `0x84` on dedicated voice four once
+  that snapshot exceeds two; zero stops the voice. The nearby-opponent section
+  has no equivalent ordinary tire-squeal branch, so this restoration does not
+  invent additional opponent tire loops.
+- The sample table record starts at `0xDD714`; the 32-bit value at `0xDD734`
+  is **22**. In wrapper `0x44FF3`, `(sampleID-0x80)*36+0xDD6A4` selects
+  that level; `0x45093`-`0x450C5` multiplies it by the supplied spatial level,
+  shifts by seven and passes it to `AIL_set_sample_volume` at `0x4AEF3`.
+  This is a gain, distinct from voice four, sample `0x84` and the 22,050-Hz
+  playback frequency (`EBX=0x5622`).
+- The underlying setter `0x55550` stores volume in sample field `+0x40`.
+  `0x54060` clamps that field to **0..127** and divides its master-volume
+  product by 127. Thus the original normalized skid gain is **22/127**. The
+  original engine/skid wrappers share the same player spatial level, giving a
+  per-sample level ratio **22/20** (or 22/18 for the quieter engine profiles).
+  The original loader sets loop count
+  zero at `0x44C64` (repeat indefinitely), as passed to
+  `AIL_set_sample_loop_count` at `0x450CD`-`0x450E8`.
+
+The port's existing player-engine envelope is `(0.17 + 0.15*abs(speed)/V_PLAYER)`
+at profile level20, rather than literal normalized20/127. Tire gain therefore
+uses that same envelope times **22/20**; literal22/127 would make the cue too
+quiet relative to the existing engines. This narrow amplitude adapter leaves
+engine playback unchanged and preserves the original sample-level ratio. The
+Sounds slider/master gain still applies independently: setting Engines to0%
+does not mute the tires, while setting Sounds to0% does.
+
+Pause, race retirement, destruction, restored grip and 0% Sounds stop the loop;
+muted sliding skips WAV lookup and playback. Lost handles are also retired at
+race teardown, and the Game Over mixer guard still takes precedence. Native
+checks mix the actual original WAV into nonzero PCM in both graphics modes,
+then verify exact silence after restored grip and on Game Over. F10 suspends all
+voices before entering settings and resumes the same tire-sample phase on Apply.
+This establishes
+the original cue, trigger and relative sample level, rather than complete DOS
+mixer equivalence.
+
 <a id="engine-audio--shop-effects-and-silent-menus"></a>
 
 ### Shop effects and silent menus
@@ -2180,39 +2240,44 @@ The generated C++ registry is `src/remastered_ui_data.h`.
 <a id="docs-validation--publication-build-validation"></a>
 
 
-Version **0.7.18-dev**, validated on 2026-10-20 from the separate publication
-source tree. Original game files remain private and are excluded from releases.
+Version **0.7.19-dev**, validated on 2026-10-20 from the separate publication
+source tree. Original game fixtures are private and excluded from releases.
 
 | Check | Result |
 | --- | --- |
-| Windows x64 build and native regressions | 16,730 assertions, zero failures |
-| Linux x86_64 build and native regressions | 16,720 assertions, zero failures |
+| Windows native regressions | 16,764 assertions, zero failures |
+| Linux native regressions | 16,754 assertions, zero failures |
 | Release-binary scene rendering | Six captures per platform: race/options/car selection, both modes |
-| Release-binary reflection and PNG-alpha checks | 13 captures and six checks per platform; zero GL errors |
-| Effect quality and Retro image checks | 43 Windows / 37 Linux captures; all four quality levels pass |
-| Native race-loading checks | Four runs, two captures and 28 checks per platform |
-| Video streaming | 27 cases / 1,629 checks across English, French and German; zero failures |
-| Effect geometry and history | 142 checks, zero failures |
-| Accepted Medium comparison | 1,200 particle/trail cases match byte for byte; Windows shadow/oil/fire captures also match the previous version |
+| Final Windows ordinary-motion trail tests | 18 native-resolution captures; High/Extreme at Original/60 FPS pass |
+| Final Linux trail suite | 48 captures: ordinary driving, moving chase camera, three rear-lit cars, braking, front-only negative case and Medium/Retro comparisons |
+| Full Windows visual candidate | The same 48-capture suite passes; only audio gain changed before the final Windows rerun |
+| Original tire WAV and lifecycle | 93 focused checks across three languages, including real mixed PCM in both modes; zero failures |
+| Effect geometry/history | 144 checks, zero failures |
 | Original driving/contact loop | 57,600 controlled states on six tracks; zero differences |
 | Publication export safeguards | 12 tests, zero failures |
 
-Loading tests verify genuine partial progress, all fourteen vehicle models and
-thirteen world-object models ready before racing, bounded streamed video reads,
-selected shader readiness and strict Retro bypass. Reflection tests cover the
-race, vehicle previews, disabled shadows, 4x MSAA and transparent custom PNGs.
+The new trail tests reproduce the faint/missing 0.7.18 output before accepting
+the correction. They require a clearly red, connected streak outside the current
+lamp/bloom footprint at native 640x480, rather than accepting a tiny image
+difference. Braking strengthens the streak; Blatt 96 gains no invented rear
+lights. Medium and Retro match the accepted 0.7.18 images byte for byte.
 
-The complete quality suites were captured before the final narrow PNG-alpha
-and Reset corrections; the affected reflection/alpha groups and the scene smoke
-tests were rerun on the exact release binaries. Exact hashes and reports are in
-[VALIDATION.json](docs/VALIDATION.json). The actual Game Over audio recording remains
-the explicitly versioned 0.7.16 baseline, rather than a newly recorded claim.
+Audio tests load the actual DERAP_A.WAV and check audible PCM, restored-grip
+silence, pause, F10 suspension/resume, 0% Sounds, teardown and Game Over. The
+original slip counter is read without changing the physics or either RNG.
+Linux graphics use headless Mesa llvmpipe with the PulseAudio device disabled
+after a WSLg audio-server wait; actual WAV mixing is tested independently.
 
-The [GitHub Actions workflow](https://github.com/nex86/openmr2/actions) independently
-rebuilds the published source. See each commit's run for its CI result. Existing
-P01/P02 rights findings remain documented in the publication audit; technical
-checks do not resolve them. See the physics notes for the scope of original-game
-matching and the remaining approximations.
+Exact hashes, capture measurements and original-sample metadata are recorded in
+[VALIDATION.json](docs/VALIDATION.json). Full Windows multi-model checks precede the
+final audio-only amplitude adapter; all ordinary-motion cases and six scenes
+were rerun on the exact release binary. Linux uses its final binary throughout.
+The separate actual Game Over recording remains the explicitly versioned 0.7.16
+baseline, rather than a new recording claimed here.
+
+The [GitHub Actions workflow](https://github.com/nex86/openmr2/actions) rebuilds
+the published source. See each commit's runs for CI results. Existing P01/P02
+rights findings and the remaining physics-parity limits remain documented.
 
 
 ---

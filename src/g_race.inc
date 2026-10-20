@@ -78,7 +78,7 @@ struct Race {
   PPos campp; int frame; double vcam[12]; int reverse_view;   // vcam: camera interpolated between two video frames (objects move smoothly)
   char msg[64]; double msg_t; uint32_t msg_col;
   int paused, pause_sel, quit; double wrong_t; double done_t, pause_anim; double pause_slide;   // pause_slide: 0 hidden .. 1 menu bar fully down
-  float gain; int eng_voice, eng2_voice, scrape_voice;
+  float gain; int eng_voice, eng2_voice, scrape_voice, skid_voice;
   int order[8];
   int crashed; int last_lap;
   int heat, final_race;               // heat 0..2; the final has no weapons and no special tactics
@@ -136,6 +136,19 @@ static int race_audio_preload_step(RaceAudioPreload *job){
 }
 static void sfx(int id, float vol) { snd_play(sfx_sample(id,AUDIO_SOUNDS), vol, 1.0f, 0, 0); }
 static void scrape_stop(){snd_stop(RC.scrape_voice);RC.scrape_voice=-1;}
+static void skid_stop(){snd_stop(RC.skid_voice);RC.skid_voice=-1;}
+static float skid_gain(double speed);
+static void skid_update(){
+  const RCar &c=RC.car[0];
+  if(!audio_enabled(AUDIO_SOUNDS)||!RC.active||!c.fixed_ready||c.out||c.finished||RC.paused||RC.phase!=PH_RACE||g_engine_suppressed){skid_stop();return;}
+  // German M.EXE 0x456D5..0x45736: DERAP_A starts after three consecutive
+  // slipping updates (+0x170), remains through 1/2, and stops at zero.
+  // Read the validated drive state; audio must never change grip or its RNG.
+  if(c.fixed.slip_frames<=0){skid_stop();return;}
+  Voice *voice=snd_voice(RC.skid_voice);
+  if(!voice&&c.fixed.slip_frames>2){RC.skid_voice=snd_play(sfx_sample(S_DERAP,AUDIO_SOUNDS),skid_gain(c.v),1,1,0,AUDIO_SOUNDS);voice=snd_voice(RC.skid_voice);}
+  if(voice){voice->vol=MX.sfx_vol*skid_gain(c.v);voice->rate=1;voice->pan=0;}
+}
 static int projectile_model(int kind){return kind==W_KARD?OM_MISSILE:kind==W_BOOMER?OM_MISSILE_MID:kind==W_HITRAX?OM_MISSILE_BIG:-1;}
 static double dist_pts(const double a[3], const double b[3]) { double dx = a[0] - b[0], dy = a[1] - b[1], dz = a[2] - b[2]; return d_sqrt(dx * dx + dy * dy + dz * dz) / 6900.0; }
 static void sfx_at(int id, const double W[3], float vol);   // attenuated by the distance to the player
@@ -155,6 +168,12 @@ static const double PT = 6900.0;                  // nominal distance between tw
 static const double V_RAW = 200.0;                // world units per second per raw speed unit: the MOB camera moves one
                                                   // node (0x1B00) per 0x1B0000/speed units of 1/51200 s (M.EXE 0x2A7B1)
 static const double V_PLAYER = 1036 * V_RAW, V_AI = 1140 * V_RAW, V_BOOST = 1290 * V_RAW, V_REVERSE = -691 * V_RAW, V_START = 518 * V_RAW;   // M.EXE
+static float skid_gain(double speed){
+  // The port normalizes its existing player-engine envelope to profile level20.
+  // Preserve the original skid/engine level ratio22/20, independently of the
+  // Engines slider; a literal22/127 would be too quiet against that envelope.
+  return (float)((.17+.15*d_abs(speed)/V_PLAYER)*(22./20));
+}
 static const double MPH_TO_UNITS = V_PLAYER / 120.0;   // only for the speed shown in the debug console
 static const double SIM_STEP = 0.04;              // original simulation step: 2048 / 51200 s = 40 ms (25 steps per second)
 static const double ACCEL = V_PLAYER / 5.0;       // gas (command 400): measured in the original, ~5 s to the limit
@@ -319,7 +338,7 @@ static void race_setup(int car_for_player, const Loadout &lo, double dmg, int op
     c.stuck_prog = c.prog;
     c.v = c.vlong = V_START; c.desired_v = V_START; c.fork_node = -1;
     c.autopilot = A.start_frame > 0 ? 0 : 1;
-    if (A.objtest) { c.v = c.vlong = c.desired_v = 0; c.autopilot = 0; }
+    if (A.objtest) { c.v = c.vlong = c.desired_v = (A.graphics_test==23||A.graphics_test==24)?V_START:0; c.autopilot = 0; }
     c.tactic_mask = (!c.player && !RC.final_race && i < 8) ? TACTIC_MASKS[TK.idx % 6][i] : 0;
     if (c.player) { c.lo = lo; c.shield = lo.shield == 1 ? 100 : lo.shield; }   // remaining shield from the last race (1 = full: older saves)
     else if (!RC.final_race) {
@@ -344,16 +363,17 @@ static void race_setup(int car_for_player, const Loadout &lo, double dmg, int op
   RC.eng_voice = car_engine_play(player().car,0.5f,mexe_engine_frequency((int)(player().v/V_RAW))/22050.f);
   RC.eng2_voice = -1;
   RC.scrape_voice = -1;
+  RC.skid_voice = -1;
   sys_log("[event] Race initialized; engine loops started.");
 }
 static void race_end_sounds(void) {
   g_engine_suppressed=1;
-  if(snd_voice(RC.eng_voice)||snd_voice(RC.eng2_voice)||snd_voice(RC.scrape_voice))sys_log("[event] Race engine/scrape loops stopped.");
-  snd_stop(RC.eng_voice); snd_stop(RC.eng2_voice); snd_stop(RC.scrape_voice);
+  if(snd_voice(RC.eng_voice)||snd_voice(RC.eng2_voice)||snd_voice(RC.scrape_voice)||snd_voice(RC.skid_voice))sys_log("[event] Race engine/scrape/skid loops stopped.");
+  snd_stop(RC.eng_voice); snd_stop(RC.eng2_voice); snd_stop(RC.scrape_voice);skid_stop();
   // A replay/state reset can lose a handle. Retire the actual race-loop samples too,
   // without stopping unrelated voices which have reused an old mixer slot.
-  for(int i=0;i<NVOICES;i++)if(MX.v[i].bus==AUDIO_ENGINES || MX.v[i].snd==&SFX[S_ENGINE] || MX.v[i].snd==&SFX[S_ENGINE2] || MX.v[i].snd==&SFX[S_ENGINE3] || MX.v[i].snd==&SFX[S_FROTTE])MX.v[i].active=0;
-  RC.eng_voice = RC.eng2_voice = RC.scrape_voice = -1;
+  for(int i=0;i<NVOICES;i++)if(MX.v[i].bus==AUDIO_ENGINES || MX.v[i].snd==&SFX[S_ENGINE] || MX.v[i].snd==&SFX[S_ENGINE2] || MX.v[i].snd==&SFX[S_ENGINE3] || MX.v[i].snd==&SFX[S_FROTTE] || MX.v[i].snd==&SFX[S_DERAP])MX.v[i].active=0;
+  RC.eng_voice = RC.eng2_voice = RC.scrape_voice = RC.skid_voice = -1;
 }
 
 // ------------------------------------------------------------------ weapons
@@ -1134,6 +1154,7 @@ static void race_update(const Input *in, double dt) {
     if (v2 && bi>=0) { v2->vol = (float)((1 - best / 12) * 0.22 * MX.sfx_vol)*car_engine_gain(RC.car[bi].car); double a,l;rel_to(P,RC.car[bi].W,&a,&l);v2->rate=mexe_engine_frequency((int)(RC.car[bi].v/V_RAW))/22050.0;v2->pan=(float)d_clamp(l/20000.0,-0.8,0.8); }
   }
   scrape_update();
+  skid_update();
   if (RC.phase == PH_DONE) RC.done_t += dt;
   if (RC.crashed) RC.done_t += dt;
 }
@@ -1286,6 +1307,9 @@ static void race_draw(int W, int H) {
     if(A.graphics_test==9){static PPos base;static double base_x;static int have;if(!have){base=P.pp;base_x=P.x;have=1;}P.pp=base;P.x=base_x;pp_move(P.pp,P.x,RC.t*8000);car_update_world(P);}
     if(A.graphics_test==21||A.graphics_test==22){static PPos base;static int have;if(!have){base=P.pp;have=1;}P.pp=base;P.x=d_sin(RC.t*8)*18000;if(A.graphics_test==22){P.damage=A.test_damage>0?A.test_damage:95;P.out=P.damage>=100;}car_update_world(P);}
     if(A.graphics_test==5)P.braking=1;
+    // Normal fixed-point driving and moving camera, with identical trajectories
+    // for the running-light / brake-light comparison. Requires --objtest-drive.
+    if(A.graphics_test==24)P.braking=1;
     if(A.graphics_test==6){P.damage=A.test_damage;P.out=A.test_damage>=100;if(P.out&&g_damage_effects){effects_reset();Fx &f=RC.fx[0];f.alive=1;f.model=OM_EXP_BIG;f.scale=2.4;f.t=A.effect_age_ms*.001;pp_world(P.pp,P.x,2500,f.W);}}
     if(A.graphics_test==12||A.graphics_test==13){effects_reset();Fx &f=RC.fx[0];f.alive=1;f.model=OM_EXP_BIG;f.scale=A.graphics_test==12?1.4:1.3;f.t=A.effect_age_ms*.001;pp_world(q,x-12000,2500,f.W);}
     if(A.graphics_test==3){effects_reset();Fx &f=RC.fx[0];f.alive=1;f.model=OM_EXP_BIG;f.scale=1.35;f.t=A.effect_age_ms*0.001;pp_world(q,x-12000,2500,f.W);}

@@ -1838,7 +1838,7 @@ static int game_frame(int W, int H, double dt, const Input *in) {
     if ((in->pressed[K_ESC] || in->pressed[K_P]) && RC.phase != PH_FLYBY) { RC.paused ^= 1; RC.pause_sel = 0; RC.pause_anim = 0; }
     g_gray = RC.paused ? 1.0f : 0.0f;
     if (RC.paused) {
-      scrape_stop();
+      scrape_stop();skid_stop();
       RC.pause_anim += dt;
       RC.pause_slide += dt / 0.35; if (RC.pause_slide > 1) RC.pause_slide = 1;   // scroll down
       int old = RC.pause_sel;

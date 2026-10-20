@@ -11,8 +11,16 @@ static void test_controls_0713(){
   int filter=G.gfx_output_filter,scale=G.gfx_scale;key(K_F5);key(K_F6);check(G.gfx_output_filter==(filter+1)%6&&G.gfx_scale==scale%4+1,"F5 and F6 cycle Retro output filters/scales");
   key(K_F2);key(K_F3);key(K_F4);key(K_F7);key(K_F8);check(!g_smooth_filter&&g_out_mode==0&&!g_video_upscale&&!g_custom_textures,"modern shortcuts cannot unlock prohibited Retro graphics");key(K_F1);check(G.gfx_mode==0&&g_video_upscale&&g_custom_textures&&g_out_mode==1,"F1 restores the saved Revived configuration");
   G.state=GS_RACE;G.t=17.25;RC.paused=0;RC.active=1;G.sel=3;int frame=TK.vid.decoded_frame;double elapsed=RC.t;
+  RC.phase=PH_RACE;player().fixed_ready=1;player().fixed.slip_frames=3;player().out=player().finished=0;g_engine_suppressed=0;g_audio_percent[AUDIO_SOUNDS]=100;
+  skid_update();int skid_handle=RC.skid_voice;Voice *skid=snd_voice(skid_handle);double skid_pos=skid?skid->pos:0;
+  check(skid&&skid->snd==&SFX[S_DERAP],"F10 test begins with the actual original tire-squeal loop active");
+  int saved_menu_volume=g_audio_percent[AUDIO_MENU_MUSIC];g_audio_percent[AUDIO_MENU_MUSIC]=0;
   key(K_F10);check(G.state==GS_OPTIONS&&RC.paused&&g_options_return==GS_RACE,"F10 opens the full settings menu and pauses a race");
+  int16_t options_pcm[128];app_audio_fill(options_pcm,64);int silent=1;for(int i=0;i<128;i++)if(options_pcm[i])silent=0;
+  check(!snd_voice(skid_handle)&&silent,"F10 suspends tire squeal before the race's ordinary pause branch and mixes no paused-race PCM");
   Input enter={};enter.pressed[K_ENTER]=1;G.sel=13;G.click=0;screen_options(&enter);
+  check(snd_voice(skid_handle)&&snd_voice(skid_handle)->pos==skid_pos,"F10 Apply resumes the same tire-squeal phase without restarting its sample");
+  skid_stop();g_audio_percent[AUDIO_MENU_MUSIC]=saved_menu_volume;
   check(G.state==GS_RACE&&!RC.paused&&G.t==17.25&&G.sel==3&&g_options_return<0,"Apply resumes the same race and original UI state");check(RC.t==elapsed&&TK.vid.decoded_frame==frame,"settings do not reset or advance the race/video clock");
   graphics_mode_set(1);key(K_F10);check(G.gfx_mode==1&&G.state==GS_OPTIONS,"F10 opens the Retro options variant in Retro");G.sel=12; // Retro Apply is the final item; use the actual return function below.
   screen_options(&enter);check(G.state==GS_RACE&&!RC.paused,"Retro Apply returns to the same race");

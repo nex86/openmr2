@@ -1,7 +1,7 @@
 # OpenMR2 - MegaRace 2 Revived
 
 A recreation of MegaRace 2 for modern Windows and Linux systems, using the
-original game data without DOSBox. Current development version: **0.7.18-dev**.
+original game data without DOSBox. Current development version: **0.7.19-dev**.
 
 **Requires your own English, French or German GOG installation of MegaRace 2.**
 Original game files are not included. Original CD editions are not yet supported.
@@ -55,7 +55,7 @@ prereleases; availability depends on the current release publication status.
 
 ### Windows x64
 
-1. Extract `OpenMR2-0.7.18-dev-Windows-x64.zip` to a writable folder.
+1. Extract `OpenMR2-0.7.19-dev-Windows-x64.zip` to a writable folder.
 2. Run `OpenMR2.exe` from the extracted directory. Windows 10/11 x64 and an
    OpenGL 3.3-capable graphics driver are the intended target; no Visual C++
    runtime installation is required.
@@ -77,8 +77,8 @@ with glibc 2.39+, X11/Xwayland and OpenGL 3.3 is the tested baseline. On Ubuntu:
 
 ```sh
 sudo apt install unzip libx11-6 libgl1 libgl1-mesa-dri libpulse0 libstdc++6
-unzip OpenMR2-0.7.18-dev-Linux-x86_64.zip
-cd OpenMR2-0.7.18-dev-Linux-x86_64
+unzip OpenMR2-0.7.19-dev-Linux-x86_64.zip
+cd OpenMR2-0.7.19-dev-Linux-x86_64
 chmod +x openmr2_linux
 ./openmr2_linux --game "/path/to/MegaRace 2"
 ```

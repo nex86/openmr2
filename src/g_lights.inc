@@ -44,7 +44,7 @@ static int lamp_motion_resources(int W,int H){
   if(g_effect_quality<2||g_tex_nearest||W<2||H<2)return 0;
   if(!LM.trail_program)LM.trail_program=shader_build(
     "#version 330 core\nout vec2 uv;uniform vec4 uRect;void main(){vec2 c=vec2(float(gl_VertexID&1),float((gl_VertexID>>1)&1));vec2 p=mix(uRect.xy,uRect.zw,c);uv=p*0.5+0.5;gl_Position=vec4(p,0.0,1.0);}",
-    "#version 330 core\nin vec2 uv;out vec4 o;uniform sampler2D uMask;uniform mat4 uPath[8];uniform int uCount,uSamples;uniform vec2 uHead;vec4 path(int i){return uPath[i/4][i%4];}void main(){vec3 sum=vec3(0.0);float weight=0.0;for(int j=0;j<192;j++){if(j>=uSamples)break;float t=(float(j)+0.5)/float(uSamples)*float(uCount-1);int k=min(int(t),uCount-2);vec4 p=mix(path(k),path(k+1),fract(t));vec2 source=(uv-p.xy)/p.z+uHead;float fade=(1.0-p.w)*(1.0-p.w);if(all(greaterThanEqual(source,vec2(0.0)))&&all(lessThanEqual(source,vec2(1.0))))sum+=texture(uMask,source).rgb*fade;weight+=fade;}vec3 c=sum/max(weight,0.001)*2.2;if(max(c.r,max(c.g,c.b))<0.0002)discard;o=vec4(c,0.0);}");
+    "#version 330 core\nin vec2 uv;out vec4 o;uniform sampler2D uMask;uniform mat4 uPath[8];uniform int uCount,uSamples;uniform vec2 uHead;vec4 path(int i){return uPath[i/4][i%4];}void main(){vec3 envelope=vec3(0.0);for(int j=0;j<192;j++){if(j>=uSamples)break;float t=(float(j)+0.5)/float(uSamples)*float(uCount-1);int k=min(int(t),uCount-2);vec4 p=mix(path(k),path(k+1),fract(t));vec2 source=(uv-p.xy)/p.z+uHead;float fade=(1.0-p.w)*(1.0-p.w);if(all(greaterThanEqual(source,vec2(0.0)))&&all(lessThanEqual(source,vec2(1.0))))envelope=max(envelope,texture(uMask,source).rgb*fade);}vec3 c=envelope*2.2;if(max(c.r,max(c.g,c.b))<0.0002)discard;o=vec4(c,0.0);}");
   if(!LM.trail_program)return 0;
   if(LM.trail_w==W&&LM.trail_h==H&&LM.trail_fbo)return 1;
   if(LM.trail_tex)glDeleteTextures(1,&LM.trail_tex);if(LM.trail_fbo)glDeleteFramebuffers(1,&LM.trail_fbo);
@@ -59,7 +59,8 @@ static V3 lamp_project(V3 eye,const GLint *viewport){
 static V3 lamp_world_project(const double *cam,const M4 &world,V3 local,const GLint *viewport){V3 point=transform_point(world,local);double W[3]={point.x/MODEL_SCALE,point.y/MODEL_SCALE,point.z/MODEL_SCALE};return lamp_project(shadow_eye(cam,W),viewport);}
 static int lamp_motion_path(const double *cam,const SceneModel &s,const GLint *viewport,float *path,float *rect,int &samples){
   LampPose *history=g_lamp_history[s.car];if(!history[0].valid||!history[1].valid)return 0;
-  const Model &m=*s.model;V3 center=(m.bmin+m.bmax)*.5f,head=lamp_world_project(cam,history[0].world,center,viewport);if(head.z<=0)return 0;
+  const Model &m=*s.model;V3 anchor=(m.bmin+m.bmax)*.5f;anchor.z=m.bmin.z;
+  V3 head=lamp_world_project(cam,history[0].world,anchor,viewport);if(head.z<=0)return 0;
   float lo_x=1,lo_y=1,hi_x=0,hi_y=0;
   for(int corner=0;corner<8;corner++){V3 local=v3(corner&1?m.bmax.x:m.bmin.x,corner&2?m.bmax.y:m.bmin.y,corner&4?m.bmax.z:m.bmin.z),p=lamp_world_project(cam,history[0].world,local,viewport);if(p.z<=0)continue;lo_x=m_min(lo_x,p.x);lo_y=m_min(lo_y,p.y);hi_x=m_max(hi_x,p.x);hi_y=m_max(hi_y,p.y);}
   double now=lamp_clock(),duration=g_effect_quality>=3?.14:.105;int count=g_effect_quality>=3?32:16;float maximum_pixels=0;
@@ -70,10 +71,18 @@ static int lamp_motion_path(const double *cam,const SceneModel &s,const GLint *v
     else{const LampPose &a=history[index],&b=history[index-1];double f=(time-a.time)/(b.time-a.time);for(int k=0;k<16;k++)pose.m[k]=a.world.m[k]+(b.world.m[k]-a.world.m[k])*(float)f;}
     double d=0;for(int k=0;k<3;k++)d+=(pose.m[12+k]-history[0].world.m[12+k])*(pose.m[12+k]-history[0].world.m[12+k]);d=d_sqrt(d);double limit=g_effect_quality>=3?12:9;
     if(d>limit)for(int k=0;k<3;k++)pose.m[12+k]=history[0].world.m[12+k]+(pose.m[12+k]-history[0].world.m[12+k])*(float)(limit/d);
-    V3 p=lamp_world_project(cam,pose,center,viewport);if(p.z<=0)p=head;float scale=m_clamp(head.z/p.z,.5f,2.f);
+    V3 p=lamp_world_project(cam,pose,anchor,viewport);if(p.z<=0)p=head;float scale=m_clamp(head.z/p.z,.5f,2.f);
     path[i*4]=p.x;path[i*4+1]=p.y;path[i*4+2]=scale;path[i*4+3]=(float)(age/duration);
     rect[0]=m_min(rect[0],p.x+(lo_x-head.x)*scale);rect[1]=m_min(rect[1],p.y+(lo_y-head.y)*scale);rect[2]=m_max(rect[2],p.x+(hi_x-head.x)*scale);rect[3]=m_max(rect[3],p.y+(hi_y-head.y)*scale);
     float dx=(p.x-head.x)*LM.w,dy=(p.y-head.y)*LM.h;maximum_pixels=m_max(maximum_pixels,m_sqrt(dx*dx+dy*dy));
+    // Forward movement can keep the anchor on the same pixel while the rear
+    // lamp footprint grows in perspective. Include that movement in the gate
+    // and sampling density, rather than discarding a visible scale-only path.
+    for(int corner=0;corner<4;corner++){
+      float x=corner&1?hi_x:lo_x,y=corner&2?hi_y:lo_y;
+      dx=(p.x+(x-head.x)*scale-x)*LM.w;dy=(p.y+(y-head.y)*scale-y)*LM.h;
+      maximum_pixels=m_max(maximum_pixels,m_sqrt(dx*dx+dy*dy));
+    }
   }
   if(maximum_pixels<.35f)return 0;samples=(int)m_clamp(maximum_pixels*2+1,g_effect_quality>=3?96.f:48.f,g_effect_quality>=3?192.f:128.f);
   for(int i=0;i<4;i++)rect[i]=m_clamp(rect[i]+(i<2?-2.f:2.f)/(i&1?LM.h:LM.w),0,1)*2-1;return count;
